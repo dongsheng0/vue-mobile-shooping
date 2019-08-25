@@ -1,7 +1,7 @@
 body {
   margin: 0px;
   padding: 0px;
-  color: rgb(34, 34, 34);
+  color: #4D4D4D;
   font-family: Helvetica, "Hiragino Sans GB", "Microsoft YaHei", Simsun, "Droid Sans Fallback", sans-serif;
   text-decoration: none;
   background: #fff;
@@ -49,6 +49,7 @@ li {
 img {
   border: 0px currentColor;
   vertical-align: top;
+  width: 100%;
 }
 
 ol {
@@ -61,3 +62,22 @@ a {
   color: rgb(0, 0, 0);
   text-decoration: none;
 }
+/* 公共 */
+body .van-card__desc{
+    color: #848484;
+}
+body .van-card__origin-price{
+  color: #727272;
+}
+[class*='van-hairline']::after{
+border: 0 !important;
+}
+.van-hairline--top-bottom::after, .van-hairline-unset--top-bottom::after{
+  border: 0 !important;
+}
+
+/* 分割线 */
+.border-split{
+      height:14px;
+      background:linear-gradient(180deg,rgba(0,0,0,.03) 0%,rgba(0,0,0,0) 100%);
+ }

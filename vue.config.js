@@ -17,5 +17,20 @@ module.exports = {
                 changeOrigin: true,
             }
         }
+    },
+    css: {
+        loaderOptions: {
+            less: {
+                modifyVars: {
+                    red: '#F37455',
+                    blue: '#3eaf7c',
+                    orange: '#F37455',
+                    block: '#4D4D4D',
+                    gray: '#C9C9C9',
+                    'active-color': '#FF4728',
+                    'text-color': '#323233'
+                }
+            }
+        }
     }
 }

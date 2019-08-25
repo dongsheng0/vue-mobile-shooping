@@ -1,106 +1,113 @@
 <template>
     <van-cell-group class="additional">
-        <van-card
-        :title="product.title"
-        :desc="product.desc"
-        :num="(iscard?null:product.quantity)"
-        style="background:#fff"
-        >
+        <van-card :title="product.title" 
+                  :centered="true" 
+                  :origin-price="product.originPrice" 
+                  :desc="product.desc" 
+                  :num="(iscard?null:product.quantity)"
+                  @click="clickProduct">
+            <!-- 自定义图片 -->
             <template slot="thumb">
-                <img :src="product.imageURL" />
+                <img class="p-img"  :src="product.imageURL" />
                 <p v-if="product.imageTag!=null&&product.imageTag!=''" class="image_tag">{{product.imageTag}}</p>
             </template>
+            <!-- 自定义价格 -->
+            <template slot="price">
+                <p class="price">￥ <span>{{product.price}}</span> 起</p>
+            </template>
+            <!-- 描述下方标签区域-->
             <template slot="tags">
-                <p class="price" v-if="product.price!=null&&product.price!=''" >
-                    ￥<span>{{product.price}}</span>
-                    <van-tag v-if="product.tags!=null" v-for="tag in product.tags" :key="tag" plain type="danger">{{tag}}</van-tag>
-                </p>
-                <van-stepper v-if="iscard" v-model="product.quantity" :max="product.max"  :min="product.min" />
+                
+            </template >
+            <template slot="bottom">
+                <div class="p-tag">
+                    <span class="p-tag-icon"></span>
+                    <span class="p-tag-price">￥{{product.price}}</span>
+                </div>
+                <!-- <div class="p-time">
+                    <span class="p-time-end">限时：{{product.time}}</span>
+                    <div class="p-tag">
+                        <span class="p-tag-icon"></span>
+                        <span class="p-tag-price">￥{{product.price}}</span>
+                    </div>
+                </div> -->
             </template>
+            <!-- <template slot="footer">
+                
+            </template> -->
         </van-card>
-        <van-cell  v-for="(gift,j) in product.gift" :key="j"  :value="'x'+gift.quantity" >
+        <!-- <van-cell v-for="(gift,j) in product.gift" :key="j" :value="'x'+gift.quantity">
             <template slot="title">
-                <van-tag type="danger" v-if="j==0" >赠品</van-tag>
-                <span class="van-cell-text" :style="(j>0?'margin-left: 35px;':'')" >{{gift.title}}</span>
+                <van-tag type="danger" v-if="j==0">赠品</van-tag>
+                <span class="van-cell-text" :style="(j>0?'margin-left: 35px;':'')">{{gift.title}}</span>
             </template>
-        </van-cell>
+        </van-cell> -->
         <slot />
     </van-cell-group>
 </template>
 
 <script>
-export default {
-    name:'product-card',
-    props:{
-        product:Object,
-        iscard: {
-            type: Boolean,
-            default: false
+    export default {
+        name: 'product-card',
+        props: {
+            product: Object,
+            iscard: {
+                type: Boolean,
+                default: false
+            },
         },
+        methods: {
+            clickProduct(data) {
+                this.$emit('click', data)
+            }
+        }
     }
-}
 </script>
 
 <style lang="less">
-.additional {
-    .van-cell {
-        padding: 0 15px;
-        font-size: 12px;
-    }
-    .van-cell:not(:last-child)::after{
-        border:0;
-    }
-    .van-card__title{
-        font-size: 14px;
-    }
-    .van-cell__title {
-        flex: 10;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    .van-tag {
-        line-height: 12px;
-        margin-right: 5px;
-    }
-    .price {
-      color: #e93b3d;
-      font-size: 10px;
-        overflow: hidden;
-        height: 18px;
-      span {
-        font-size: 16px;
-            margin-right: 5px;
-      }
-      .van-tag{
-        font-size: 12px;
-      }
-    }
-    .van-stepper{
-        position: absolute;
-        bottom: 5px;
-        right: 5px;
-        &__plus{
-            width: 30px;
+    .additional {
+        .p-img{
+            background-color:rgba(216,216,216,1);
+            border-radius:8px;
         }
-        &__minus{
-            width: 30px;
+         .p-tag {
+            float: right;
+            min-width:46px;
+            height:26px;
+            display: inline-block;
+            background:rgba(252,157,96,.3);
+            border-radius:13px;
+            padding: 0 13px;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 26px;
+            color: #FD6234;
+            &-icon{
+                width: 13px;
+                height: 12px;
+                background: url(../../assets/img/icon/icon_gift.png) no-repeat;
+                display: inline-block;
+            }
+        }
+        .p-time{
+            .p-time-end{
+                color: #FD6234;
+                font-size: 12px;
+            }
+        }
+        .van-cell:not(:last-child)::after {
+            border: 0;
+        }
+        /deep/  .van-card__title {
+            font-size:15px;
+            font-weight: 500;
+            color: #424242;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        /deep/ .van-card__desc{
+            padding: 5px 0;
         }
     }
-    .image_tag{
-        position: absolute;
-        bottom: 0;
-        width: 90px;
-        height: 20px;
-        line-height: 20px;
-        font-size: 10px;
-        color: #fff;
-        text-align: center;
-        background-color: rgba(0,0,0,.7);
-    }
-}
-.additional::after{
-    border-color: #f7f7f7;
-
-}
 </style>

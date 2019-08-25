@@ -78,6 +78,13 @@ const routes = [{
       title: '搜素'
     }
   },
+  {
+    path: '/list',
+    component: () => import('../pages/product/list'),
+    meta: {
+      title: 'listtest'
+    }
+  },
   // 详情
   {
     path: '/goods/:id',
