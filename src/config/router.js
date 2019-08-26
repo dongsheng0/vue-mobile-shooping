@@ -65,7 +65,7 @@ const routes = [{
     }
   },
   {
-    path: '/cities',
+    path: '/city',
     component: () => import('../pages/cities/index'),
     meta: {
       title: '城市'

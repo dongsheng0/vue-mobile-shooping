@@ -62,22 +62,66 @@ a {
   color: rgb(0, 0, 0);
   text-decoration: none;
 }
+
 /* 公共 */
-body .van-card__desc{
-    color: #848484;
+body .van-card__desc {
+  color: #848484;
 }
-body .van-card__origin-price{
+
+body .van-card__origin-price {
   color: #727272;
 }
-[class*='van-hairline']::after{
-border: 0 !important;
+
+[class*='van-hairline']::after {
+  border: 0 !important;
 }
-.van-hairline--top-bottom::after, .van-hairline-unset--top-bottom::after{
+
+.van-hairline--top-bottom::after,
+.van-hairline-unset--top-bottom::after {
   border: 0 !important;
 }
 
 /* 分割线 */
-.border-split{
-      height:14px;
-      background:linear-gradient(180deg,rgba(0,0,0,.03) 0%,rgba(0,0,0,0) 100%);
- }
+.border-split {
+  height: 14px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, .03) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+/* 地点标志 */
+.address {
+  display: inline-block;
+  font-size: 13px;
+  color: #666;
+  padding-left: 25px;
+  line-height: 22px;
+  background: url(../img/icon/icon_address.png) no-repeat left;
+}
+
+/* 标题左侧 */
+.left-bar {
+  display: block;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(114, 114, 114, 1);
+  line-height: 21px;
+  padding-left: 25px;
+  background: url(../img/icon/left_bar.png) no-repeat left;
+}
+
+/* 左侧的点 */
+.point:before {
+  width: 5px;
+  height: 5px;
+  content: "";
+  background-color: #555;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 5px;
+}
+
+.point.active:before {
+  background-color: #FF4728;
+}
+
+/* 公共颜色  #FF4728 */

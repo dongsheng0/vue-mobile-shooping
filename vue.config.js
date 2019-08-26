@@ -5,6 +5,7 @@ let baseurl = {
 }
 module.exports = {
     devServer: {
+        port: 2000,
         proxy: {
             '/api': {
                 target: baseurl[process.env.NODE_ENV],
