@@ -1,3 +1,96 @@
-.van-card__desc{
-    color: #848484;
+@import "./van-global.less";
+
+@primary: #FF4728; //主题色
+@primary-gray: #4C4C4C; //主题灰-顶部bar
+
+.button(@color: "red"; @width: 92px; @height: 30px; @font-size: 14px)when(@color="red") {
+  width: @width;
+  padding: 0px;
+  line-height: @height;
+  font-size: @font-size;
+  border-radius: 50%;
+  cursor: pointer;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(135deg, rgba(255, 96, 97, 1) 0%, rgba(255, 69, 68, 1) 100%);
+
+  &:hover {
+    background: linear-gradient(135deg, rgba(255, 104, 105, 1) 0%, rgba(255, 79, 78, 1) 100%);
+  }
+
+  &:active {
+    background: linear-gradient(135deg, rgba(248, 82, 83, 1) 0%, rgba(250, 61, 60, 1) 100%);
+  }
+}
+
+.button(@color: "green"; @width: 92px; @height: 30px; @font-size: 14px)when(@color="green") {
+  display: inline-block;
+  width: @width;
+  padding: 0px;
+  line-height: @height;
+  font-size: @font-size;
+  border-radius: 50%;
+  cursor: pointer;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(135deg, rgba(15, 96, 97, 1) 0%, rgba(155, 69, 68, 1) 100%);
+
+  &:hover {
+    background: linear-gradient(135deg, rgba(155, 104, 105, 1) 0%, rgba(155, 79, 78, 1) 100%);
+  }
+
+  &:active {
+    background: linear-gradient(135deg, rgba(148, 82, 83, 1) 0%, rgba(150, 61, 60, 1) 100%);
+  }
+}
+
+/* 分割线 */
+.border-split {
+  height: 14px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, .03) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+/* 地点标志 */
+.address {
+  display: inline-block;
+  font-size: 13px;
+  color: #666;
+  padding-left: 25px;
+  line-height: 22px;
+  background: url(../img/icon/icon_address.png) no-repeat left;
+}
+
+/* 标题左侧 */
+.left-bar {
+  display: block;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(114, 114, 114, 1);
+  line-height: 21px;
+  padding-left: 25px;
+  background: url(../img/icon/left_bar.png) no-repeat left;
+}
+
+/* 左侧的点 */
+.point {
+  font-size: 12px;
+
+  &:before {
+    width: 5px;
+    height: 5px;
+    content: "";
+    background-color: #555;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 5px;
+  }
+
+  &.active {
+    color: @primary;
+
+    &:before {
+      background-color: @primary;
+    }
+  }
 }

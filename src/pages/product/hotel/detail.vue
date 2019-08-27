@@ -1,11 +1,12 @@
 <style lang="less">
+@import "../../../assets/style/global";
 </style>
 
 <template>
   <!-- 酒店详情 -->
   <div>
-    <div class="detail-c">
-      <tabs :tabs="tabs" active="hotel"></tabs>
+    <div>
+      <van-field v-model="value" placeholder="请输入用户名" />
     </div>
     <!-- <div class="point active"></div>
     <van-button @click="selectData" type="warning">警告按钮</van-button>
@@ -16,22 +17,15 @@
   </div>
 </template>
 <script>
-import tabs from '../../../components/common/tabs'
 export default {
   data () {
     return {
       show: false,
       minDate: new Date(),
-      isShowSave: false,
-      tabs: [
-        { title: '景区', type: 1, name: 'scenic' },
-        { title: '酒店', type: 2, name: 'hotel' },
-        { title: '商品', type: 3, name: 'goods' }
-      ]
+      isShowSave: false
     }
   },
   components: {
-    tabs
   },
   methods: {
     selectData () {
@@ -41,8 +35,6 @@ export default {
       this.show = false
     },
     change (e) {
-      console.log('日期改变');
-      console.log(e);
       this.isShowSave = e.length > 1 ? true : false
     }
   }

@@ -1,6 +1,6 @@
 <template>
   <div class="x-van-tabs">
-    <van-tabs v-model="active" @click="tabClick" :border="false">
+    <van-tabs v-model="tabActive" @click="tabClick" :border="false">
       <van-tab v-for="(item, index) in tabs" :key="index" :name="item.name">
         <div slot="title">
           <p class="tab-title">{{item.title}}</p>
@@ -14,6 +14,11 @@
 export default {
   name: 'x-tabs',
   props: ['active', 'tabs'],
+  data () {
+    return {
+      tabActive: this.active
+    }
+  },
   methods: {
     tabClick (e) {
       this.$emit('click', e)
