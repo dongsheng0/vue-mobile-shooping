@@ -85,7 +85,7 @@ function process(res) {
 }
 export function get(url, params = {}) {
   return new Promise((resolve, reject) => {
-    axios.get(`${API}url`, {
+    axios.get(`${API}${url}`, {
         params: params
       })
       .then(res => {
