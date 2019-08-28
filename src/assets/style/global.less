@@ -3,12 +3,13 @@
 @primary: #FF4728; //主题色
 @primary-gray: #4C4C4C; //主题灰-顶部bar
 
-.button(@color: "red"; @width: 92px; @height: 30px; @font-size: 14px)when(@color="red") {
+.button(@color: "red"; @width: 52px; @height: 30px; @font-size: 14px)when(@color="red") {
+  display: inline-block;
   width: @width;
   padding: 0px;
   line-height: @height;
   font-size: @font-size;
-  border-radius: 50%;
+  border-radius: @height/2;
   cursor: pointer;
   text-align: center;
   color: #fff;
@@ -23,17 +24,17 @@
   }
 }
 
-.button(@color: "green"; @width: 92px; @height: 30px; @font-size: 14px)when(@color="green") {
+.button(@color: "green"; @width: 52px; @height: 30px; @font-size: 14px)when(@color="green") {
   display: inline-block;
   width: @width;
   padding: 0px;
   line-height: @height;
   font-size: @font-size;
-  border-radius: 50%;
+  border-radius: @height / 2;
   cursor: pointer;
   text-align: center;
   color: #fff;
-  background: linear-gradient(135deg, rgba(15, 96, 97, 1) 0%, rgba(155, 69, 68, 1) 100%);
+  background: linear-gradient(135deg, #c7f263 0%, #8aee77 100%);
 
   &:hover {
     background: linear-gradient(135deg, rgba(155, 104, 105, 1) 0%, rgba(155, 79, 78, 1) 100%);
@@ -74,10 +75,11 @@
 /* 左侧的点 */
 .point {
   font-size: 12px;
+  line-height: 20px;
 
   &:before {
-    width: 5px;
-    height: 5px;
+    width: 4px;
+    height: 4px;
     content: "";
     background-color: #555;
     border-radius: 50%;

@@ -1,7 +1,7 @@
 <template>
   <div class="x-van-tabs">
     <van-tabs v-model="tabActive" @click="tabClick" :border="false">
-      <van-tab v-for="(item, index) in tabs" :key="index" :name="item.name">
+      <van-tab v-for="(item, index) in tabs" :key="index" :name="index">
         <div slot="title">
           <p class="tab-title">{{item.title}}</p>
         </div>

@@ -75,8 +75,3 @@ body .van-card__origin-price {
 [class*='van-hairline']::after {
   border: 0 !important;
 }
-
-.van-hairline--top-bottom::after,
-.van-hairline-unset--top-bottom::after {
-  border: 0 !important;
-}
