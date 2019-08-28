@@ -1,14 +1,9 @@
-let baseurl = {
-  development: 'https://xiaoxue-live.test-dahai.com',
-  testing: 'https://s4.test-v2-live.qdsay.com',
-  production: 'https://v2-live.dahai.com',
-};
 module.exports = {
   devServer: {
     port: 2000,
     proxy: {
-      '/api': {
-        target: baseurl[process.env.NODE_ENV],
+      '/cgi': {
+        target: process.env.VUE_APP_BASE_URL,
         changeOrigin: true,
         secure: false,
       },

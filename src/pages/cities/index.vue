@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import serverHttp from '../../assets/js/api'
 export default {
   data () {
     return {
@@ -36,73 +37,10 @@ export default {
       console.log(index)
     },
     requireData () {
-      let res = {
-        "hotCites": [ //热门城市
-          {
-            "provinceCode": 340000, //省代码
-            "cityCode": null, //市代码
-            "name": "安徽"//城市名称
-          },
-          {
-            "provinceCode": 110000,
-            "cityCode": null,
-            "name": "北京"
-          },
-          {
-            "provinceCode": 340000,
-            "cityCode": 340800,
-            "name": "安庆市"
-          }
-        ],
-        "dictCites": { //字母分类下的城市A-Z
-          "A": [
-            {
-              "provinceCode": 820000, //省代码
-              "cityCode": null, //市代码
-              "name": "澳门"//城市名称
-            },
-            {
-              "provinceCode": 510000,
-              "cityCode": 513200,
-              "name": "阿坝藏族羌族自治州"
-            },
-            {
-              "provinceCode": 650000,
-              "cityCode": 652900,
-              "name": "阿克苏地区"
-            },
-            {
-              "provinceCode": 650000,
-              "cityCode": 659002,
-              "name": "阿拉尔市"
-            },
-            {
-              "provinceCode": 150000,
-              "cityCode": 152900,
-              "name": "阿拉善盟"
-            }
-          ],
-          "B": [
-            {
-              "provinceCode": 110000,
-              "cityCode": null,
-              "name": "北京"
-            },
-            {
-              "provinceCode": 220000,
-              "cityCode": 220800,
-              "name": "白城市"
-            },
-            {
-              "provinceCode": 450000,
-              "cityCode": 451000,
-              "name": "百色市"
-            }
-          ]
-        }
-      }
-      this.hotCites = res.hotCites
-      this.dictCites = res.dictCites
+      serverHttp.cityApi().then(res => {
+        this.hotCites = res.rs.hotCites
+        this.dictCites = res.rs.dictCites
+      })
     }
   },
 }
@@ -112,7 +50,7 @@ export default {
 .hot-city {
   display: inline-block;
   min-width: 100px;
-  height: 38px;
+  line-height: 38px;
   background: rgba(247, 247, 247, 1);
   border-radius: 19px;
   font-size: 12px;

@@ -1,32 +1,25 @@
-import axios from 'axios'
-
-
-function process(res) {
-  if (res.data.error_code == 0) {
-    return Promise.resolve(res.data);
-  } else {
-    return Promise.reject(res.data);
+import {
+  get,
+  post
+} from "../../config/axios"
+let API = '/cgi'
+/**
+ * 下面是获取数据的接口
+ */
+/** 
+ * 测试接口
+ * 名称：exam
+ * 参数：paramObj/null
+ * 方式：fetch/post/patch/put
+ */
+const serverHttp = {
+  // 首页banner
+  bannerApi: (paramObj) => {
+    return get(`${API}/banner/list`, paramObj);
+  },
+  // 城市列表
+  cityApi: (paramObj) => {
+    return get(`${API}/city/list`, paramObj);
   }
 }
-const request = (method, url, param) => {
-  return axios[method](
-      url,
-      method == 'get' ? {
-        params: param,
-      } :
-      param
-    )
-    .then(res => {
-      return process(res);
-    })
-    .catch(err => {
-      // Message.error({
-      //   message: err.message,
-      // });
-      return Promise.reject(err);
-    });
-};
-
-export const getPreviewUrl = (param) => {
-  return request('get', '/api/live/courseware/courseware/get_preview_url', param)
-}
+export default serverHttp
