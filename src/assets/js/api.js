@@ -2,7 +2,6 @@ import {
   get,
   post
 } from "../../config/axios"
-let API = '/cgi'
 /**
  * 下面是获取数据的接口
  */
@@ -15,11 +14,15 @@ let API = '/cgi'
 const serverHttp = {
   // 首页banner
   bannerApi: (paramObj) => {
-    return get(`${API}/banner/list`, paramObj);
+    return get('/banner/list', paramObj);
   },
   // 城市列表
   cityApi: (paramObj) => {
-    return get(`${API}/city/list`, paramObj);
+    return get('/city/list', paramObj);
+  },
+  // 首页-景区列表
+  scenicApotsApi: (paramObj) => {
+    return get('/scenic_spots/list', paramObj);
   }
 }
 export default serverHttp

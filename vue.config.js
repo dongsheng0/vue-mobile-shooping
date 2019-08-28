@@ -6,12 +6,7 @@ module.exports = {
         target: process.env.VUE_APP_BASE_URL,
         changeOrigin: true,
         secure: false,
-      },
-      '/passport': {
-        target: baseurl[process.env.NODE_ENV],
-        secure: false,
-        changeOrigin: true,
-      },
+      }
     },
   },
   publicPath: './',

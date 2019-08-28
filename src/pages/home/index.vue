@@ -46,9 +46,9 @@
 <template>
   <div class="home-page">
     <navigate />
-    <!-- <imageAd :bannerList="bannerList"></imageAd> -->
+    <imageAd :bannerList="bannerList"></imageAd>
     <!-- <search v-if="item.Code=='Search'" :data="item.ParameterDictionary"></search> -->
-    <!-- <div class="content">
+    <div class="content">
       <van-tabs v-model="active" title-active-color="#F37455" @click="tabClick" :border="false">
         <van-tab v-for="(item, index) in tabs" :key="index" :name="item.name">
           <div slot="title">
@@ -61,7 +61,7 @@
           </div>
         </van-tab>
       </van-tabs>
-    </div>-->
+    </div>
   </div>
 </template>
 <script>
@@ -80,20 +80,7 @@ export default {
   data: function () {
     return {
       bannerList: [],
-      productList: [
-        {
-          id: '2',
-          moneyNow: '299',
-          price: '299',
-          originPrice: '1000',
-          title: '外滩',
-          time: "12:00:00",
-          "provinceCode": 110000,
-          "cityCode": null,
-          "address": '上海市中心黄浦区的黄浦江畔一带',
-          "imageURL": "https://haitao.nosdn2.127.net/bc977ba46ed74158b6b3386eaf27f7f81530241584513jizebvc810863.jpg",
-        }
-      ],
+      productList: [],
       active: 'hotel',
       page: {},
       tabs: [
@@ -107,6 +94,7 @@ export default {
   },
   mounted () {
     this.getBannerData()
+    this.getListData()
   },
   methods: {
     getBannerData () {
@@ -114,6 +102,41 @@ export default {
       serverHttp.bannerApi().then(res => {
         that.bannerList = res.rs
       })
+    },
+    getListData () {
+      let data = {
+        provinceCode: 110000,
+        lat: 116.33664,
+        lng: 39.94228,
+        pageNum: 1
+      }
+      serverHttp.scenicApotsApi(data).then(res => {
+        console.log(res.rs)
+      })
+      this.productList = [
+        {
+          "picUrl": "http://pw4gcfw3i.bkt.clouddn.com/scenicSpots/2019-08-17/1566053719398.jpg", //列表页图片
+          "address": "北京市西城区西直门外大街137号", //地址
+          "lng": 39.94228,
+          "distance": 12159.45,
+          "city": "北京", //所在城市
+          "provinceCode": 110000,
+          "includeSpecialOfferPrice": true, //是否显示限时特价
+          "name": "北京动物园", //景区名称
+          "minimumRakeOff": 2.5, //最低佣金
+          "id": 1,
+          "minimumPrice": 68, //最低价格
+          "lat": 116.33664
+        }
+      ]
+
+      // 参数名称	必选	类型及范围	说明
+      // provinceCode	 是	int	省代码
+      // cityCode	否	int	市代码
+      // lat	是	double	纬度 116.33664
+      // lng	是	double	经度
+      // pageNum	否	int	当前页，默认1
+      // pageSize	否	int	分页大小，默认20
     },
     tabClick (name, title) {
       console.log(name)

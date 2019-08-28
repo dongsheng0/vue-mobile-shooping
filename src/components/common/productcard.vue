@@ -1,16 +1,16 @@
 <template>
   <van-cell-group class="additional">
     <van-card
-      :title="product.title"
+      :title="product.name"
       :centered="true"
-      :origin-price="product.originPrice"
+      :origin-price="product.minimumPrice"
       :desc="product.desc"
       :num="(iscard?null:product.quantity)"
       @click="clickProduct"
     >
       <!-- 自定义图片 -->
       <template slot="thumb">
-        <img class="p-img" :src="product.imageURL" />
+        <img class="p-img" :src="product.picUrl" />
         <p v-if="product.imageTag!=null&&product.imageTag!=''" class="image_tag">{{product.imageTag}}</p>
       </template>
       <!-- 自定义价格 -->
@@ -25,7 +25,7 @@
       <template slot="bottom">
         <div class="p-tag">
           <span class="p-tag-icon"></span>
-          <span class="p-tag-price">￥{{product.price}}</span>
+          <span class="p-tag-price">￥{{product.minimumPrice}}</span>
         </div>
         <!-- <div class="p-time">
                     <span class="p-time-end">限时：{{product.time}}</span>

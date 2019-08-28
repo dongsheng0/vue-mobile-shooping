@@ -68,6 +68,7 @@ const responseHandlerError = err => {
 //响应拦截器即异常处理
 axios.interceptors.response.use(responseHandler, responseHandlerError)
 
+let API = '/cgi'
 
 /**
  * 封装get方法
@@ -84,7 +85,7 @@ function process(res) {
 }
 export function get(url, params = {}) {
   return new Promise((resolve, reject) => {
-    axios.get(url, {
+    axios.get(`${API}url`, {
         params: params
       })
       .then(res => {
@@ -110,7 +111,7 @@ export function get(url, params = {}) {
 
 export function post(url, data = {}) {
   return new Promise((resolve, reject) => {
-    axios.post(url, data)
+    axios.post(`${API}url`, data)
       .then(response => {
         process(response)
       }, err => {
