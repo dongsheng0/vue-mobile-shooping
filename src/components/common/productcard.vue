@@ -4,10 +4,8 @@
       :title="product.name"
       :centered="true"
       :origin-price="product.minimumPrice"
-      :desc="product.desc"
-      :num="(iscard?null:product.quantity)"
-      @click="clickProduct"
-    >
+      :desc="product.address"
+      @click="clickProduct">
       <!-- 自定义图片 -->
       <template slot="thumb">
         <img class="p-img" :src="product.picUrl" />
@@ -16,45 +14,20 @@
       <!-- 自定义价格 -->
       <template slot="price">
         <p class="price">
-          ￥
-          <span>{{product.price}}</span> 起
+          ￥ <span>{{product.price}}</span> 起
         </p>
       </template>
-      <!-- 描述下方标签区域-->
-      <template slot="tags"></template>
+     
+      <template slot="tags">
+        <slot name="tags" />
+      </template>
       <template slot="bottom">
-        <div class="p-tag">
-          <span class="p-tag-icon"></span>
-          <span class="p-tag-price">￥{{product.minimumPrice}}</span>
-        </div>
-        <!-- <div class="p-time">
-                    <span class="p-time-end">限时：{{product.time}}</span>
-                    <div class="p-tag">
-                        <span class="p-tag-icon"></span>
-                        <span class="p-tag-price">￥{{product.price}}</span>
-                    </div>
-        </div>-->
+        <slot name="bottom" />
       </template>
       <template slot="footer">
-        <div>
-          <van-row type="flex" justify="space-between">
-            <van-col span="18">
-              <span class>{{product.shareMeg}}</span>
-            </van-col>
-            <van-col span="6">
-              <span class="share">推广</span>
-            </van-col>
-          </van-row>
-        </div>
+        <slot name="footer" />
       </template>
     </van-card>
-    <!-- <van-cell v-for="(gift,j) in product.gift" :key="j" :value="'x'+gift.quantity">
-            <template slot="title">
-                <van-tag type="danger" v-if="j==0">赠品</van-tag>
-                <span class="van-cell-text" :style="(j>0?'margin-left: 35px;':'')">{{gift.title}}</span>
-            </template>
-    </van-cell>-->
-    <slot />
   </van-cell-group>
 </template>
 
@@ -62,11 +35,7 @@
 export default {
   name: 'product-card',
   props: {
-    product: Object,
-    iscard: {
-      type: Boolean,
-      default: false
-    },
+    product: Object
   },
   methods: {
     clickProduct (data) {
@@ -123,7 +92,20 @@ export default {
     padding: 5px 0;
   }
   .share {
+    .button("green");
+  }
+  .reserve {
     .button("red");
+     margin-left: 0.2rem;
+  }
+  .card-tag{
+    display: inline-block;
+    padding:0 5px;
+    border-radius:9px;
+    border:1px solid rgba(182,182,182,1);
+    color:rgba(182,182,182,1);
+    line-height:16px;
+    margin:4px 4px 4px 0;
   }
 }
 </style>

@@ -20,13 +20,17 @@ const serverHttp = {
   cityApi: (paramObj) => {
     return get('/city/list', paramObj);
   },
-  // 首页-景区列表 OK
-  scenicApotsApi: (paramObj) => {
+  // 首页-景区列表 OK spots
+  scenicSpotsApi: (paramObj) => {
     return get('/scenic_spots/list', paramObj);
   },
   // 景区详情 OK
-  scenicApotsDetailApi: (paramObj) => {
+  scenicSpotsDetailApi: (paramObj) => {
     return get('/scenic_spots/detail', paramObj);
+  },
+  // 景区详情 OK
+  scenicSpotsPreorderApi: (paramObj) => {
+    return get('/scenic_spots/preorder', paramObj);
   }
 }
 export default serverHttp

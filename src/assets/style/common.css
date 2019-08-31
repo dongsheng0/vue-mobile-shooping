@@ -6,6 +6,8 @@ body {
   text-decoration: none;
   background: #fff;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  font-size: 13px;
+  line-height:20px;
 }
 
 body,

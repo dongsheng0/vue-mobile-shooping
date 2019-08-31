@@ -3,6 +3,7 @@ import headerNav from '../components/header/nav';
 import navigate from '../components/footer/navigate.vue'
 import productcard from '../components/common/productcard.vue'
 import {
+  DatetimePicker,
   ActionSheet,
   IndexBar,
   IndexAnchor,
@@ -44,6 +45,7 @@ import {
 } from 'vant';
 
 const components = [
+  DatetimePicker,
   ActionSheet,
   IndexBar,
   IndexAnchor,
@@ -61,7 +63,7 @@ const components = [
   SwipeCell,
   Dialog,
   headerNav,
-  Tab, Tabs, Toast, Row, Checkbox, CheckboxGroup, SubmitBar, NavBar, Tabbar, TabbarItem, navigate, Panel, List, Step, Steps, Field, Popup, productcard, Stepper, RadioGroup, Radio, Picker, Uploader, Info
+  Tab, Tabs, Toast, Row, Checkbox, CheckboxGroup, SubmitBar, NavBar, Tabbar, TabbarItem, Panel, List, Step, Steps, Field, Popup, Stepper, RadioGroup, Radio, Picker, Uploader, Info, productcard, navigate
 ]
 
 

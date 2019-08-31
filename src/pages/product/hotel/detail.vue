@@ -1,49 +1,15 @@
-<style lang="less">
+<style lang="less" scoped>
 @import "../../../assets/style/global";
 .detail {
-  .date {
-    position: relative;
-    text-align: center;
-    font-size: 14px;
-    margin: 10px 0;
-    font-weight: 500;
-    color: rgba(66, 66, 66, 1);
-    line-height: 20px;
-    .date-in {
-      background: url("../../../assets/img/hotel_in.png") no-repeat left center;
-      padding-left: 19px;
+  
+  &-list {
+    .hotel-time-end{
+        float: right;
+        color: @primary;
     }
-    &-out {
-      background: url("../../../assets/img/hotel_out.png") no-repeat left center;
-      padding-left: 19px;
+    .bottom-content{
+         text-align: left !important;
     }
-    .date-content {
-      position: relative;
-    }
-    &-time {
-      width: 110px;
-      height: 48px;
-      margin: 10px auto;
-
-      background: rgba(255, 249, 246, 1);
-      box-shadow: 0px 8px 8px 0px rgba(253, 157, 101, 0.14);
-      border-radius: 15px;
-      line-height: 48px;
-    }
-    &-split {
-      position: absolute;
-      left: 50%;
-      margin-left: -14px;
-      bottom: 30px;
-      width: 28px;
-      height: 2px;
-      background-color: @primary;
-    }
-  }
-  .save {
-    .button("red", @width:70%);
-    display: block;
-    margin: 10px auto;
   }
 }
 </style>
@@ -51,63 +17,81 @@
 <template>
   <!-- 酒店详情 -->
   <div class="detail">
-    <!-- <head-img :detail="details"></head-img> -->
-    <div class="date">
-      <van-row>
-        <van-col span="12">
-          <span class="date-in" @click="selectData">入住日期</span>
-        </van-col>
-        <van-col span="12">
-          <span class="date-in" @click="selectData">离店日期</span>
-        </van-col>
-      </van-row>
-      <van-row class="date-content">
-        <van-col span="12">
-          <p class="date-time" @click="selectData">8月8日</p>
-        </van-col>
-        <van-col span="12">
-          <p class="date-time" @click="selectData">8月8日</p>
-        </van-col>
-        <span class="date-split"></span>
-      </van-row>
+    <head-img :detail="details"></head-img>
+    <room-date @select="handelSelect" />
+    <div class="detail-list">
+      <van-list v-model="loading" :error.sync="error" error-text="请求失败，点击重新加载" @load="onLoad">
+        <van-cell v-for="item in productList" :key="item.id">
+          <product-card :product="item" source="hotelDetail">
+            <template slot="tags">
+              <div>
+                <span class="card-tag" v-for="(tag,i) in item.tags" :key="i">{{tag}}</span>
+              </div>
+            </template>
+            <span slot="bottom" class="hotel-time-end">限时：{{item.time}}</span>
+            <template slot="footer">
+              <van-row type="flex" justify="space-between">
+                <van-col span="12" class="bottom-content">
+                  <span class="point">使用前3日可退</span>
+                  <span class="point active">奖励3.5</span>
+                </van-col>
+                <van-col span="12">
+                  <span class="share">推广</span>
+                  <span class="reserve">预定</span>
+                </van-col>
+              </van-row>
+            </template>
+          </product-card>
+        </van-cell>
+      </van-list>
     </div>
-
-    <div v-for="item in productList" :key="item.id">
-      <product-card :product="item" />
-    </div>
-
-    <van-action-sheet v-model="show" title="标题">
-      <inlineCalendar mode="during" @change="change" :minDate="minDate" />
-      <div class="save" v-show="isShowSave">完成</div>
-    </van-action-sheet>
   </div>
 </template>
 <script>
 import headImg from "../../../components/detail/head";
+import roomDate from "../../../components/detail/roomDate";
+import serverHttp from '../../../assets/js/api'
 
 export default {
   data () {
     return {
+      detailId: this.$route.params.id,
       productList: [],
-      show: false,
-      minDate: new Date(),
-      isShowSave: false,
-      details: {}
+      list: [],
+      details: {},
+      error: false,
+      loading: true
     }
   },
   components: {
-    headImg
+    headImg,
+    roomDate
+  },
+  mounted () {
+    this.getDetail()
   },
   methods: {
-    selectData () {
+    onLoad() {
       console.log(0)
-      this.show = true
+      this.loading = false
     },
-    save () {
-      this.show = false
+    handelSelect(e) {
+      console.log('选中后的结果')
+      console.log(e)
     },
-    change (e) {
-      this.isShowSave = e.length > 1 ? true : false
+    getDetail() {
+      serverHttp.scenicSpotsDetailApi({ id: this.detailId }).then(res => {
+        this.details = res.rs
+        this.pic = res.rs.pics[0]
+        this.tabs = res.rs.ticketTypes.map(item => { return { title: item.name, "name": 0 } })
+        this.ticketTypes = res.rs.ticketTypes
+        this.productList = this.ticketTypes[0].tickets
+        this.productList.forEach(item => {
+          item.picUrl='http://pw4gcfw3i.bkt.clouddn.com/scenicSpots/2019-08-17/1566053528010.jpg'
+          item.tags=['大床', '大床', '大床就']
+        })
+        this.details.tags = ['24小时前台', '24小时前台', '24小时前台']
+      })
     }
   }
 }

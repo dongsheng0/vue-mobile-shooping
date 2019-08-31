@@ -50,7 +50,7 @@
         .button("green");
         margin-right: 0.5rem;
       }
-      .buy {
+      .reserve {
         .button("red");
       }
     }
@@ -85,7 +85,7 @@
               </van-col>
               <van-col span="18" class="right">
                 <span class="share">推广</span>
-                <span class="buy">预定</span>
+                <span class="reserve">预定</span>
               </van-col>
             </van-row>
           </div>
@@ -123,7 +123,7 @@ export default {
       this.list = this.ticketTypes[e].tickets
     },
     getDetail () {
-      serverHttp.scenicApotsDetailApi({ id: this.detailId }).then(res => {
+      serverHttp.scenicSpotsDetailApi({ id: this.detailId }).then(res => {
         this.details = res.rs
         this.pic = res.rs.pics[0]
         this.tabs = res.rs.ticketTypes.map(item => { return { title: item.name, "name": 0 } })

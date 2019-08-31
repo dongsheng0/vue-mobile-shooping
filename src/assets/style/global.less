@@ -13,14 +13,13 @@
   cursor: pointer;
   text-align: center;
   color: #fff;
-  background: linear-gradient(135deg, rgba(255, 96, 97, 1) 0%, rgba(255, 69, 68, 1) 100%);
-
+  background: linear-gradient(135deg, rgba(254, 167, 99, 0.5) 0%, rgba(242, 111, 84, 1) 100%);
   &:hover {
     background: linear-gradient(135deg, rgba(255, 104, 105, 1) 0%, rgba(255, 79, 78, 1) 100%);
   }
 
   &:active {
-    background: linear-gradient(135deg, rgba(248, 82, 83, 1) 0%, rgba(250, 61, 60, 1) 100%);
+    background: linear-gradient(135deg, rgba(248, 82, 83, .5) 0%, rgba(250, 61, 60, 1) 100%);
   }
 }
 
@@ -68,7 +67,8 @@
   font-weight: 500;
   color: rgba(114, 114, 114, 1);
   line-height: 21px;
-  padding-left: 25px;
+  padding-left: 15px;
+  padding-right: 15px;
   background: url(../img/icon/left_bar.png) no-repeat left;
 }
 
@@ -95,4 +95,17 @@
       background-color: @primary;
     }
   }
+}
+.field-label{
+  height:20px;
+  font-size:14px;
+  color:rgba(66,66,66,1);
+  line-height:20px;
+  padding: 8px 0 8px 15px;
+}
+.order-userinfo{
+  padding: 15px;
+}
+.order-num{
+  text-align: center;
 }

@@ -20,7 +20,7 @@ module.exports = {
           orange: '#F37455',
           block: '#4D4D4D',
           gray: '#C9C9C9',
-          'active-color': '#FF4728',
+          // 'active-color': '#FF4728', 选中的颜色
           'text-color': '#323233'
         },
       },

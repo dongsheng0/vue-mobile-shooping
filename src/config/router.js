@@ -94,7 +94,7 @@ const routes = [{
     }
   },
   {
-    path: '/goods/order',
+    path: '/goods/order/:id',
     component: () => import('../pages/product/goods/order'),
     meta: {
       title: '商品提交预定'
@@ -115,7 +115,7 @@ const routes = [{
     }
   },
   {
-    path: '/hotel/order',
+    path: '/hotel/order/:id',
     component: () => import('../pages/product/hotel/order'),
     meta: {
       title: '酒店提交预定'
@@ -129,7 +129,7 @@ const routes = [{
     }
   },
   {
-    path: '/scenic/order',
+    path: '/scenic/order/:id',
     component: () => import('../pages/product/scenic/order'),
     meta: {
       title: '景区提交预定'

@@ -49,18 +49,34 @@
     <!-- <imageAd :bannerList="bannerList"></imageAd> -->
     <!-- <search v-if="item.Code=='Search'" :data="item.ParameterDictionary"></search> -->
     <div class="content">
+      <!-- 菜单-->
       <van-tabs v-model="active" title-active-color="#F37455" @click="tabClick" :border="false">
         <van-tab v-for="(item, index) in tabs" :key="index" :name="item.name">
           <div slot="title">
             <span class="tab" :class="item.name"></span>
             <p class="h_title">{{item.title}}</p>
           </div>
-          <div class="top-border"></div>
-          <div v-for="item in productList" :key="item.id">
-            <product-card :product="item" @click="showProductDetail(item)" />
-          </div>
         </van-tab>
       </van-tabs>
+      <!-- 列表 -->
+      <div class="top-border"></div>
+      <div v-for="item in productList" :key="item.id">
+        <product-card :product="item" @click="showProductDetail(item)" >
+         <template slot="bottom">
+            <div class="p-tag">
+              <span class="p-tag-icon"></span>
+              <span class="p-tag-price">￥{{item.minimumPrice}}</span>
+            </div>
+            <!-- <div class="p-time">
+              <span class="p-time-end">限时：{{item.time}}</span>
+              <div class="p-tag">
+                <span class="p-tag-icon"></span>
+                <span class="p-tag-price">￥{{item.price}}</span>
+              </div>
+            </div> -->
+         </template>
+        </product-card>
+      </div>
     </div>
   </div>
 </template>
@@ -81,7 +97,7 @@ export default {
     return {
       bannerList: [],
       productList: [],
-      active: 'hotel',
+      active: 'scenic',
       page: {},
       tabs: [
         { title: '景区', type: 1, name: 'scenic' },
@@ -118,7 +134,7 @@ export default {
         lng: 39.94228,
         pageNum: 1
       }
-      serverHttp.scenicApotsApi(data).then(res => {
+      serverHttp.scenicSpotsApi(data).then(res => {
         console.log()
         this.productList = res.rs.list
       })
