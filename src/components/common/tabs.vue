@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     tabClick (e) {
-      this.$emit('click', e)
+      this.$emit('click', this.tabs[e])
     }
   }
 }

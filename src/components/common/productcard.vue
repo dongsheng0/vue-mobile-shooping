@@ -14,7 +14,7 @@
       <!-- 自定义价格 -->
       <template slot="price">
         <p class="price">
-          ￥ <span>{{product.price}}</span> 起
+          ￥ <span>{{product.price}}</span> <span class="price-style">起</span>
         </p>
       </template>
      
@@ -94,7 +94,7 @@ export default {
   .share {
     .button("green");
   }
-  .reserve {
+  .preorder {
     .button("red");
      margin-left: 0.2rem;
   }

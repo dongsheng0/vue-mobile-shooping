@@ -9,6 +9,7 @@
     }
     .bottom-content{
          text-align: left !important;
+         line-height: 30px;
     }
   }
 }
@@ -37,7 +38,7 @@
                 </van-col>
                 <van-col span="12">
                   <span class="share">推广</span>
-                  <span class="reserve">预定</span>
+                  <router-link class="preorder"  :to="`/hotel/order/${detailId}`">预定</router-link>
                 </van-col>
               </van-row>
             </template>

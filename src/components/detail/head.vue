@@ -3,12 +3,12 @@
   <!-- 3个页面都用，包括图片查看 -->
   <div class="head-img">
     <van-swipe :autoplay="3000" class="head-swipe">
-      <!-- <van-swipe-item v-for="(image,index) in detail.pics" :key="index" @click="click">
+      <van-swipe-item v-for="(image,index) in detail.pics" :key="index" @click="click">
         <img v-lazy="image.pic_url+''" style="width: 100%;" />
-      </van-swipe-item> -->
+      </van-swipe-item>
     </van-swipe>
 
-    <div class="head-content">
+    <!-- <div class="head-content">
       <h3 class="head-content-title">{{detail.name}}</h3>
       <div class="head-content-address">{{detail.address}}</div>
       <div v-if="detail.tags">
@@ -16,7 +16,7 @@
       </div>
       <slot name="footer"></slot>
     </div>
-    <div class="border-split"></div>
+    <div class="border-split"></div> -->
   </div>
 </template>
 

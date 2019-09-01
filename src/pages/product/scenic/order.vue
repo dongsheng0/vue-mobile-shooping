@@ -75,6 +75,14 @@
         <div class="field-label">备注信息</div>
         <van-field v-model="value" type="textarea" rows="1" autosize placeholder="请输入备注信息" />
     </div>
+    <!-- 提交订单 -->
+    <div class="save-order">
+      <van-row type="flex" justify="space-between" align="center">
+        <van-col span="6" class="">￥10000.00</van-col>
+        <van-col span="18" class="save-order-btn"><span @click="saveOrder">提交订单</span></van-col>
+      </van-row>
+    </div>
+    <!-- 提交订单 -->
     <van-popup v-model="showDatetimePicker" position="bottom">
         <van-datetime-picker v-model="currentDate" type="date" :min-date="minDate" @cancel="show = !show"  @confirm="onConfirmDatetimePicker" />
     </van-popup>
@@ -114,6 +122,10 @@ export default {
     ticket
   },
   methods: {
+    // 提交订单
+    saveOrder() {
+
+    },
     handelDatetimePicker() {
       this.showDatetimePicker = true
     },

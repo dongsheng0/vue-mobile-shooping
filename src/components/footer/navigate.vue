@@ -31,9 +31,10 @@ export default {
   .footer{
     /deep/ .van-tabbar{
       margin-bottom: 5px;
-      height: 49px;
+      height: 45px;
       background:rgba(255,255,255,1);
       box-shadow:0px -6px 6px 0px rgba(0,0,0,0.03);
+      padding: 5px 0;
     }
     .home{
       display: inline-block;

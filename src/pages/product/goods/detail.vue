@@ -2,6 +2,7 @@
   @import "../../../assets/style/global";
 
   .detail {
+    padding-bottom: 50px;
      .type {
         font-size: 17px;
         font-weight: 600;
@@ -59,6 +60,10 @@
     <div class="detail-content">
       <!-- 详情介绍 -->
       <introduce :detail="details.detail" :pic="pic"></introduce>
+    </div>
+    <div class="preorder-btn">
+      <div class="share">推广<span class="money">赚￥2.00</span></div>
+      <router-link class="preorder" :to="`/goods/order/${detailId}`">预定</router-link>
     </div>
   </div>
 </template>

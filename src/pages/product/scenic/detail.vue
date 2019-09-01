@@ -50,7 +50,7 @@
         .button("green");
         margin-right: 0.5rem;
       }
-      .reserve {
+      .preorder {
         .button("red");
       }
     }
@@ -85,7 +85,7 @@
               </van-col>
               <van-col span="18" class="right">
                 <span class="share">推广</span>
-                <span class="reserve">预定</span>
+                <router-link class="preorder"  :to="`/scenic/order/${detailId}`">预定</router-link> 
               </van-col>
             </van-row>
           </div>
