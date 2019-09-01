@@ -3,6 +3,7 @@ import headerNav from '../components/header/nav';
 import navigate from '../components/footer/navigate.vue'
 import productcard from '../components/common/productcard.vue'
 import {
+  Search,
   DatetimePicker,
   ActionSheet,
   IndexBar,
@@ -45,6 +46,7 @@ import {
 } from 'vant';
 
 const components = [
+  Search,
   DatetimePicker,
   ActionSheet,
   IndexBar,

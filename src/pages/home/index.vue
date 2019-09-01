@@ -1,5 +1,19 @@
-<style lang="less">
+<style lang="less" scoped>
 .home-page {
+  .search{
+    margin: 15px;
+    height:35px;
+    border-radius:20px;
+    border:1px solid rgba(240,240,240,1);
+    text-align: center;
+    /deep/ a{
+      display: block;
+      width: 100%;
+    }
+    .van-icon-search{
+      vertical-align: middle
+    }
+  }
   .h_title {
     line-height: 22px;
   }
@@ -46,8 +60,13 @@
 <template>
   <div class="home-page">
     <navigate />
+    <div class="search">
+      <router-link to="/search">
+        <van-icon name="search" />
+        <span>搜索</span>
+      </router-link>
+    </div>
     <!-- <imageAd :bannerList="bannerList"></imageAd> -->
-    <!-- <search v-if="item.Code=='Search'" :data="item.ParameterDictionary"></search> -->
     <div class="content">
       <!-- 菜单-->
       <van-tabs v-model="active" title-active-color="#F37455" @click="tabClick" :border="false">
@@ -83,13 +102,11 @@
 <script>
 import serverHttp from '../../assets/js/api'
 import "../../assets/style/index.css";
-import search from "../../components/home/search.vue";
 import navigate from '../../components/footer/navigate'
 import imageAd from "../../components/home/imageAd.vue";
 export default {
   name: "page",
   components: {
-    search,
     navigate,
     [imageAd.name]: imageAd,
   },
