@@ -128,12 +128,25 @@ export default {
   mounted () {
     this.getBannerData()
     this.getListData()
+    this.getHotelListData()
   },
   methods: {
     getBannerData () {
       let that = this
       serverHttp.bannerApi().then(res => {
         that.bannerList = res.rs
+      })
+    },
+    getHotelListData() {
+      let data = {
+        provinceCode: 110000,
+        lat: 116.33664,
+        lng: 39.94228,
+        pageNum: 1
+      }
+      serverHttp.hotelListApi(data).then(res => {
+        console.log()
+        this.productList = res.rs.list
       })
     },
     getListData () {

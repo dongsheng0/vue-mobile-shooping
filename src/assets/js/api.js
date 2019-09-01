@@ -31,6 +31,11 @@ const serverHttp = {
   // 景区详情 OK
   scenicSpotsPreorderApi: (paramObj) => {
     return get('/scenic_spots/preorder', paramObj);
+  },
+  // 酒店
+  // 首页酒店列表 OK
+  hotelListApi: (paramObj) => {
+    return get('/hotel/list', paramObj);
   }
 }
 export default serverHttp
