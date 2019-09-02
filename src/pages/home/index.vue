@@ -1,12 +1,13 @@
 <template>
   <div class="home-page">
-    <navigate />
+    <div>{{weixin}}</div>
+    <!-- <navigate />
     <div>
       <van-search v-model="searchvalue" placeholder="请输入搜索关键词" show-action shape="round" @search="onSearch">
         <div slot="action" @click="onSearch">搜索</div>
       </van-search>
     </div>
-    <span class="address home-city">北京</span>
+    <span class="address home-city">北京</span>-->
     <!-- <imageAd :bannerList="bannerList"></imageAd> -->
     <div class="content">
       <!-- 菜单-->
@@ -53,6 +54,7 @@ export default {
   },
   data: function () {
     return {
+      weixin: "我还是我",
       searchvalue: '',
       bannerList: [],
       productList: [],
@@ -71,6 +73,7 @@ export default {
     this.getBannerData()
     this.gitScenicListData()
     this.getHotelListData()
+    this.weixin = window.localStorage.getItem('webtoken')
   },
   methods: {
     onSearch (e) {
