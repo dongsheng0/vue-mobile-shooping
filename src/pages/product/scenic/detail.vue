@@ -1,3 +1,84 @@
+
+<template>
+  <!-- 景区详情 -->
+  <div class="detail">
+    <head-img :detail="details"></head-img>
+    <div class="detail-tabs">
+      <tabs :tabs="tabs" active="0" @click="tabClick"></tabs>
+    </div>
+    <div class="detail-content">
+      <ul>
+        <li v-for="(item, index) in list" class="list" :key="index">
+          <van-row type="flex" justify="space-between">
+            <van-col span="6" class="type">{{item.specName}}</van-col>
+            <van-col span="18" class="right">
+              <span class="price">￥ {{item.specialOfferPrice}}</span>
+              <span class="origin">{{item.minimumPrice}}</span>
+              <span class="time">限时：{{item.specialOfferTimeLimit}}</span>
+            </van-col>
+          </van-row>
+          <div class="desc">
+            <p class="point" v-for="(rule, i) in item.useRules" :key="i">{{rule}}</p>
+          </div>
+          <div class="desc last">
+            <van-row type="flex" justify="space-between">
+              <van-col span="6">
+                <span class="point active">奖励：￥{{item.minimumRakeOff}}</span>
+              </van-col>
+              <van-col span="18" class="right">
+                <span class="share">推广</span>
+                <router-link class="preorder" :to="`/scenic/order/${item.id}`">预定</router-link>
+              </van-col>
+            </van-row>
+          </div>
+        </li>
+      </ul>
+      <!-- 详情介绍 -->
+      <introduce :detail="details.detail" :pic="pic"></introduce>
+    </div>
+  </div>
+</template>
+
+<script>
+import headImg from "../../../components/detail/head";
+import introduce from '../../../components/detail/introduce'
+import tabs from '../../../components/common/tabs'
+import serverHttp from '../../../assets/js/api'
+
+export default {
+  data () {
+    return {
+      detailId: this.$route.params.id,
+      pic: '',
+      tabs: [],
+      list: [],
+      details: {},
+    }
+  },
+  components: {
+    headImg,
+    introduce,
+    tabs
+  },
+  methods: {
+    tabClick (e) {
+      this.list = this.ticketTypes[e].tickets
+    },
+    getDetail () {
+      serverHttp.scenicSpotsDetailApi({ id: this.detailId }).then(res => {
+        this.details = res.rs
+        this.pic = res.rs.pics[0]
+        this.tabs = res.rs.ticketTypes.map(item => { return { title: item.name, "name": 0 } })
+        this.ticketTypes = res.rs.ticketTypes
+        this.list = this.ticketTypes[0].tickets
+      })
+    }
+  },
+  mounted () {
+    this.getDetail()
+  }
+}
+</script>
 <style lang="less">
 @import "../../../assets/style/global";
 .detail {
@@ -57,85 +138,5 @@
   }
 }
 </style>
-<template>
-  <!-- 景区详情 -->
-  <div class="detail">
-    <head-img :detail="details"></head-img>
-    <div class="detail-tabs">
-      <tabs :tabs="tabs" active="0" @click="tabClick"></tabs>
-    </div>
-    <div class="detail-content">
-      <ul>
-        <li v-for="(item, index) in list" class="list" :key="index">
-          <van-row type="flex" justify="space-between">
-            <van-col span="6" class="type">{{item.specName}}</van-col>
-            <van-col span="18" class="right">
-              <span class="price">￥ {{item.specialOfferPrice}}</span>
-              <span class="origin">{{item.minimumPrice}}</span>
-              <span class="time">限时：{{item.specialOfferTimeLimit}}</span>
-            </van-col>
-          </van-row>
-          <div class="desc">
-            <p class="point" v-for="(rule, i) in item.useRules" :key="i">{{rule}}</p>
-          </div>
-          <div class="desc last">
-            <van-row type="flex" justify="space-between">
-              <van-col span="6">
-                <span class="point active">奖励：￥{{item.minimumRakeOff}}</span>
-              </van-col>
-              <van-col span="18" class="right">
-                <span class="share">推广</span>
-                <router-link class="preorder"  :to="`/scenic/order/${detailId}`">预定</router-link> 
-              </van-col>
-            </van-row>
-          </div>
-        </li>
-      </ul>
-      <!-- 详情介绍 -->
-      <introduce :detail="details.detail" :pic="pic"></introduce>
-    </div>
-  </div>
-</template>
-
-<script>
-import headImg from "../../../components/detail/head";
-import introduce from '../../../components/detail/introduce'
-import tabs from '../../../components/common/tabs'
-import serverHttp from '../../../assets/js/api'
-
-export default {
-  data () {
-    return {
-      detailId: this.$route.params.id,
-      pic: '',
-      tabs: [],
-      list: [],
-      details: {},
-    }
-  },
-  components: {
-    headImg,
-    introduce,
-    tabs
-  },
-  methods: {
-    tabClick (e) {
-      this.list = this.ticketTypes[e].tickets
-    },
-    getDetail () {
-      serverHttp.scenicSpotsDetailApi({ id: this.detailId }).then(res => {
-        this.details = res.rs
-        this.pic = res.rs.pics[0]
-        this.tabs = res.rs.ticketTypes.map(item => { return { title: item.name, "name": 0 } })
-        this.ticketTypes = res.rs.ticketTypes
-        this.list = this.ticketTypes[0].tickets
-      })
-    }
-  },
-  mounted () {
-    this.getDetail()
-  }
-}
-</script>
 
 

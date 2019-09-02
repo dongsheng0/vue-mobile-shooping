@@ -1,12 +1,11 @@
 <style lang="less" scoped>
-  @import "../../../assets/style/global";
+@import "../../../assets/style/global";
 </style>
-
 <template>
   <!-- 提交订单-商品 -->
   <div class="order">
     <ticket />
-    <div class="left-bar">购买数量 </div>
+    <div class="left-bar">购买数量</div>
     <div class="order-num">
       <van-stepper v-model="value" integer input-width="60px" @change="changeOrderNum" />
     </div>
@@ -24,8 +23,10 @@
     <!-- 提交订单 -->
     <div class="save-order">
       <van-row type="flex" justify="space-between" align="center">
-        <van-col span="6" class="">￥10000.00</van-col>
-        <van-col span="18" class="save-order-btn"><span @click="saveOrder">提交订单</span></van-col>
+        <van-col span="6" class>￥10000.00</van-col>
+        <van-col span="18" class="save-order-btn">
+          <span @click="saveOrder">提交订单</span>
+        </van-col>
       </van-row>
     </div>
     <!-- 提交订单 -->
@@ -33,35 +34,35 @@
 </template>
 
 <script>
-  import serverHttp from '../../../assets/js/api'
-  import ticket from "../../../components/detail/ticket";
+import serverHttp from '../../../assets/js/api'
+import ticket from "../../../components/detail/ticket";
 
-  export default {
-    data() {
-      return {
-        value1: '',
-        userName: '',
-        value: ''
-      }
-    },
-    components: {
-      ticket
-    },
-    methods: {
-      // 提交订单
-      saveOrder() {
-
-      },
-      // 数量改变
-      changeOrderNum(e) {
-        console.log(e)
-      },
-      // 获取订单详情
-      preorder() {
-        serverHttp.scenicSpotsPreorderApi({}).then(res => {
-          console.log(res)
-        })
-      },
+export default {
+  data () {
+    return {
+      value1: '',
+      userName: '',
+      value: ''
     }
+  },
+  components: {
+    ticket
+  },
+  methods: {
+    // 提交订单
+    saveOrder () {
+
+    },
+    // 数量改变
+    changeOrderNum (e) {
+      console.log(e)
+    },
+    // 获取订单详情
+    preorder () {
+      serverHttp.scenicSpotsPreorderApi({}).then(res => {
+        console.log(res)
+      })
+    },
   }
+}
 </script>

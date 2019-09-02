@@ -16,7 +16,7 @@
       </div>
       <slot name="footer"></slot>
     </div>
-    <div class="border-split"></div> -->
+    <div class="border-split"></div>-->
   </div>
 </template>
 

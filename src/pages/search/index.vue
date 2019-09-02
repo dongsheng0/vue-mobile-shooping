@@ -17,7 +17,7 @@
                     <span class="p-tag-icon"></span>
                     <span class="p-tag-price">￥{{item.price}}</span>
                   </div>
-                </div> -->
+          </div>-->
         </template>
       </product-card>
     </div>
@@ -25,12 +25,13 @@
 </template>
 
 <script>
-  import serverHttp from '../../assets/js/api'
+import serverHttp from '../../assets/js/api'
 
 export default {
   data () {
     return {
       productList: [],
+      keyword: ''
     }
   },
   components: {
@@ -38,13 +39,12 @@ export default {
   },
   mounted () {
     this.getListData()
-    this.$nextTick(function() {
-      this.$refs.search.getElementsByTagName('input')[0].onfocus
-    })
+    this.keyword = decodeURIComponent(this.$route.query.keyword)
+    console.log(this.keyword)
   },
   methods: {
-    onSearch(){},
-    getListData() {
+    onSearch () { },
+    getListData () {
 
       // 参数名称	必选	类型及范围	说明
       // provinceCode	 是	int	省代码

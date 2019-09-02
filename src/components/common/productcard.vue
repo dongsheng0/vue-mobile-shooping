@@ -5,7 +5,8 @@
       :centered="true"
       :origin-price="product.minimumPrice"
       :desc="product.address"
-      @click="clickProduct">
+      @click="clickProduct"
+    >
       <!-- 自定义图片 -->
       <template slot="thumb">
         <img class="p-img" :src="product.picUrl" />
@@ -14,10 +15,12 @@
       <!-- 自定义价格 -->
       <template slot="price">
         <p class="price">
-          ￥ <span>{{product.price}}</span> <span class="price-style">起</span>
+          ￥
+          <span>{{product.price}}</span>
+          <span class="price-style">起</span>
         </p>
       </template>
-     
+
       <template slot="tags">
         <slot name="tags" />
       </template>
@@ -51,6 +54,7 @@ export default {
   .p-img {
     background-color: rgba(216, 216, 216, 1);
     border-radius: 8px;
+    height: 100%;
   }
   .p-tag {
     float: right;
@@ -96,16 +100,16 @@ export default {
   }
   .preorder {
     .button("red");
-     margin-left: 0.2rem;
+    margin-left: 0.2rem;
   }
-  .card-tag{
+  .card-tag {
     display: inline-block;
-    padding:0 5px;
-    border-radius:9px;
-    border:1px solid rgba(182,182,182,1);
-    color:rgba(182,182,182,1);
-    line-height:16px;
-    margin:4px 4px 4px 0;
+    padding: 0 5px;
+    border-radius: 9px;
+    border: 1px solid rgba(182, 182, 182, 1);
+    color: rgba(182, 182, 182, 1);
+    line-height: 16px;
+    margin: 4px 4px 4px 0;
   }
 }
 </style>
