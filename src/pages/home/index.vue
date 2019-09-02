@@ -14,6 +14,9 @@
       vertical-align: middle
     }
   }
+  .home-city{
+    margin-left: 15px;
+  }
   .h_title {
     line-height: 22px;
   }
@@ -60,12 +63,12 @@
 <template>
   <div class="home-page">
     <navigate />
-    <div class="search">
-      <router-link to="/search">
-        <van-icon name="search" />
-        <span>搜索</span>
-      </router-link>
+    <div>
+      <van-search v-model="searchvalue" placeholder="请输入搜索关键词" show-action shape="round" @search="onSearch">
+        <div slot="action" @click="onSearch">搜索</div>
+      </van-search>
     </div>
+    <span class="address home-city">北京</span>
     <!-- <imageAd :bannerList="bannerList"></imageAd> -->
     <div class="content">
       <!-- 菜单-->
@@ -112,6 +115,7 @@ export default {
   },
   data: function () {
     return {
+      searchvalue: '',
       bannerList: [],
       productList: [],
       active: 'scenic',
@@ -131,6 +135,9 @@ export default {
     this.getHotelListData()
   },
   methods: {
+    onSearch(e) {
+      console.log(e)
+    },
     getBannerData () {
       let that = this
       serverHttp.bannerApi().then(res => {
