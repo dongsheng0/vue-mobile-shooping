@@ -43,6 +43,7 @@
 </template>
 <script>
 import serverHttp from '../../assets/js/api'
+import Utils from '../../assets/js/utils'
 import "../../assets/style/index.css";
 import navigate from '../../components/footer/navigate'
 import imageAd from "../../components/home/imageAd.vue";
@@ -74,6 +75,10 @@ export default {
     this.gitScenicListData()
     this.getHotelListData()
     this.url = window.location.hash
+    let userid = Utils.getUrlParam('userid')
+    let webToken = Utils.getUrlParam('webToken')
+    console.log(userid)
+    console.log(webToken)
   },
   methods: {
     onSearch (e) {
