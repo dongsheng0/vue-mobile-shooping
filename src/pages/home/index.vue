@@ -1,5 +1,6 @@
 <template>
   <div class="home-page">
+    <div>{{url}}</div>
     <navigate />
     <div>
       <van-search v-model="searchvalue" placeholder="请输入搜索关键词" show-action shape="round" @search="onSearch">
@@ -53,6 +54,7 @@ export default {
   },
   data: function () {
     return {
+      url: '微信',
       searchvalue: '',
       bannerList: [],
       productList: [],
@@ -71,6 +73,7 @@ export default {
     this.getBannerData()
     this.gitScenicListData()
     this.getHotelListData()
+    this.url = window.location.hash
   },
   methods: {
     onSearch (e) {

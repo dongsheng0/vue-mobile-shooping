@@ -29,10 +29,22 @@ const serverHttp = {
   scenicSpotsPreorderApi: paramObj => {
     return get ('/scenic_spots/preorder', paramObj);
   },
+  // 景区-创建订单 OK
+  scenicSpotsCreateOrderApi: paramObj => {
+    return get('/scenic_spots/createOrder', paramObj);
+  },
   // 酒店
   // 首页酒店列表 OK
   hotelListApi: paramObj => {
     return get ('/hotel/list', paramObj);
+  },
+  // 酒店详情
+  hotelDetailApi: paramObj => {
+    return get('/hotel/detail', paramObj);
+  },
+  // 酒店-日期筛选房型
+  hotelRoomspi: paramObj => {
+    return get('/hotel/detail', paramObj);
   },
 };
 export default serverHttp;
