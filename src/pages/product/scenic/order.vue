@@ -8,7 +8,7 @@
     <div class="date">
       <van-row type="flex" justify="space-between">
         <van-col span="6" v-for="(item, i) in details.priceAndStock" :key="i">
-          <div class="date-btn" :class="{'active': activeDate==i? true: false}" @click="activeDate = i">
+          <div class="date-btn" :class="{'active': activeDate==i? true: false}" @click="handelDatetime(item,i)">
             <p>{{item.dateFromNow}}{{item.date}}</p>
             <p>{{item.price}}元</p>
           </div>
@@ -16,6 +16,8 @@
         <van-col span="6" @click="handelDatetimePicker">
           <div class="date-btn date-btn-last">
             <p>更多日期</p>
+            <p>{{datetimePicker}}</p>
+            <p></p>
           </div>
         </van-col>
       </van-row>
@@ -42,7 +44,7 @@
       <div class="field-label">证件类型</div>
       <select-picker
         placeholder="请选择证件类型"
-        v-model="creatOrderForm.fillInfo.cardType"
+        :selectValue="creatOrderForm.fillInfo.cardType"
         @select="selectCardType"
         :columns="cardTypeOptions"
       />
@@ -54,7 +56,7 @@
     <!-- 提交订单 -->
     <div class="save-order">
       <van-row type="flex" justify="space-between" align="center">
-        <van-col span="6" class>￥10000.00</van-col>
+        <van-col span="6" class>￥{{allPrice}}</van-col>
         <van-col span="18" class="save-order-btn">
           <span @click="saveOrder">提交订单</span>
         </van-col>
@@ -66,7 +68,7 @@
         v-model="currentDate"
         type="date"
         :min-date="minDate"
-        @cancel="show = !show"
+        @cancel="showDatetimePicker = !showDatetimePicker"
         @confirm="onConfirmDatetimePicker"
       />
     </van-popup>
@@ -77,22 +79,20 @@
 import serverHttp from '../../../assets/js/api'
 import selectPicker from '../../../components/common/selectpicker'
 import ticket from "../../../components/detail/ticket";
-import moment from 'moment'
+// import moment from 'moment'
 export default {
   data () {
     return {
       activeDate: '',
-      ticket: '房子类型', // 房子类型
+      price: '', // 单价
       showDatetimePicker: false,
+      datetimePicker: '',
       minDate: new Date(),
       currentDate: new Date(),
-      value1: '',
-      userName: '',
       detailId: this.$route.params.id,
       details: {},
-      value: '',
       creatOrderForm: {
-        ticketId: '',	// 是	int	门票ID
+        ticketId: this.$route.params.id,	// 是	int	门票ID
         preorderDate: '', 	// 是	int	预定日期 yyyyMMdd格式
         buyNum: '', //	是	int	购买数量
         fillInfo: {
@@ -111,7 +111,9 @@ export default {
     }
   },
   computed: {
-
+    allPrice() {
+      return this.creatOrderForm.buyNum * this.price
+    }
   },
   components: {
     selectPicker,
@@ -122,8 +124,9 @@ export default {
   },
   methods: {
     selectCardType (e) {
-      console.log(e);
-      // this.creatOrderForm.fillInfo.cardType = e.type
+      if(typeof e == 'object')  {
+        this.creatOrderForm.fillInfo.cardType = e.type
+      }
     },
     // 提交订单
     saveOrder () {
@@ -138,18 +141,46 @@ export default {
       //       "checkGatxz": false, //填写港澳通行证
       //       "checkHz": false//填写护照
       //   }
-
-      this.$toast('提示文案')
-
+   
+      if (!this.creatOrderForm.preorderDate) {
+        this.$toast('选择日期')
+      } else if (!this.creatOrderForm.fillInfo.name) {
+        this.$toast('姓名')
+      } else if (this.creatOrderForm.fillInfo.mobile) {
+        this.$toast('手机号')
+      } else if (this.creatOrderForm.preorderDate) {
+//
+      } else {
+          this.creatOrder()
+      }
+      this.creatOrder()
     },
+    creatOrder() {
+      // let data = Object.assign({},this.creatOrderForm)
+      // data.fillInfo = JSON.stringify(data.fillInfo)
+      // console.log(data)
+      // serverHttp.creatOrder(data).then(res => {
+        
+      // })
+    },
+    // 更多日期
     handelDatetimePicker () {
       this.showDatetimePicker = true
     },
+    // 今天，明天，后天
+    handelDatetime(item, i) {
+      this.activeDate = i
+      this.creatOrderForm.preorderDate = item.stock_date
+      this.datetimePicker = ''
+      this.price = this.details.priceAndStock[0].price // 缺少选择某一天的价钱，就直接显示今天的价钱
+    },
     // 选择日期-确定
     onConfirmDatetimePicker (value) {
-      this.result = value;
-      this.showDatetimePicker = !this.show;
+      this.showDatetimePicker = !this.showDatetimePicker
       console.log(value)
+      this.datetimePicker = this.creatOrderForm.preorderDate = (new Date(value).getMonth()) + 1
+      this.activeDate = -1
+      this.price = item.price
     },
     // 数量改变
     changeOrderNum () {
@@ -163,7 +194,7 @@ export default {
         let dateName = ['今天', '明天', '后天']
         this.details.priceAndStock.forEach((item, i) => {
           item.dateFromNow = dateName[i]
-          item.date = `${moment(item.stock_date, "YYYYMMDD").get('month') + 1}/${moment(item.stock_date, "YYYYMMDD").get('day')}`
+          // item.date = `${moment(item.stock_date, "YYYYMMDD").get('month') + 1}/${moment(item.stock_date, "YYYYMMDD").get('day')}`
         });
       })
     },
