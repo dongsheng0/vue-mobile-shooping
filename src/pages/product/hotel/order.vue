@@ -5,7 +5,7 @@
   <!-- 提交订单-酒店 -->
   <div class="order">
     <ticket />
-    <room-date @select="handelSelect" />
+    <room-date v-model="selectValue" @change="changeRoomDate" :hotelId="detailId" />
     <div class="left-bar">房间数量</div>
     <div class="order-num">
       <van-stepper v-model="value" integer input-width="60px" @change="changeOrderNum" />
@@ -41,6 +41,7 @@ import roomDate from "../../../components/detail/roomDate";
 export default {
   data () {
     return {
+      selectValue: [],
       detailId: this.$route.params.id,
       value1: '',
       userName: '',
@@ -67,6 +68,9 @@ export default {
   methods: {
     // 提交订单
     saveOrder () {
+
+    },
+    changeRoomDate (e) {
 
     },
     // 数量改变

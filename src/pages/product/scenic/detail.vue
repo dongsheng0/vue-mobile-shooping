@@ -14,7 +14,10 @@
             <van-col span="18" class="right">
               <span class="price">￥ {{item.specialOfferPrice}}</span>
               <span class="origin">{{item.minimumPrice}}</span>
-              <span class="time">限时：{{item.specialOfferTimeLimit}}</span>
+              <span class="time">
+                限时:
+                <van-count-down :time="item.specialOfferTimeLimit | countDown" />
+              </span>
             </van-col>
           </van-row>
           <div class="desc">

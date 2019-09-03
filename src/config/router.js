@@ -108,6 +108,7 @@ const routes = [{
     }
   },
   {
+    name: 'name',
     path: '/room/:id',
     component: () => import('../pages/product/hotel/room'),
     meta: {

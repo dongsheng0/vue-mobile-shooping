@@ -22,10 +22,7 @@
         </van-col>
       </van-row>
     </div>
-    <div class="left-bar">
-      购买数量
-      <span class="tips">每个证件号码购买一次</span>
-    </div>
+    <div class="left-bar">购买数量</div>
     <div class="order-num">
       <van-stepper
         v-model="creatOrderForm.buyNum"
@@ -34,6 +31,9 @@
         input-width="60px"
         @change="changeOrderNum"
       />
+      <div class="tips">
+        <p v-for="(item, i) in details.useRules" :key="i">{{item}}</p>
+      </div>
     </div>
     <div class="left-bar">预订人信息</div>
     <div class="order-userinfo">
@@ -111,7 +111,7 @@ export default {
     }
   },
   computed: {
-    allPrice() {
+    allPrice () {
       return this.creatOrderForm.buyNum * this.price
     }
   },
@@ -124,7 +124,7 @@ export default {
   },
   methods: {
     selectCardType (e) {
-      if(typeof e == 'object')  {
+      if (typeof e == 'object') {
         this.creatOrderForm.fillInfo.cardType = e.type
       }
     },
@@ -141,7 +141,7 @@ export default {
       //       "checkGatxz": false, //填写港澳通行证
       //       "checkHz": false//填写护照
       //   }
-   
+
       if (!this.creatOrderForm.preorderDate) {
         this.$toast('选择日期')
       } else if (!this.creatOrderForm.fillInfo.name) {
@@ -149,18 +149,18 @@ export default {
       } else if (this.creatOrderForm.fillInfo.mobile) {
         this.$toast('手机号')
       } else if (this.creatOrderForm.preorderDate) {
-//
+        //
       } else {
-          this.creatOrder()
+        this.creatOrder()
       }
       this.creatOrder()
     },
-    creatOrder() {
+    creatOrder () {
       // let data = Object.assign({},this.creatOrderForm)
       // data.fillInfo = JSON.stringify(data.fillInfo)
       // console.log(data)
       // serverHttp.creatOrder(data).then(res => {
-        
+
       // })
     },
     // 更多日期
@@ -168,7 +168,7 @@ export default {
       this.showDatetimePicker = true
     },
     // 今天，明天，后天
-    handelDatetime(item, i) {
+    handelDatetime (item, i) {
       this.activeDate = i
       this.creatOrderForm.preorderDate = item.stock_date
       this.datetimePicker = ''
@@ -234,10 +234,13 @@ export default {
     }
   }
   .tips {
-    float: right;
-    color: rgba(254, 163, 98, 1);
-    line-height: 17px;
+    text-align: left;
+    padding-bottom: 5px;
     font-size: 12px;
+    padding-left: 15px;
+    p {
+      color: rgba(254, 163, 98, 1);
+    }
   }
 }
 </style>

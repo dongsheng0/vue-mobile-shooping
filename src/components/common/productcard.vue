@@ -6,6 +6,7 @@
       :origin-price="product.minimumPrice"
       :desc="product.address"
       @click="clickProduct"
+      @click-thumb="clickThumb"
     >
       <!-- 自定义图片 -->
       <template slot="thumb">
@@ -41,6 +42,9 @@ export default {
   methods: {
     clickProduct (data) {
       this.$emit('click', data)
+    },
+    clickThumb (data) {
+      this.$emit('clickThumb', data)
     }
   }
 }

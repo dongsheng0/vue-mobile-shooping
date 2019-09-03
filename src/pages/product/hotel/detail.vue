@@ -8,7 +8,7 @@
     <div class="detail-list">
       <van-list v-model="loading" :error.sync="error" error-text="请求失败，点击重新加载" @load="onLoad">
         <van-cell v-for="item in productList" :key="item.id">
-          <product-card :product="item" source="hotelDetail">
+          <product-card :product="item" source="hotelDetail" @clickThumb="$router.push({path: `/room/${item.id}`})">
             <template slot="tags">
               <div>
                 <span class="card-tag" v-for="(tag,i) in item.attributes" :key="i">{{tag}}</span>

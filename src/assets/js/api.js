@@ -46,8 +46,8 @@ const serverHttp = {
     return get('/hotel/detail', paramObj);
   },
   // 酒店-日期筛选房型
-  hotelRoomspi: paramObj => {
-    return get('/hotel/detail', paramObj);
+  hotelRoomsApi: paramObj => {
+    return get('/hotel/rooms', paramObj);
   },
 };
 export default serverHttp;

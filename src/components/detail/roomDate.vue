@@ -27,17 +27,20 @@
   </div>
 </template>
 <script>
+import serverHttp from '../../assets/js/api'
+import moment from 'moment'
 export default {
   name: 'room-date',
   model: {
-    prop: "selectValue"
+    prop: "selectValue",
+    event: 'input'
   },
   props: {
-    columns: {
-      type: Array
+    hotelId: {
+      type: String || Number
     },
     selectValue: {
-      type: String
+      type: Array
     }
   },
   data () {
@@ -45,8 +48,9 @@ export default {
       minDate: new Date(),
       showSave: false, // 保存按钮
       showCalendar: false, // 日历
-      result: this.selectValue, // 选中的最终结果
-      selectResult: [] // 选中后未保存结果
+      result: [], // 选中的最终结果
+      roomList: [], // 接口返回时间段内的房间数
+      resultTemp: [] // 日历选中后，保存按钮点击前的结果
     };
   },
   methods: {
@@ -54,15 +58,23 @@ export default {
       console.log(0)
       this.showCalendar = true
     },
-    // 选中时间
-    handelSave () {
+    // 弹框点击完成-最终选中时间
+    async handelSave () {
+      await this.gethotelRoomsApi(moment(this.resultTemp[0].$d).format('YYYYMMDD'), moment(this.resultTemp[1].$d).format('YYYYMMDD'))
       this.showCalendar = false
-      this.result = this.selectResult;
+      this.result = this.resultTemp;
     },
-    // 选择时间
+    // 根据日期获取房间
+    gethotelRoomsApi (startDay, endDay) {
+      let data = { id: this.hotelId, startDay, endDay }
+      serverHttp.hotelRoomsApi(data).then(res => {
+        this.$emit("change", res.rs);
+      })
+    },
+    // 日历-选择完时间
     changeCalendar (e) {
       this.showSave = e.length > 1 ? true : false
-      this.selectResult = e
+      this.resultTemp = e
     },
   },
   watch: {
@@ -70,7 +82,7 @@ export default {
       this.result = newVal;
     },
     result (newVal) {
-      this.$emit("select", newVal);
+      this.$emit("input", newVal);
     }
   }
 };
