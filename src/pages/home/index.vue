@@ -1,12 +1,7 @@
 <template>
   <div class="home-page">
-<<<<<<< HEAD
     <div>{{weixin}}</div>
     <!-- <navigate />
-=======
-    <div>{{url}}</div>
-    <navigate />
->>>>>>> c1ff8199778b94db52467e35981b3bfa7f8b174f
     <div>
       <van-search v-model="searchvalue" placeholder="请输入搜索关键词" show-action shape="round" @search="onSearch">
         <div slot="action" @click="onSearch">搜索</div>

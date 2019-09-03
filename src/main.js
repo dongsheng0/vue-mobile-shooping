@@ -7,6 +7,7 @@ import App from './App.vue';
 import VueLazyload from 'vue-lazyload'
 import Calendar from 'vue-mobile-calendar'
 import components from './config/components.js';
+import moment from 'moment'
 Vue.use(components);
 
 Vue.use(VueLazyload)
@@ -18,3 +19,9 @@ new Vue({
   el: '#app',
   render: h => h(App)
 });
+Vue.filter('countDown', function (value) {
+  return (moment(value).unix() - moment().unix()) * 1000
+})
+Vue.filter('price', function (value) {
+  return `￥${value}`
+})

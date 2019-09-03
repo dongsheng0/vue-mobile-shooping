@@ -8,7 +8,7 @@
       </van-swipe-item>
     </van-swipe>
 
-    <!-- <div class="head-content">
+    <div class="head-content">
       <h3 class="head-content-title">{{detail.name}}</h3>
       <div class="head-content-address">{{detail.address}}</div>
       <div v-if="detail.tags">
@@ -16,7 +16,7 @@
       </div>
       <slot name="footer"></slot>
     </div>
-    <div class="border-split"></div>-->
+    <div class="border-split"></div>
   </div>
 </template>
 

@@ -3,7 +3,7 @@
 <template>
   <!-- 酒店详情 -->
   <div class="detail">
-    <head-img :detail="details"></head-img>
+    <!-- <head-img :detail="details"></head-img> -->
     <room-date @select="handelSelect" />
     <div class="detail-list">
       <van-list v-model="loading" :error.sync="error" error-text="请求失败，点击重新加载" @load="onLoad">
@@ -11,21 +11,27 @@
           <product-card :product="item" source="hotelDetail">
             <template slot="tags">
               <div>
-                <span class="card-tag" v-for="(tag,i) in item.tags" :key="i">{{tag}}</span>
+                <span class="card-tag" v-for="(tag,i) in item.attributes" :key="i">{{tag}}</span>
               </div>
             </template>
-            <span slot="bottom" class="hotel-time-end">限时：{{item.time}}</span>
+            <span slot="bottom" class="hotel-time-end">
+              限时：
+              <van-count-down :time="item.specialOfferTimeLimit | countDown" />
+            </span>
             <template slot="footer">
               <van-row type="flex" justify="space-between">
                 <van-col span="12" class="bottom-content">
-                  <span class="point">使用前3日可退</span>
-                  <span class="point active">奖励3.5</span>
+                  <!-- <span class="point">使用前3日可退</span> -->
+                  <span class="point active">奖励{{item.rakeOff | price}}</span>
                 </van-col>
                 <van-col span="12">
                   <span class="share">推广</span>
-                  <router-link class="preorder" :to="`/hotel/order/${detailId}`">预定</router-link>
+                  <router-link class="preorder" :to="`/hotel/order/${item.id}`">预定</router-link>
                 </van-col>
               </van-row>
+              <div class="useRules">
+                <p class="point" v-for="(item, i) in item.useRules" :key="i">{{item}}</p>
+              </div>
             </template>
           </product-card>
         </van-cell>
@@ -66,17 +72,20 @@ export default {
       console.log(e)
     },
     getDetail () {
-      serverHttp.scenicSpotsDetailApi({ id: this.detailId }).then(res => {
-        this.details = res.rs
-        this.pic = res.rs.pics[0]
-        this.tabs = res.rs.ticketTypes.map(item => { return { title: item.name, "name": 0 } })
-        this.ticketTypes = res.rs.ticketTypes
-        this.productList = this.ticketTypes[0].tickets
+      serverHttp.hotelDetailApi({ id: this.detailId }).then(res => {
+        console.log(res.rs);
+        let result = res.rs
+        this.details = result || {}
+        this.pic = result.pics[0]
+        this.productList = result.rooms
         this.productList.forEach(item => {
-          item.picUrl = 'http://pw4gcfw3i.bkt.clouddn.com/scenicSpots/2019-08-17/1566053528010.jpg'
-          item.tags = ['大床', '大床', '大床就']
+          item.picUrl = item.pic_url
+          // 有限时特价
+          if (item.specialOfferTimeLimit) {
+            item.minimumPrice = item.price
+            item.price = item.specialOfferPrice
+          }
         })
-        this.details.tags = ['24小时前台', '24小时前台', '24小时前台']
       })
     }
   }
@@ -94,6 +103,9 @@ export default {
       text-align: left !important;
       line-height: 30px;
     }
+  }
+  .useRules {
+    text-align: left;
   }
 }
 </style>

@@ -15,12 +15,10 @@
       <!-- 自定义价格 -->
       <template slot="price">
         <p class="price">
-          ￥
-          <span>{{product.price}}</span>
+          <span>{{product.price | price}}</span>
           <span class="price-style">起</span>
         </p>
       </template>
-
       <template slot="tags">
         <slot name="tags" />
       </template>
