@@ -59,11 +59,7 @@ export default {
   },
   data: function () {
     return {
-<<<<<<< HEAD
       weixin: "我还是我",
-=======
-      url: '微信',
->>>>>>> c1ff8199778b94db52467e35981b3bfa7f8b174f
       searchvalue: '',
       bannerList: [],
       productList: [],
@@ -82,11 +78,7 @@ export default {
     this.getBannerData()
     this.gitScenicListData()
     this.getHotelListData()
-<<<<<<< HEAD
-    this.weixin = window.localStorage.getItem('webtoken')
-=======
     this.url = window.location.hash
->>>>>>> c1ff8199778b94db52467e35981b3bfa7f8b174f
   },
   methods: {
     onSearch (e) {
