@@ -41,29 +41,21 @@ import roomDate from "../../../components/detail/roomDate";
 export default {
   data () {
     return {
-      selectValue: [],
+      selectValue: [], // 入住日期
       detailId: this.$route.params.id,
       value1: '',
       userName: '',
-      date: [{
-        name: '今天',
-        date: '7/20'
-      },
-      {
-        name: '明天',
-        date: '7/21'
-      },
-      {
-        name: '后天',
-        date: '7/22'
-      }],
-      value: ''
+      value: '',
+      details: {}, // 详情
     }
   },
   components: {
     selectPicker,
     ticket,
     roomDate
+  },
+  mounted () {
+    this.preorder()
   },
   methods: {
     // 提交订单
@@ -83,8 +75,14 @@ export default {
     },
     // 获取订单详情
     preorder () {
-      serverHttp.scenicSpotsPreorderApi({}).then(res => {
-        console.log(res)
+      // 房型ID（不是酒店ID）
+      serverHttp.hotelPreorderApi({ id: this.detailId }).then(res => {
+        let result = res.rs
+        this.details = {
+          name: result.hotelName,
+          source: 'hotel'
+        }
+        console.log(this.details);
       })
     },
   }

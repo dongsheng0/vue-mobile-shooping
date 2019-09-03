@@ -20,6 +20,11 @@ const serverHttp = {
   cityApi: paramObj => {
     return get('/city/list', paramObj);
   },
+  // 
+  //
+  //景区部分
+  //
+  //
   // 首页-景区列表 OK spots
   scenicSpotsApi: paramObj => {
     return get('/scenic_spots/list', paramObj);
@@ -36,7 +41,10 @@ const serverHttp = {
   scenicSpotsCreateOrderApi: paramObj => {
     return get('/scenic_spots/createOrder', paramObj);
   },
-  // 酒店
+  // 
+  // 
+  // 酒店部分
+  //
   // 首页酒店列表 OK
   hotelListApi: paramObj => {
     return get('/hotel/list', paramObj);
@@ -48,6 +56,10 @@ const serverHttp = {
   // 酒店-日期筛选房型
   hotelRoomsApi: paramObj => {
     return get('/hotel/rooms', paramObj);
+  },
+  // 酒店-下单前
+  hotelPreorderApi: paramObj => {
+    return get('/hotel/preorder', paramObj);
   },
 };
 export default serverHttp;
