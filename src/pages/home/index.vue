@@ -1,13 +1,13 @@
 <template>
   <div class="home-page">
     <div>{{weixin}}</div>
-    <!-- <navigate />
+    <navigate />
     <div>
       <van-search v-model="searchvalue" placeholder="请输入搜索关键词" show-action shape="round" @search="onSearch">
         <div slot="action" @click="onSearch">搜索</div>
       </van-search>
     </div>
-    <span class="address home-city">北京</span>-->
+    <span class="address home-city" @click="$router.push({path:'/city', query: {city:'北京'}})">{{city.name}}</span>
     <!-- <imageAd :bannerList="bannerList"></imageAd> -->
     <div class="content">
       <!-- 菜单-->
@@ -59,6 +59,7 @@ export default {
       searchvalue: '',
       bannerList: [],
       productList: [],
+      city: { cityCode: null, name: '北京', provinceCode: 110000},
       active: 'scenic',
       page: {},
       tabs: [
@@ -71,6 +72,7 @@ export default {
   created: function () {
   },
   mounted () {
+    this.setCity()
     this.getBannerData()
     this.gitScenicListData()
     this.getHotelListData()
@@ -79,6 +81,8 @@ export default {
     let webToken = Utils.getUrlParam('webToken')
     console.log(userid)
     console.log(webToken)
+    console.log(this.city)
+
   },
   methods: {
     onSearch (e) {
@@ -90,6 +94,21 @@ export default {
         that.bannerList = res.rs
       })
     },
+    setCity() {
+      
+      let cityCode = this.$route.query.cityCode
+      let name = this.$route.name
+      let provinceCode = this.$route.provinceCode
+      // let name = Utils.getUrlParam('name')
+      // let provinceCode = $route Utils.getUrlParam('provinceCode')
+      // this.city = {cityCode, name,provinceCode}
+      
+      let city = localStorage.getItem('city')
+      if (city && JSON.parse(city)){
+        this.city = JSON.parse(city)
+      }
+      
+    },
     // 酒店列表
     getHotelListData () {
       // provinceCode	是	int	省代码
@@ -100,8 +119,8 @@ export default {
       // pageSize	否	int	分页大小，默认20
 
       let data = {
-        provinceCode: 110000,
-        cityCode: null,
+        provinceCode: this.city.provinceCode,
+        cityCode: this.city.cityCode,
         lat: 116.33664,
         lng: 39.94228,
         pageNum: 1
@@ -121,7 +140,8 @@ export default {
       // pageNum	否	int	当前页，默认1
       // pageSize	否	int	分页大小，默认20
       let data = {
-        provinceCode: 110000,
+        provinceCode: this.city.provinceCode,
+        cityCode: this.city.cityCode,
         lat: 116.33664,
         lng: 39.94228,
         pageNum: 1

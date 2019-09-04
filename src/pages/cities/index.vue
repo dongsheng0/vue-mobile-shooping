@@ -33,8 +33,13 @@ export default {
     this.requireData()
   },
   methods: {
-    selectCity (index) {
-      console.log(index)
+    selectCity (item) {
+      this.backHomePage(item)
+    },
+    backHomePage(item) {
+     let { cityCode, name, provinceCode } = item
+     this.$router.push({path:'/home', query: { cityCode, name, provinceCode}})
+     localStorage.setItem('city', JSON.stringify(item))
     },
     requireData () {
       serverHttp.cityApi().then(res => {
