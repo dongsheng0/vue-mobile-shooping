@@ -37,8 +37,6 @@ export default {
       this.backHomePage(item)
     },
     backHomePage(item) {
-     let { cityCode, name, provinceCode } = item
-     this.$router.push({path:'/home', query: { cityCode, name, provinceCode}})
      localStorage.setItem('city', JSON.stringify(item))
     },
     requireData () {

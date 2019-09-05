@@ -79,7 +79,11 @@ let API = '/cgi'
 function process(res) {
   if (res.data.code == 0) {
     return Promise.resolve(res.data);
+  } else if (res.data.code == 401) {
+    this.$toast('未授权，请重新登录')
+    return Promise.reject(res.data);
   } else {
+    this.$toast(res.data.msg)
     return Promise.reject(res.data);
   }
 }

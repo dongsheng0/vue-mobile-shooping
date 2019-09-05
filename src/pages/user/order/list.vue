@@ -54,7 +54,7 @@
 
 <script>
   import tabs from '../../../components/common/tabs'
-
+  import serverHttp from '../../../assets/js/api'
   export default {
     components: {
       tabs
@@ -62,61 +62,36 @@
     data() {
       return {
         active: 1,
+        // 0待支付1待使用3已完成
         tabs: [
-          { title: '未支付', type: 1, name: '1' },
-          { title: '已支付', type: 2, name: '2' },
-          { title: '待使用', type: 3, name: '3' },
-          { title: '已完成', type: 4, name: '4' }
+          { title: '未支付', type: 0, name: '1' },
+          { title: '待使用', type: 1, name: '2' },
+          { title: '已完成', type: 2, name: '3' }
         ],
         orderList:[],
         orderListDefault: [
-          {
-            orderid: 1,
-            ordercode: '4511248234235',
-            status: 1,
-            products: {
-              picUrl: 'https://pop.nosdn.127.net/19e33c9b-6c22-4a4b-96da-1cb7afb32712',
-              name: 'BEYOND博洋家纺 床上套件 秋冬保暖纯棉床单被套 双人被罩 磨毛全棉印花床品四件套',
-              address: '冰雪嘉年华两大一小全家乐通票',
-              price: '499',
-              quantity: 2
-            }
-          },
-          {
-            orderid: 2,
-            ordercode: '4511248234235',
-            status: 2,
-            products: {
-              picUrl: 'https://pop.nosdn.127.net/19e33c9b-6c22-4a4b-96da-1cb7afb32712',
-              name: 'BEYOND博洋家纺 床上套件 秋冬保暖纯棉床单被套 双人被罩 磨毛全棉印花床品四件套',
-              address: '冰雪嘉年华两大一小全家乐通票',
-              price: '499',
-              quantity: 2
-            }
-          },
-          {
-            orderid: 2,
-            ordercode: '4511248234235',
-            status: 3,
-            products: {
-              picUrl: 'https://pop.nosdn.127.net/19e33c9b-6c22-4a4b-96da-1cb7afb32712',
-              name: 'BEYOND博洋家纺 床上套件 秋冬保暖纯棉床单被套 双人被罩 磨毛全棉印花床品四件套',
-              address: '冰雪嘉年华两大一小全家乐通票',
-              price: '499',
-              quantity: 2
-            }
-          },
         ]
       }
     },
     methods: {
       tabClick(e) {
         console.log(e)
-        this.orderList = this.orderListDefault.filter(i=> i.status==e.type)
+        this.getOrderLists(e.type,)
+        // this.orderList = this.orderListDefault.filter(i=> i.status==e.type)
+      },
+      getOrderLists(state, pageNum=1) {
+        serverHttp.userOrdersApi({
+            state,
+            pageNum
+          }).then(res=> {
+          let result = res.rs
+          this.orderList = result.list
+        })
       },
     },
     mounted () {
-      this.orderList = this.orderListDefault
+      // this.orderList = this.orderListDefault
+      this.orderList=this.getOrderLists(0)
     }
   }
 </script>

@@ -61,5 +61,14 @@ const serverHttp = {
   hotelPreorderApi: paramObj => {
     return get('/hotel/preorder', paramObj);
   },
+
+
+  //
+  //个人中心
+  //user /orders
+  // 酒店-下单前
+  userOrdersApi: paramObj => {
+    return get('/user/orders', paramObj);
+  },
 };
 export default serverHttp;
