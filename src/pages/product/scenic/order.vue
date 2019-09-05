@@ -93,14 +93,14 @@ export default {
       detailId: this.$route.params.id,
       details: {},
       creatOrderForm: {
-        ticketId: this.$route.params.id,	// 是	int	门票ID
-        preorderDate: '', 	// 是	int	预定日期 yyyyMMdd格式
-        buyNum: '', //	是	int	购买数量
+        ticketId: +this.$route.params.id,	// 是	int	门票ID
+        preorderDate: '20190905', 	// 是	int	预定日期 yyyyMMdd格式
+        buyNum: 1, //	是	int	购买数量
         fillInfo: {
-          "name": "", //姓名
-          "mobile": '', //手机号
+          "name": "wds", //姓名
+          "mobile": '1370123913', //手机号
           "cardType": 0,
-          "cardNo": "" //证件号
+          "cardNo": "130724198902123814" //证件号
         }
       },
       cardTypeOptions: [
@@ -160,7 +160,7 @@ export default {
       let data = Object.assign({}, this.creatOrderForm)
       data.fillInfo = JSON.stringify(data.fillInfo)
       console.log(data)
-      serverHttp.creatOrder(data).then(res => {
+      serverHttp.scenicSpotsCreateOrderApi(data).then(res => {
         WXPay(res.rs.orderNo)
       })
     },
@@ -189,7 +189,7 @@ export default {
     },
     // 获取订单详情
     preorder () {
-      serverHttp.scenicSpotsPreorderApi({ id: this.detailId }).then(res => {
+      serverHttp.scenicSpotsPreorderApi({ id: parseInt(this.detailId) }).then(res => {
         this.details = res.rs
         this.details.source = 'scenic'
         let dateName = ['今天', '明天', '后天']

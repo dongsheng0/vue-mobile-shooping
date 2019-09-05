@@ -4,6 +4,7 @@ axios.defaults.timeout = 5000;
 let headers = {
   'Content-Type': 'application/x-www-form-urlencoded'
 }
+
 let userInfo = JSON.parse(localStorage.getItem('userInfo'))
 let temp = {}
 if (userInfo) {
@@ -131,7 +132,7 @@ export function get(url, params = {}) {
 
 export function post(url, data = {}) {
   return new Promise((resolve, reject) => {
-    axios.post(`${API}url`, data)
+    axios.post(`${API}${url}`, data)
       .then(response => {
         process(response)
       }, err => {

@@ -39,7 +39,7 @@ const serverHttp = {
   },
   // 景区-创建订单 OK
   scenicSpotsCreateOrderApi: paramObj => {
-    return get('/scenic_spots/createOrder', paramObj);
+    return post('/scenic_spots/createOrder', paramObj);
   },
   // 
   // 
