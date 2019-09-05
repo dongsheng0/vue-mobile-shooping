@@ -79,6 +79,7 @@
 import serverHttp from '../../../assets/js/api'
 import selectPicker from '../../../components/common/selectpicker'
 import ticket from "../../../components/detail/ticket";
+import WXPay from '../../../assets/js/wxpay'
 // import moment from 'moment'
 export default {
   data () {
@@ -156,12 +157,12 @@ export default {
       this.creatOrder()
     },
     creatOrder () {
-      // let data = Object.assign({},this.creatOrderForm)
-      // data.fillInfo = JSON.stringify(data.fillInfo)
-      // console.log(data)
-      // serverHttp.creatOrder(data).then(res => {
-
-      // })
+      let data = Object.assign({}, this.creatOrderForm)
+      data.fillInfo = JSON.stringify(data.fillInfo)
+      console.log(data)
+      serverHttp.creatOrder(data).then(res => {
+        WXPay(res.rs.orderNo)
+      })
     },
     // 更多日期
     handelDatetimePicker () {

@@ -1,12 +1,28 @@
 import axios from 'axios';
-
 axios.defaults.timeout = 5000;
 
+let headers = {
+  'Content-Type': 'application/x-www-form-urlencoded'
+}
+let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+let temp = {}
+if (userInfo) {
+  let {
+    userid,
+    webToken
+  } = userInfo
+  temp = {
+    userid,
+    webToken
+  }
+}
+let configHeaders = {
+  ...headers,
+  ...temp
+}
 const requestHandler = config => {
   config.data = JSON.stringify(config.data);
-  config.headers = {
-    'Content-Type': 'application/x-www-form-urlencoded'
-  }
+  config.headers = configHeaders
   return config;
 }
 const errorHandler = error => Promise.reject(error);

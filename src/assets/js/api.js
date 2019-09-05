@@ -70,5 +70,10 @@ const serverHttp = {
   userOrdersApi: paramObj => {
     return get('/user/orders', paramObj);
   },
+  //user /orders
+  // §2.21	订单支付
+  userPayApi: paramObj => {
+    return get('/user/pay', paramObj);
+  },
 };
 export default serverHttp;

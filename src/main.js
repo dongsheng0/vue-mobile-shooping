@@ -2,6 +2,7 @@ import Vue from 'vue';
 import {
   router
 } from './config/router';
+import './assets/js/userinfo'
 import './config/rem';
 import App from './App.vue';
 import VueLazyload from 'vue-lazyload'

@@ -59,7 +59,7 @@ export default {
       searchvalue: '',
       bannerList: [],
       productList: [],
-      city: { cityCode: null, name: '北京', provinceCode: 110000},
+      city: { cityCode: null, name: '北京', provinceCode: 110000 },
       active: 'scenic',
       page: {},
       tabs: [
@@ -76,13 +76,6 @@ export default {
     this.getBannerData()
     this.gitScenicListData()
     this.getHotelListData()
-    this.url = window.location.hash
-    let userid = Utils.getUrlParam('userid')
-    let webToken = Utils.getUrlParam('webToken')
-    console.log(userid)
-    console.log(webToken)
-    console.log(this.city)
-
   },
   methods: {
     onSearch (e) {
@@ -94,20 +87,20 @@ export default {
         that.bannerList = res.rs
       })
     },
-    setCity() {
-      
+    setCity () {
+
       let cityCode = this.$route.query.cityCode
       let name = this.$route.name
       let provinceCode = this.$route.provinceCode
       // let name = Utils.getUrlParam('name')
       // let provinceCode = $route Utils.getUrlParam('provinceCode')
       // this.city = {cityCode, name,provinceCode}
-      
+
       let city = localStorage.getItem('city')
-      if (city && JSON.parse(city)){
+      if (city && JSON.parse(city)) {
         this.city = JSON.parse(city)
       }
-      
+
     },
     // 酒店列表
     getHotelListData () {
