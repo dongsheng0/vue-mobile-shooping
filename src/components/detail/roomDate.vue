@@ -11,17 +11,17 @@
       </van-row>
       <van-row class="date-content" @click="selectData">
         <van-col span="12">
-          <p class="date-time">8月8日</p>
+          <p class="date-time">{{start}}</p>
         </van-col>
         <van-col span="12">
-          <p class="date-time">8月8日</p>
+          <p class="date-time">{{end}}</p>
         </van-col>
         <span class="date-split"></span>
       </van-row>
     </div>
 
     <van-action-sheet v-model="showCalendar" title="标题">
-      <inlineCalendar mode="during" @change="changeCalendar" :minDate="minDate" />
+      <inlineCalendar mode="during" @change="changeCalendar" :minDate="minDate" :defaultDate="defaultDate" />
       <div class="save" v-show="showSave" @click="handelSave">完成</div>
     </van-action-sheet>
   </div>
@@ -41,17 +41,32 @@ export default {
     },
     selectValue: {
       type: Array
+    },
+    startDay: {
+      type: String
+    },
+    endDay: {
+      type: String
     }
   },
   data () {
     return {
+      defaultDate: [new Date(), new Date()],
+      start: '请选择',
+      end: '请选择',
       minDate: new Date(),
       showSave: false, // 保存按钮
       showCalendar: false, // 日历
-      result: [], // 选中的最终结果
+      result: [], // 选中的最终结果 ["20190212", "20190212"]
       roomList: [], // 接口返回时间段内的房间数
       resultTemp: [] // 日历选中后，保存按钮点击前的结果
     };
+  },
+  mounted () {
+    if (this.$route.query.startDay) {
+      this.start = `${moment(this.$route.query.startDay).get('month') + 1}月${moment(this.$route.query.startDay).get('date')}日`
+      this.end = `${moment(this.$route.query.endDay).get('month') + 1}月${moment(this.$route.query.endDay).get('date')}日`
+    }
   },
   methods: {
     selectData () {
@@ -62,7 +77,9 @@ export default {
     async handelSave () {
       await this.gethotelRoomsApi(moment(this.resultTemp[0].$d).format('YYYYMMDD'), moment(this.resultTemp[1].$d).format('YYYYMMDD'))
       this.showCalendar = false
-      this.result = this.resultTemp;
+      this.result = [moment(this.resultTemp[0].$d).format('YYYYMMDD'), moment(this.resultTemp[1].$d).format('YYYYMMDD')]
+      this.start = `${this.resultTemp[0].$M + 1}月${this.resultTemp[0].$D}日`
+      this.end = `${this.resultTemp[1].$M + 1}月${this.resultTemp[1].$D}日`
     },
     // 根据日期获取房间
     gethotelRoomsApi (startDay, endDay) {

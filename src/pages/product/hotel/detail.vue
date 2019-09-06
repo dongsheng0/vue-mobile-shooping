@@ -4,7 +4,7 @@
   <!-- 酒店详情 -->
   <div class="detail">
     <!-- <head-img :detail="details"></head-img> -->
-    <room-date @select="handelSelect" />
+    <room-date v-model="selectValue" @change="changeRoomDate" :hotelId="detailId" />
     <div class="detail-list">
       <van-list v-model="loading" :error.sync="error" error-text="请求失败，点击重新加载" @load="onLoad">
         <van-cell v-for="item in productList" :key="item.id">
@@ -25,8 +25,11 @@
                   <span class="point active">奖励{{item.rakeOff | price}}</span>
                 </van-col>
                 <van-col span="12">
-                  <span class="share">推广</span>
-                  <router-link class="preorder" :to="`/hotel/order/${item.id}`">预定</router-link>
+                  <span class="share" @click="share">推广</span>
+                  <span
+                    class="preorder"
+                    @click="$router.push({'path':`/hotel/order/${item.id}`, query: {startDay, endDay}})"
+                  >预定</span>
                 </van-col>
               </van-row>
               <div class="useRules">
@@ -43,16 +46,33 @@
 import headImg from "../../../components/detail/head";
 import roomDate from "../../../components/detail/roomDate";
 import serverHttp from '../../../assets/js/api'
-
+import moment from 'moment'
 export default {
   data () {
     return {
+      selectValue: [new Date(), new Date()],
       detailId: this.$route.params.id,
       productList: [],
       list: [],
       details: {},
       error: false,
       loading: true
+    }
+  },
+  computed: {
+    startDay () {
+      let time = ''
+      if (this.selectValue.length > 0) {
+        time = this.selectValue[0]
+      }
+      return time
+    },
+    endDay () {
+      let time = ''
+      if (this.selectValue.length > 1) {
+        time = this.selectValue[1]
+      }
+      return time
     }
   },
   components: {
@@ -63,13 +83,28 @@ export default {
     this.getDetail()
   },
   methods: {
+    share () {
+
+    },
+    // 选择日期，帅选酒店
+    changeRoomDate (e) {
+      this.mapDetailsdata(e)
+    },
     onLoad () {
       console.log(0)
       this.loading = false
     },
-    handelSelect (e) {
-      console.log('选中后的结果')
-      console.log(e)
+    // 二次处理数据
+    mapDetailsdata (list) {
+      list.forEach(item => {
+        item.picUrl = item.pic_url
+        // 有限时特价
+        if (item.specialOfferTimeLimit) {
+          item.minimumPrice = item.price
+          item.price = item.specialOfferPrice
+        }
+      })
+      this.productList = list
     },
     getDetail () {
       serverHttp.hotelDetailApi({ id: this.detailId }).then(res => {
@@ -77,15 +112,7 @@ export default {
         let result = res.rs
         this.details = result || {}
         this.pic = result.pics[0]
-        this.productList = result.rooms
-        this.productList.forEach(item => {
-          item.picUrl = item.pic_url
-          // 有限时特价
-          if (item.specialOfferTimeLimit) {
-            item.minimumPrice = item.price
-            item.price = item.specialOfferPrice
-          }
-        })
+        this.mapDetailsdata(result.rooms)
       })
     }
   }
