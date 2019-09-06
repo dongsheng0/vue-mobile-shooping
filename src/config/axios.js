@@ -1,91 +1,94 @@
 import axios from 'axios';
 axios.defaults.timeout = 5000;
-
 let headers = {
-  'content-type': 'multipart/form-data;boundary=' + new Date().getTime()
+  'content-type': 'application/x-www-form-urlencoded'
+};
+let API = '/cgi';
+if (window.location.host == 'h.roztop.com') {
+  axios.defaults.baseURL = 'https://h.roztop.com';
+  // let API = '/pages/cgi';
 }
 // axios.defaults.headers.post['Content-Type'] = 'multipart/form-data;boundary = ' + new Date().getTime()
-let userInfo = JSON.parse(localStorage.getItem('userInfo'))
-let temp = {}
+let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+let temp = {};
 if (userInfo) {
   let {
     userid,
     webToken
-  } = userInfo
+  } = userInfo;
   temp = {
     userid,
-    webToken
-  }
+    webToken,
+  };
 }
 let configHeaders = {
   ...headers,
-  ...temp
-}
+  ...temp,
+};
 const requestHandler = config => {
   config.data = JSON.stringify(config.data);
-  config.headers = configHeaders
+  config.headers = configHeaders;
   return config;
-}
+};
 const errorHandler = error => Promise.reject(error);
 //http request 拦截器
 axios.interceptors.request.use(requestHandler, errorHandler);
 
 const responseHandler = response => {
-  return response
-}
+  return response;
+};
 const responseHandlerError = err => {
-  let errMsg = ''
+  let errMsg = '';
   if (err && err.response) {
     switch (err.response.status) {
       case 400:
-        errMsg = '错误请求'
+        errMsg = '错误请求';
         break;
       case 401:
-        errMsg = '未授权，请重新登录'
+        errMsg = '未授权，请重新登录';
         break;
       case 403:
-        errMsg = '拒绝访问'
+        errMsg = '拒绝访问';
         break;
       case 404:
-        errMsg = '请求错误,未找到该资源'
+        errMsg = '请求错误,未找到该资源';
         break;
       case 405:
-        errMsg = '请求方法未允许'
+        errMsg = '请求方法未允许';
         break;
       case 408:
-        errMsg = '请求超时'
+        errMsg = '请求超时';
         break;
       case 500:
-        errMsg = '服务器端出错'
+        errMsg = '服务器端出错';
         break;
       case 501:
-        errMsg = '网络未实现'
+        errMsg = '网络未实现';
         break;
       case 502:
-        errMsg = '网络错误'
+        errMsg = '网络错误';
         break;
       case 503:
-        errMsg = '服务不可用'
+        errMsg = '服务不可用';
         break;
       case 504:
-        errMsg = '网络超时'
+        errMsg = '网络超时';
         break;
       case 505:
-        errMsg = 'http版本不支持该请求'
+        errMsg = 'http版本不支持该请求';
         break;
       default:
-        errMsg = `连接错误${err.response.status}`
+        errMsg = `连接错误${err.response.status}`;
     }
   } else {
-    errMsg = '连接到服务器失败'
+    errMsg = '连接到服务器失败';
   }
-  console.log(`10000${errMsg}`)
-  return Promise.resolve(err.response)
-}
+  console.log(`10000${errMsg}`);
+  return Promise.resolve(err.response);
+};
 //响应拦截器即异常处理
-axios.interceptors.response.use(responseHandler, responseHandlerError)
+axios.interceptors.response.use(responseHandler, responseHandlerError);
 
-let API = '/cgi'
 
 /**
  * 封装get方法
@@ -97,17 +100,18 @@ function process(res) {
   if (res.data.code == 0) {
     return Promise.resolve(res.data);
   } else if (res.data.code == 401) {
-    this.$toast('未授权，请重新登录')
+    this.$toast('未授权，请重新登录');
     return Promise.reject(res.data);
   } else {
-    this.$toast(res.data.msg)
+    this.$toast(res.data.msg);
     return Promise.reject(res.data);
   }
 }
 export function get(url, params = {}) {
   return new Promise((resolve, reject) => {
-    axios.get(`${API}${url}`, {
-        params: params
+    axios
+      .get(`${API}${url}`, {
+        params: params,
       })
       .then(res => {
         if (res.data.code == 0) {
@@ -117,11 +121,10 @@ export function get(url, params = {}) {
         }
       })
       .catch(err => {
-        reject(err)
-      })
-  })
+        reject(err);
+      });
+  });
 }
-
 
 /**
  * 封装post请求
@@ -131,12 +134,33 @@ export function get(url, params = {}) {
  */
 
 export function post(url, data = {}) {
+  let abc = ''
+  for (let it in data) {
+    abc += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+  }
+  console.log(abc);
   return new Promise((resolve, reject) => {
-    axios.post(`${API}${url}`, data)
-      .then(response => {
-        process(response)
-      }, err => {
-        reject(err)
-      })
-  })
+    axios({
+      method: 'post',
+      url: `${API}${url}`,
+      transformRequest: [function (data) {
+        let ret = ''
+        for (let it in data) {
+          ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+        }
+        return ret
+      }],
+      params: data,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }).then(
+      response => {
+        process(response);
+      },
+      err => {
+        reject(err);
+      }
+    );
+  });
 }

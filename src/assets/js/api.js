@@ -73,7 +73,7 @@ const serverHttp = {
   //
   // 订单支付
   userPayApi: paramObj => {
-    return get('/user/pay', paramObj);
+    return post('/user/pay', paramObj);
   },
 };
 export default serverHttp;

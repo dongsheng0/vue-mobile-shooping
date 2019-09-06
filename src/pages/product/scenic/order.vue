@@ -2,76 +2,78 @@
 
 <template>
   <!-- 提交订单-景区 -->
-  <div class="order">
-    <ticket :ticket="details" />
-    <div class="left-bar">使用日期</div>
-    <div class="date">
-      <van-row type="flex" justify="space-between">
-        <van-col span="6" v-for="(item, i) in details.priceAndStock" :key="i">
-          <div class="date-btn" :class="{'active': activeDate==i? true: false}" @click="handelDatetime(item,i)">
-            <p>{{item.dateFromNow}}{{item.date}}</p>
-            <p>{{item.price}}元</p>
-          </div>
-        </van-col>
-        <van-col span="6" @click="handelDatetimePicker">
-          <div class="date-btn date-btn-last">
-            <p>更多日期</p>
-            <p>{{datetimePicker}}</p>
-            <p></p>
-          </div>
-        </van-col>
-      </van-row>
-    </div>
-    <div class="left-bar">购买数量</div>
-    <div class="order-num">
-      <van-stepper
-        v-model="creatOrderForm.buyNum"
-        :max="details.maxPerOrder"
-        integer
-        input-width="60px"
-        @change="changeOrderNum"
-      />
-      <div class="tips">
-        <p v-for="(item, i) in details.useRules" :key="i">{{item}}</p>
+  <div>
+    <div class="order">
+      <ticket :ticket="details" />
+      <div class="left-bar">使用日期</div>
+      <div class="date">
+        <van-row type="flex" justify="space-between">
+          <van-col span="6" v-for="(item, i) in details.priceAndStock" :key="i">
+            <div class="date-btn" :class="{'active': activeDate==i? true: false}" @click="handelDatetime(item,i)">
+              <p>{{item.dateFromNow}}{{item.date}}</p>
+              <p>{{item.price}}元</p>
+            </div>
+          </van-col>
+          <van-col span="6" @click="handelDatetimePicker">
+            <div class="date-btn date-btn-last">
+              <p>更多日期</p>
+              <p>{{datetimePicker}}</p>
+              <p></p>
+            </div>
+          </van-col>
+        </van-row>
       </div>
+      <div class="left-bar">购买数量</div>
+      <div class="order-num">
+        <van-stepper
+          v-model="creatOrderForm.buyNum"
+          :max="details.maxPerOrder"
+          integer
+          input-width="60px"
+          @change="changeOrderNum"
+        />
+        <div class="tips">
+          <p v-for="(item, i) in details.useRules" :key="i">{{item}}</p>
+        </div>
+      </div>
+      <div class="left-bar">预订人信息</div>
+      <div class="order-userinfo">
+        <div class="field-label">联系人</div>
+        <van-field v-model="creatOrderForm.fillInfo.name" placeholder="请输入用户名" />
+        <div class="field-label">手机号</div>
+        <van-field v-model="creatOrderForm.fillInfo.mobile" placeholder="请输入接收信息的手机号" />
+        <div class="field-label">证件类型</div>
+        <select-picker
+          placeholder="请选择证件类型"
+          :selectValue="creatOrderForm.fillInfo.cardType"
+          @select="selectCardType"
+          :columns="cardTypeOptions"
+        />
+        <div class="field-label">证件号</div>
+        <van-field v-model="creatOrderForm.fillInfo.cardNo" placeholder="请输入证件号" />
+        <div class="field-label">备注信息</div>
+        <van-field type="textarea" rows="1" autosize placeholder="请输入备注信息" />
+      </div>
+      <!-- 提交订单 -->
+      <div class="save-order">
+        <van-row type="flex" justify="space-between" align="center">
+          <van-col span="6" class>￥{{allPrice}}</van-col>
+          <van-col span="18" class="save-order-btn">
+            <span @click="saveOrder">提交订单</span>
+          </van-col>
+        </van-row>
+      </div>
+      <!-- 提交订单 -->
+      <van-popup v-model="showDatetimePicker" position="bottom">
+        <van-datetime-picker
+          v-model="currentDate"
+          type="date"
+          :min-date="minDate"
+          @cancel="showDatetimePicker = !showDatetimePicker"
+          @confirm="onConfirmDatetimePicker"
+        />
+      </van-popup>
     </div>
-    <div class="left-bar">预订人信息</div>
-    <div class="order-userinfo">
-      <div class="field-label">联系人</div>
-      <van-field v-model="creatOrderForm.fillInfo.name" placeholder="请输入用户名" />
-      <div class="field-label">手机号</div>
-      <van-field v-model="creatOrderForm.fillInfo.mobile" placeholder="请输入接收信息的手机号" />
-      <div class="field-label">证件类型</div>
-      <select-picker
-        placeholder="请选择证件类型"
-        :selectValue="creatOrderForm.fillInfo.cardType"
-        @select="selectCardType"
-        :columns="cardTypeOptions"
-      />
-      <div class="field-label">证件号</div>
-      <van-field v-model="creatOrderForm.fillInfo.cardNo" placeholder="请输入证件号" />
-      <div class="field-label">备注信息</div>
-      <van-field type="textarea" rows="1" autosize placeholder="请输入备注信息" />
-    </div>
-    <!-- 提交订单 -->
-    <div class="save-order">
-      <van-row type="flex" justify="space-between" align="center">
-        <van-col span="6" class>￥{{allPrice}}</van-col>
-        <van-col span="18" class="save-order-btn">
-          <span @click="saveOrder">提交订单</span>
-        </van-col>
-      </van-row>
-    </div>
-    <!-- 提交订单 -->
-    <van-popup v-model="showDatetimePicker" position="bottom">
-      <van-datetime-picker
-        v-model="currentDate"
-        type="date"
-        :min-date="minDate"
-        @cancel="showDatetimePicker = !showDatetimePicker"
-        @confirm="onConfirmDatetimePicker"
-      />
-    </van-popup>
   </div>
 </template>
 
@@ -187,14 +189,11 @@ export default {
     },
     creatOrder () {
       let data = Object.assign({}, this.creatOrderForm)
-      // data.fillInfo = JSON.stringify([data.fillInfo])
-      console.log(data.fillInfo);
-      console.log('提交');
-      data.fillInfo = [data.fillInfo]
+      data.fillInfo = JSON.stringify([data.fillInfo])
       console.log(data)
-      let d = this.json2formData(data)
-      serverHttp.scenicSpotsCreateOrderApi(d).then(res => {
+      serverHttp.scenicSpotsCreateOrderApi(data).then(res => {
         WXPay(res.rs.orderNo)
+        // orderNo: "S-190906-10"
       })
     },
     // 更多日期
