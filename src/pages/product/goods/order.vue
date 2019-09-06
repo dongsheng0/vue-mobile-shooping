@@ -36,30 +36,64 @@
 <script>
 import serverHttp from '../../../assets/js/api'
 import ticket from "../../../components/detail/ticket";
+import WXPay from '../../../assets/js/wxpay'
 
 export default {
   data () {
     return {
+      detailId: this.$route.params.id,
       value1: '',
       userName: '',
-      value: ''
+      value: '',
+      creatOrderForm: {
+        goodsSpecId: 1,	// 是	int	商品规格ID
+        buyNum: 1, //	是	int	购买数量
+        fillInfo: {
+          "name": "wds", //姓名
+          "mobile": '1370123913', //手机号
+        }
+      },
     }
   },
   components: {
     ticket
   },
+  mounted () {
+    this.preorder()
+  },
   methods: {
     // 提交订单
     saveOrder () {
 
+      if (!this.creatOrderForm.goodsSpecId) {
+        this.$toast('选择商品规格')
+      } else if (!this.creatOrderForm.fillInfo.name) {
+        this.$toast('请填写姓名')
+      } else if (!this.creatOrderForm.fillInfo.mobile) {
+        this.$toast('请填写手机号')
+      } else {
+        // this.creatOrder()
+      }
+      this.creatOrder()
+    },
+    creatOrder () {
+      let data = Object.assign({}, this.creatOrderForm)
+      data.fillInfo = JSON.stringify(data.fillInfo)
+      console.log(data)
+      serverHttp.goodsCreateOrderApi(data).then(res => {
+        WXPay(res.rs.orderNo)
+        // orderNo: "S-190906-10"
+        // orderNo: "G-190906-12"
+      })
     },
     // 数量改变
     changeOrderNum (e) {
       console.log(e)
     },
+
     // 获取订单详情
     preorder () {
-      serverHttp.scenicSpotsPreorderApi({}).then(res => {
+      serverHttp.goodsPreorderApi({ id: this.detailId }).then(res => {
         console.log(res)
       })
     },

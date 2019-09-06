@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     getDetail () {
-      serverHttp.scenicSpotsDetailApi({ id: this.detailId }).then(res => {
+      serverHttp.goodsDetailApi({ id: this.detailId }).then(res => {
         this.details = res.rs
         this.pic = res.rs.pics[0]
         this.details.name = '商品详情'

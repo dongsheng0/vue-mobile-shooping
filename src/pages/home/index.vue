@@ -102,6 +102,26 @@ export default {
       }
 
     },
+    // 商品列表
+    getGoodslListData () {
+      // provinceCode	是	int	省代码
+      // cityCode	否	int	市代码
+      // lat	是	double	纬度
+      // lng	是	double	经度
+      // pageNum	否	int	当前页，默认1
+      // pageSize	否	int	分页大小，默认20
+
+      let data = {
+        provinceCode: this.city.provinceCode,
+        cityCode: this.city.cityCode,
+        lat: 116.33664,
+        lng: 39.94228,
+        pageNum: 1
+      }
+      serverHttp.goodslListApi(data).then(res => {
+        this.productList = res.rs.list
+      })
+    },
     // 酒店列表
     getHotelListData () {
       // provinceCode	是	int	省代码
@@ -152,6 +172,9 @@ export default {
           break;
         case 'hotel':
           this.getHotelListData();
+          break;
+        case 'goods':
+          this.getGoodslListData();
           break;
         default:
           this.gitScenicListData();

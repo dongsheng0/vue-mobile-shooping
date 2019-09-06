@@ -66,6 +66,25 @@ const serverHttp = {
     return post('/hotel/createOrder', paramObj);
   },
 
+  // 首页商品列表 OK
+  goodslListApi: paramObj => {
+    return get('/goods/list', paramObj);
+  },
+  // 商品详情 OK
+  goodsDetailApi: paramObj => {
+    return get('/goods/detail', paramObj);
+  },
+  // 商品-下单前 OK
+  goodsPreorderApi: paramObj => {
+    return post('/goods/preorder', paramObj);
+  },
+  // 商品-创建订单 OK
+  goodsCreateOrderApi: paramObj => {
+    return post('/goods/createOrder', paramObj);
+  },
+
+
+
   //
   //个人中心
   //

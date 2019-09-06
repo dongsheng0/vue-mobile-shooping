@@ -21,9 +21,6 @@ const WXPay = (orderNo) => {
           });
         }
       })
-
-
-
     }
   })
 
