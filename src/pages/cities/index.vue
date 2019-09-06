@@ -36,8 +36,8 @@ export default {
     selectCity (item) {
       this.backHomePage(item)
     },
-    backHomePage(item) {
-     localStorage.setItem('city', JSON.stringify(item))
+    backHomePage (item) {
+      localStorage.setItem('city', JSON.stringify(item))
     },
     requireData () {
       serverHttp.cityApi().then(res => {

@@ -7,19 +7,22 @@
       <product-card :product="item" @click="showProductDetail(item)">
         <template slot="footer">
           <!-- 未支付 -->
-          <van-row type="flex" justify="space-between" v-if="item.status == 0">
+          <van-row type="flex" justify="space-between" v-if="active == 1">
             <van-col span="12" class="bottom-content">
-              <span class="point active">请在 <van-count-down :time="item.dead_line | countDown" /> 内付款</span>
+              <span class="point active">
+                请在
+                <van-count-down :time="item.dead_line | countDown" />内付款
+              </span>
             </van-col>
             <van-col span="12">
-              <span class="order-cancel">取消</span>
-              <span class="order-pay">支付</span>
+              <!-- <span class="order-cancel">取消</span> -->
+              <span class="order-pay" @click="pay(item.order_no)">支付</span>
             </van-col>
           </van-row>
 
-          <van-row type="flex" justify="end" v-if="item.can_exchange == 1">
+          <van-row type="flex" justify="end" v-if="item.can_exchange == 2">
             <van-col>
-              <span class="order-cancel">退款</span>
+              <!-- <span class="order-cancel">退款</span> -->
               <span class="order-confirm">确认收货</span>
             </van-col>
           </van-row>
@@ -32,6 +35,7 @@
 <script>
 import tabs from '../../../components/common/tabs'
 import serverHttp from '../../../assets/js/api'
+import WXPay from '../../../assets/js/wxpay'
 export default {
   components: {
     tabs
@@ -51,6 +55,10 @@ export default {
     }
   },
   methods: {
+    pay (id) {
+      alert('点击支付按钮')
+      WXPay(id)
+    },
     tabClick (e) {
       console.log(e)
       this.getOrderLists(e.type)
@@ -64,7 +72,7 @@ export default {
       }).then(res => {
         let result = res.rs
         that.orderList = result.list
-        that.orderList.forEach(item=> {
+        that.orderList.forEach(item => {
           item.name = item.title
           item.price = item.order_money
           item.address = ""

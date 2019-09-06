@@ -1,11 +1,11 @@
 <template>
-<!-- 列表 -->
-    <div class="product-list">
-        <searchtop/>
-        <div v-for="(product,i) in products" :key="i">
-          <product-card :product='product' @click="showProduct(product)" />
-        </div>
+  <!-- 列表 -->
+  <div class="product-list">
+    <searchtop />
+    <div v-for="(product,i) in products" :key="i">
+      <product-card :product="product" @click="showProduct(product)" />
     </div>
+  </div>
 </template>
 
 <script>
@@ -15,25 +15,25 @@ export default {
   components: {
     searchtop
   },
-  data() {
+  data () {
     return {
       value: "",
       filterindex: 0,
       filtersort: false,
       filtershow: false,
-      
-            products:[
-                {
-                    id:1,
-                    imageURL:'https://pop.nosdn.127.net/19e33c9b-6c22-4a4b-96da-1cb7afb32712',
-                    title:'BEYOND博洋家纺 床上套件 秋冬保暖纯棉床单被套 双人被罩 磨毛全棉印花床品四件套',
-                    price:'125.50',
-                },
-            ]
+
+      products: [
+        {
+          id: 1,
+          imageURL: 'https://pop.nosdn.127.net/19e33c9b-6c22-4a4b-96da-1cb7afb32712',
+          title: 'BEYOND博洋家纺 床上套件 秋冬保暖纯棉床单被套 双人被罩 磨毛全棉印花床品四件套',
+          price: '125.50',
+        },
+      ]
     };
   },
   methods: {
-    onFilterBar(value) {
+    onFilterBar (value) {
       if (value == 0) {
         this.filtersort = !this.filtersort;
       } else if (value == 3) {
@@ -43,20 +43,20 @@ export default {
         this.filterindex = value;
       }
     },
-    showProduct(product){
-        this.$router.push('/product/'+product.id);
+    showProduct (product) {
+      this.$router.push('/product/' + product.id);
     }
   }
 };
 </script>
 
 <style lang="less">
-.product-list{
-    .additional .price{
-        position: absolute;
-        bottom: 6px;
-        height: 34px;
-    }
+.product-list {
+  .additional .price {
+    position: absolute;
+    bottom: 6px;
+    height: 34px;
+  }
 }
 .filterbar {
   font-size: 14px;
@@ -151,9 +151,9 @@ export default {
     li {
       width: 100%;
       text-align: left;
-        height: auto;
-        line-height: initial;
-      .van-cell{
+      height: auto;
+      line-height: initial;
+      .van-cell {
         font-size: 16px;
       }
       .big {
@@ -166,14 +166,14 @@ export default {
         margin-left: 10px;
       }
     }
-    .filterInner{
-        overflow-y: scroll;
-        max-height: 100%;
-        .van-button{
-            height: 40px;
-            margin-bottom: 15px;
-            line-height: 40px;
-        }
+    .filterInner {
+      overflow-y: scroll;
+      max-height: 100%;
+      .van-button {
+        height: 40px;
+        margin-bottom: 15px;
+        line-height: 40px;
+      }
     }
     .tags_selection {
       font-size: 14px;
@@ -199,7 +199,7 @@ export default {
           border-radius: 4px;
           overflow: hidden;
           text-overflow: ellipsis;
-            height: 30px;
+          height: 30px;
         }
       }
     }
