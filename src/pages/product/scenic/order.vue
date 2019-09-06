@@ -80,6 +80,7 @@ import serverHttp from '../../../assets/js/api'
 import selectPicker from '../../../components/common/selectpicker'
 import ticket from "../../../components/detail/ticket";
 import WXPay from '../../../assets/js/wxpay'
+import axios from 'axios'
 // import moment from 'moment'
 export default {
   data () {
@@ -131,6 +132,27 @@ export default {
     },
     // 提交订单
     saveOrder () {
+      //     axios({
+      // method:"post",
+      // url:"/cgi/scenic_spots/createOrder",
+      // headers:{
+      //     'Content-type': 'x-www-form-urlencoded',
+      //     'userid':'1',
+      //     'webToken': 'ec9f35b5d15a79832de8c25fe3b6fd955215f42457fa38799467745b5e7f3195'
+      // },
+      // data:{"ticketId":5,"preorderDate":"20190905","buyNum":1,"fillInfo":[{"name":"wds","mobile":"1370123913","cardType":0,"cardNo":"130724198902123814"}]},
+      // // transformRequest: [function (data) {
+      //   //   let ret = ''
+      //   //   for (let it in data) {
+      //   //     ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+      //   //   }
+      //   //   return ret
+      //   // }],
+      //   }).then((res)=>{
+      //       console.log(res.data);
+      //   })
+
+
       console.log(this.creatOrderForm);
       // creatOrderForm
       // infoRules": { //必填信息规则
@@ -147,20 +169,31 @@ export default {
         this.$toast('选择日期')
       } else if (!this.creatOrderForm.fillInfo.name) {
         this.$toast('姓名')
-      } else if (this.creatOrderForm.fillInfo.mobile) {
-        this.$toast('手机号')
+      } else if (!this.creatOrderForm.fillInfo.mobile) {
+        // this.$toast('手机号')
       } else if (this.creatOrderForm.preorderDate) {
         //
       } else {
-        this.creatOrder()
+        // this.creatOrder()
       }
       this.creatOrder()
     },
+    json2formData (jsonData) {
+      var params = new URLSearchParams();
+      for (var key in jsonData) {             //遍历json对象的每个key/value对
+        params.append(key, jsonData[key]);
+      }
+      return params;
+    },
     creatOrder () {
       let data = Object.assign({}, this.creatOrderForm)
-      data.fillInfo = JSON.stringify(data.fillInfo)
+      // data.fillInfo = JSON.stringify([data.fillInfo])
+      console.log(data.fillInfo);
+      console.log('提交');
+      data.fillInfo = [data.fillInfo]
       console.log(data)
-      serverHttp.scenicSpotsCreateOrderApi(data).then(res => {
+      let d = this.json2formData(data)
+      serverHttp.scenicSpotsCreateOrderApi(d).then(res => {
         WXPay(res.rs.orderNo)
       })
     },

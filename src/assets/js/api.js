@@ -59,19 +59,19 @@ const serverHttp = {
   },
   // 酒店-下单前
   hotelPreorderApi: paramObj => {
-    return get('/hotel/preorder', paramObj);
+    return post('/hotel/preorder', paramObj);
   },
 
 
   //
   //个人中心
-  //user /orders
-  // 酒店-下单前
+  //
+  // 我的订单
   userOrdersApi: paramObj => {
     return get('/user/orders', paramObj);
   },
-  //user /orders
-  // §2.21	订单支付
+  //
+  // 订单支付
   userPayApi: paramObj => {
     return get('/user/pay', paramObj);
   },

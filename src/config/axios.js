@@ -2,9 +2,9 @@ import axios from 'axios';
 axios.defaults.timeout = 5000;
 
 let headers = {
-  'Content-Type': 'application/x-www-form-urlencoded'
+  'content-type': 'multipart/form-data;boundary=' + new Date().getTime()
 }
-
+// axios.defaults.headers.post['Content-Type'] = 'multipart/form-data;boundary = ' + new Date().getTime()
 let userInfo = JSON.parse(localStorage.getItem('userInfo'))
 let temp = {}
 if (userInfo) {
