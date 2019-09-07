@@ -12,9 +12,9 @@
           <van-row type="flex" justify="space-between">
             <van-col span="6" class="type">{{item.specName}}</van-col>
             <van-col span="18" class="right">
-              <span class="price">￥ {{item.specialOfferPrice}}</span>
-              <span class="origin">{{item.minimumPrice}}</span>
-              <span class="time">
+              <span class="price"> {{(item.specialOfferTimeLimit? item.specialOfferPrice:item.minimumPrice) | price}}</span>
+              <span class="origin" v-if="item.specialOfferTimeLimit">原价:{{item.specialOfferPrice}}</span>
+              <span class="time" v-if="item.specialOfferTimeLimit">
                 限时:
                 <van-count-down :time="item.specialOfferTimeLimit | countDown" />
               </span>
@@ -26,10 +26,10 @@
           <div class="desc last">
             <van-row type="flex" justify="space-between">
               <van-col span="6">
-                <span class="point active">奖励：￥{{item.minimumRakeOff}}</span>
+                <span class="point active">奖励:{{item.minimumRakeOff | price}}</span>
               </van-col>
               <van-col span="18" class="right">
-                <span class="share">推广</span>
+                <span class="share" @click="share">推广</span>
                 <router-link class="preorder" :to="`/scenic/order/${item.id}`">预定</router-link>
               </van-col>
             </van-row>
@@ -64,14 +64,19 @@ export default {
     tabs
   },
   methods: {
+    // 推广
+    share() {
+      this.$toast('敬请期待')
+    },
+    // 切换tab
     tabClick (e) {
-      this.list = this.ticketTypes[e].tickets
+      this.list = this.ticketTypes[e.name].tickets
     },
     getDetail () {
       serverHttp.scenicSpotsDetailApi({ id: this.detailId }).then(res => {
         this.details = res.rs
         this.pic = res.rs.pics[0]
-        this.tabs = res.rs.ticketTypes.map(item => { return { title: item.name, "name": 0 } })
+        this.tabs = res.rs.ticketTypes.map((item, index) => { return { title: item.name, name: index } })
         this.ticketTypes = res.rs.ticketTypes
         this.list = this.ticketTypes[0].tickets
       })

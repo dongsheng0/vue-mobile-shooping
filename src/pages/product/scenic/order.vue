@@ -9,16 +9,14 @@
       <div class="date">
         <van-row type="flex" justify="space-between">
           <van-col span="6" v-for="(item, i) in details.priceAndStock" :key="i">
-            <div class="date-btn" :class="{'active': activeDate==i? true: false}" @click="handelDatetime(item,i)">
+            <div class="date-btn" :class="{'active': activeDate==i? true: false, 'disabled':   item.stock_num== '0'? true: false}" @click="handelDatetime(item,i)">
               <p>{{item.dateFromNow}}{{item.date}}</p>
               <p>{{item.price}}元</p>
             </div>
           </van-col>
           <van-col span="6" @click="handelDatetimePicker">
-            <div class="date-btn date-btn-last">
-              <p>更多日期</p>
-              <p>{{datetimePicker}}</p>
-              <p></p>
+            <div class="date-btn date-btn-last" :class="{'active': datetimePicker? true: false}">
+              <p>{{datetimePicker? datetimePicker : '更多日期'}}</p>
             </div>
           </van-col>
         </van-row>
@@ -45,8 +43,7 @@
         <div class="field-label">证件类型</div>
         <select-picker
           placeholder="请选择证件类型"
-          :selectValue="creatOrderForm.fillInfo.cardType"
-          @select="selectCardType"
+          v-model="cardType"
           :columns="cardTypeOptions"
         />
         <div class="field-label">证件号</div>
@@ -63,7 +60,7 @@
           </van-col>
         </van-row>
       </div>
-      <!-- 提交订单 -->
+      <!-- 提交订单 end-->
       <van-popup v-model="showDatetimePicker" position="bottom">
         <van-datetime-picker
           v-model="currentDate"
@@ -82,29 +79,32 @@ import serverHttp from '../../../assets/js/api'
 import selectPicker from '../../../components/common/selectpicker'
 import ticket from "../../../components/detail/ticket";
 import WXPay from '../../../assets/js/wxpay'
-// import moment from 'moment'
+import moment from 'moment'
 export default {
   data () {
     return {
-      activeDate: '',
+      activeDate: -1,
       price: '', // 单价
       showDatetimePicker: false,
-      datetimePicker: '',
-      minDate: new Date(),
-      currentDate: new Date(),
+      datetimePicker: '', // 更多日期
+      minDate: new Date(new Date().getTime() + 3* 86400000),
+      currentDate: new Date(new Date().getTime() + 3 * 86400000),
       detailId: this.$route.params.id,
       details: {},
+      // 提交数据
       creatOrderForm: {
         ticketId: +this.$route.params.id,	// 是	int	门票ID
-        preorderDate: '20190905', 	// 是	int	预定日期 yyyyMMdd格式
+        preorderDate: '', 	// 是	int	预定日期 yyyyMMdd格式
         buyNum: 1, //	是	int	购买数量
         fillInfo: {
-          "name": "wds", //姓名
-          "mobile": '1370123913', //手机号
-          "cardType": 0,
-          "cardNo": "130724198902123814" //证件号
+          "name": "", //姓名
+          "mobile": '', //手机号
+          "cardType": '', 
+          "cardNo": "" //证件号
         }
       },
+      // 下拉选择数据
+      cardType: { text: '身份证', type: 0 },
       cardTypeOptions: [
         { text: '身份证', type: 0 },
         { text: '台胞证', type: 1 },
@@ -114,6 +114,7 @@ export default {
     }
   },
   computed: {
+    // 总价
     allPrice () {
       return this.creatOrderForm.buyNum * this.price
     }
@@ -126,14 +127,8 @@ export default {
     this.preorder()
   },
   methods: {
-    selectCardType (e) {
-      if (typeof e == 'object') {
-        this.creatOrderForm.fillInfo.cardType = e.type
-      }
-    },
     // 提交订单
     saveOrder () {
-      console.log(this.creatOrderForm);
       // creatOrderForm
       // infoRules": { //必填信息规则
       //       "needAllGuestInfo": false, //是否需要所有游客的信息
@@ -144,20 +139,26 @@ export default {
       //       "checkGatxz": false, //填写港澳通行证
       //       "checkHz": false//填写护照
       //   }
-
+      this.creatOrderForm.fillInfo.cardType = this.cardType.type
       if (!this.creatOrderForm.preorderDate) {
-        this.$toast('选择日期')
+        this.$toast('请选择日期')
+        return
       } else if (!this.creatOrderForm.fillInfo.name) {
-        this.$toast('姓名')
+        this.$toast('请填写姓名')
+        return
       } else if (!this.creatOrderForm.fillInfo.mobile) {
-        // this.$toast('手机号')
-      } else if (this.creatOrderForm.preorderDate) {
-        //
-      } else {
-        // this.creatOrder()
+        this.$toast('请填写手机号')
+        return
+      } else  {
+        if (this.creatOrderForm.fillInfo.cardType == 0 && !this.creatOrderForm.fillInfo.cardNo) {
+          this.$toast('请填写身份证号')
+        } else {
+          this.creatOrder() 
+          console.log('提价')
+        }
       }
-      this.creatOrder()
     },
+    // 支付
     creatOrder () {
       let data = Object.assign({}, this.creatOrderForm)
       data.fillInfo = JSON.stringify([data.fillInfo])
@@ -167,24 +168,27 @@ export default {
         // orderNo: "S-190906-10"
       })
     },
-    // 更多日期
+    // 点击更多日期
     handelDatetimePicker () {
       this.showDatetimePicker = true
     },
-    // 今天，明天，后天
+    // 选择按钮-今天，明天，后天
     handelDatetime (item, i) {
-      this.activeDate = i
-      this.creatOrderForm.preorderDate = item.stock_date
-      this.datetimePicker = ''
-      this.price = this.details.priceAndStock[0].price // 缺少选择某一天的价钱，就直接显示今天的价钱
+      if (item.stock_num == 0) {
+        this.$toast('当天暂无库存，请选择其它日期')
+      } else {
+        this.activeDate = i
+        this.creatOrderForm.preorderDate = item.stock_date
+        this.datetimePicker = ''
+        this.price = item.price 
+      }
     },
-    // 选择日期-确定
+    // 更多日期-选择日期-确定
     onConfirmDatetimePicker (value) {
       this.showDatetimePicker = !this.showDatetimePicker
-      console.log(value)
-      this.datetimePicker = this.creatOrderForm.preorderDate = (new Date(value).getMonth()) + 1
+      this.datetimePicker = this.creatOrderForm.preorderDate =moment(value).format('MM-DD')
       this.activeDate = -1
-      this.price = item.price
+      this.price = this.details.priceAndStock[0].price // 缺少选择某一天的价钱，就直接显示今天的价钱
     },
     // 数量改变
     changeOrderNum () {
@@ -229,12 +233,24 @@ export default {
           rgba(242, 111, 84, 1) 100%
         );
       }
+      &.disabled{
+        background: #555;
+        color: #fff;
+      }
     }
     &-btn-last {
       border-radius: 13px 0 0 13px;
       height: 100%;
       box-sizing: border-box;
       line-height: 36px;
+      &.active{
+        color: #fff;
+        background: linear-gradient(
+          -90deg,
+          rgba(254, 167, 99, 0.5) 0%,
+          rgba(242, 111, 84, 1) 100%
+        );
+      }
     }
   }
   .tips {

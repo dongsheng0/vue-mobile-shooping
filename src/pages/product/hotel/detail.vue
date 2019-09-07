@@ -83,8 +83,9 @@ export default {
     this.getDetail()
   },
   methods: {
-    share () {
-
+     // 推广
+    share() {
+      this.$toast('敬请期待')
     },
     // 选择日期，帅选酒店
     changeRoomDate (e) {

@@ -3,6 +3,7 @@
 .introduce {
   .title {
     text-align: center;
+    padding: 10px 0 16px 0;
     &-content {
       .title-icon {
         display: inline-block;

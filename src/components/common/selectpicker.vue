@@ -16,7 +16,7 @@ export default {
       type: Array
     },
     selectValue: {
-      type: [String, Number]
+      type: Object
     }
   },
   data () {
@@ -36,7 +36,7 @@ export default {
       this.result = newVal;
     },
     result (newVal) {
-      this.$emit("select", newVal);
+      this.$emit("input", newVal);
     }
   }
 };
