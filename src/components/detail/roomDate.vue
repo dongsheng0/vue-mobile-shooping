@@ -51,7 +51,7 @@ export default {
   },
   data () {
     return {
-      defaultDate: [new Date(), new Date()],
+      defaultDate: [],
       start: '请选择',
       end: '请选择',
       minDate: new Date(),

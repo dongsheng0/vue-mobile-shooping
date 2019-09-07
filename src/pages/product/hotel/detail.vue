@@ -28,7 +28,7 @@
                   <span class="share" @click="share">推广</span>
                   <span
                     class="preorder"
-                    @click="$router.push({'path':`/hotel/order/${item.id}`, query: {startDay, endDay}})"
+                    @click="$router.push({'path':`/hotel/order/${item.id}`, query: {startDay, endDay, price:item.price}})"
                   >预定</span>
                 </van-col>
               </van-row>
@@ -62,14 +62,14 @@ export default {
   computed: {
     startDay () {
       let time = ''
-      if (this.selectValue.length > 0) {
+      if (typeof this.selectValue != 'object') {
         time = this.selectValue[0]
       }
       return time
     },
     endDay () {
       let time = ''
-      if (this.selectValue.length > 1) {
+      if (typeof this.selectValue != 'object') {
         time = this.selectValue[1]
       }
       return time

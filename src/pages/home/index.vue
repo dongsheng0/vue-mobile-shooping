@@ -69,6 +69,16 @@ export default {
       ]
     }
   },
+  computed: {
+    mapInfo() {
+      return {
+        provinceCode: this.city.provinceCode,  // provinceCode	 是	int	省代码
+        cityCode: this.city.cityCode,  // cityCode	否	int	市代码
+        lat: 116.33664, // lat	是	double	纬度 116.33664
+        lng: 39.94228  // lng	是	double	经度
+      }
+    }
+  },
   created: function () {
   },
   mounted () {
@@ -87,77 +97,38 @@ export default {
         that.bannerList = res.rs
       })
     },
+    // 获取当前及选择的城市
     setCity () {
-
-      let cityCode = this.$route.query.cityCode
-      let name = this.$route.name
-      let provinceCode = this.$route.provinceCode
-      // let name = Utils.getUrlParam('name')
-      // let provinceCode = $route Utils.getUrlParam('provinceCode')
-      // this.city = {cityCode, name,provinceCode}
-
       let city = localStorage.getItem('city')
       if (city && JSON.parse(city)) {
         this.city = JSON.parse(city)
       }
-
     },
     // 商品列表
-    getGoodslListData () {
-      // provinceCode	是	int	省代码
-      // cityCode	否	int	市代码
-      // lat	是	double	纬度
-      // lng	是	double	经度
-      // pageNum	否	int	当前页，默认1
-      // pageSize	否	int	分页大小，默认20
-
+    getGoodslListData (pageNum=1) {
       let data = {
-        provinceCode: this.city.provinceCode,
-        cityCode: this.city.cityCode,
-        lat: 116.33664,
-        lng: 39.94228,
-        pageNum: 1
+        ...this.mapInfo,
+        ...{ pageNum}
       }
       serverHttp.goodslListApi(data).then(res => {
         this.productList = res.rs.list
       })
     },
     // 酒店列表
-    getHotelListData () {
-      // provinceCode	是	int	省代码
-      // cityCode	否	int	市代码
-      // lat	是	double	纬度
-      // lng	是	double	经度
-      // pageNum	否	int	当前页，默认1
-      // pageSize	否	int	分页大小，默认20
-
-      let data = {
-        provinceCode: this.city.provinceCode,
-        cityCode: this.city.cityCode,
-        lat: 116.33664,
-        lng: 39.94228,
-        pageNum: 1
+    getHotelListData (pageNum=1) {
+     let data = {
+        ...this.mapInfo,
+        ...{ pageNum}
       }
       serverHttp.hotelListApi(data).then(res => {
         this.productList = res.rs.list
       })
     },
     // 获取景区列表
-    gitScenicListData () {
-
-      // 参数名称	必选	类型及范围	说明
-      // provinceCode	 是	int	省代码
-      // cityCode	否	int	市代码
-      // lat	是	double	纬度 116.33664
-      // lng	是	double	经度
-      // pageNum	否	int	当前页，默认1
-      // pageSize	否	int	分页大小，默认20
-      let data = {
-        provinceCode: this.city.provinceCode,
-        cityCode: this.city.cityCode,
-        lat: 116.33664,
-        lng: 39.94228,
-        pageNum: 1
+    gitScenicListData (pageNum=1) {
+     let data = {
+        ...this.mapInfo,
+        ...{ pageNum }
       }
       serverHttp.scenicSpotsApi(data).then(res => {
         console.log()

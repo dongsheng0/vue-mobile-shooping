@@ -5,6 +5,7 @@
         <h4>{{ticket.name}}</h4>
         <p class="point" v-for="(i, key) in ticket.preorderRules" :key="key">{{i}}</p>
       </van-col>
+      <!-- ticketSpec -->
       <van-col span="4">
         <div class="ticket-type" v-if="ticket.source !='goods'">
           <p v-for="(item, i) in ticket.ticketSpec" :key="i">{{item}}</p>
@@ -24,11 +25,11 @@ export default {
       type: Object,
       default: function () {
         return {
-          source: '',
+          source: '',  // 票的类型 ， scenic hotel goods
           url: '',
-          ticketSpec: '',
-          name: '',
-          preorderRules: []
+          ticketSpec: '', // 右侧票名称
+          name: '', // 票名字
+          preorderRules: [] // 预定规则
         }
       }
     }

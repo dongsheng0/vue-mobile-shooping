@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Toast } from 'vant';
 axios.defaults.timeout = 5000;
 let headers = {
   'content-type': 'application/x-www-form-urlencoded'
@@ -83,7 +84,7 @@ const responseHandlerError = err => {
   } else {
     errMsg = '连接到服务器失败';
   }
-  console.log(`10000${errMsg}`);
+  Toast(`10000${errMsg}`);
   return Promise.resolve(err.response);
 };
 //响应拦截器即异常处理
@@ -98,12 +99,12 @@ axios.interceptors.response.use(responseHandler, responseHandlerError);
  */
 function process(res) {
   if (res.data.code == 0) {
-    return Promise.resolve(res.data);
+    Promise.resolve(res.data);
   } else if (res.data.code == 401) {
-    this.$toast('未授权，请重新登录');
+    Toast('未授权，请重新登录');
     return Promise.reject(res.data);
   } else {
-    this.$toast(res.data.msg);
+    Toast(res.data.msg);
     return Promise.reject(res.data);
   }
 }
@@ -154,9 +155,12 @@ export function post(url, data = {}) {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
-    }).then(
-      response => {
-        process(response);
+    }).then(res => {
+        if (res.data.code == 0) {
+          resolve(res.data);
+        } else {
+          reject(res.data);
+        }
       },
       err => {
         reject(err);

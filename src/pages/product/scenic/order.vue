@@ -194,7 +194,7 @@ export default {
     preorder () {
       serverHttp.scenicSpotsPreorderApi({ id: parseInt(this.detailId) }).then(res => {
         this.details = res.rs
-        this.details.source = 'scenic'
+        this.details.type = 'scenic'
         let dateName = ['今天', '明天', '后天']
         this.details.priceAndStock.forEach((item, i) => {
           item.dateFromNow = dateName[i]

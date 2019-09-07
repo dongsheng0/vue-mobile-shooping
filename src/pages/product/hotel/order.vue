@@ -22,7 +22,7 @@
     <!-- 提交订单 -->
     <div class="save-order">
       <van-row type="flex" justify="space-between" align="center">
-        <van-col span="6" class>￥10000.00</van-col>
+        <van-col span="6" class>{{price | price}}</van-col>
         <van-col span="18" class="save-order-btn">
           <span @click="saveOrder">提交订单</span>
         </van-col>
@@ -42,6 +42,7 @@ import moment from 'moment'
 export default {
   data () {
     return {
+      price: this.$route.query.price,
       selectValue: [], // 入住日期
       detailId: this.$route.params.id,
       value1: '',
@@ -119,9 +120,12 @@ export default {
       // 房型ID（不是酒店ID）
       serverHttp.hotelPreorderApi({ id: this.detailId }).then(res => {
         let result = res.rs
+        this.details = res
         this.details = {
           name: result.hotelName,
-          source: 'hotel'
+          ticketSpec: result.name,
+          preorderRules: result.useRules,
+          type: 'hotel',
         }
         console.log(this.details);
       })
