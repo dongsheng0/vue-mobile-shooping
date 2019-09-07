@@ -118,10 +118,12 @@ export function get(url, params = {}) {
         if (res.data.code == 0) {
           resolve(res.data);
         } else {
+          Toast(res.data.msg)
           reject(res.data);
         }
       })
       .catch(err => {
+        Toast(err)
         reject(err);
       });
   });
@@ -159,10 +161,12 @@ export function post(url, data = {}) {
         if (res.data.code == 0) {
           resolve(res.data);
         } else {
+          Toast(res.data.msg)
           reject(res.data);
         }
       },
       err => {
+        Toast(err)
         reject(err);
       }
     );

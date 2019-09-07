@@ -112,6 +112,9 @@ export default {
       }
       serverHttp.goodslListApi(data).then(res => {
         this.productList = res.rs.list
+        this.productList.forEach(item => {
+          item.price = item.minimumPrice
+        });
       })
     },
     // 酒店列表
@@ -122,6 +125,9 @@ export default {
       }
       serverHttp.hotelListApi(data).then(res => {
         this.productList = res.rs.list
+        this.productList.forEach(item => {
+          item.price = item.minimumPrice
+        });
       })
     },
     // 获取景区列表
@@ -133,6 +139,9 @@ export default {
       serverHttp.scenicSpotsApi(data).then(res => {
         console.log()
         this.productList = res.rs.list
+        this.productList.forEach(item => {
+          item.price = item.minimumPrice
+        });
       })
     },
     tabClick (name) {

@@ -1,16 +1,16 @@
 <template>
   <div class="ticket">
     <van-row type="flex" align="center">
-      <van-col span="20" :class="ticket.source !='goods' ? 'ticket-left-content' : ''">
+      <van-col span="20" :class="ticket.type !='goods' ? 'ticket-left-content' : ''">
         <h4>{{ticket.name}}</h4>
         <p class="point" v-for="(i, key) in ticket.preorderRules" :key="key">{{i}}</p>
       </van-col>
       <!-- ticketSpec -->
       <van-col span="4">
-        <div class="ticket-type" v-if="ticket.source !='goods'">
+        <div class="ticket-type" v-if="ticket.type !='goods'">
           <p v-for="(item, i) in ticket.ticketSpec" :key="i">{{item}}</p>
         </div>
-        <img class="ticket-img" :src="ticket.url" alt v-else />
+        <img class="ticket-img" :src="ticket.picUrl" alt v-else />
       </van-col>
     </van-row>
     <span class="ticket-left"></span>
@@ -25,7 +25,7 @@ export default {
       type: Object,
       default: function () {
         return {
-          source: '',  // 票的类型 ， scenic hotel goods
+          type: '',  // 票的类型 ， scenic hotel goods
           url: '',
           ticketSpec: '', // 右侧票名称
           name: '', // 票名字

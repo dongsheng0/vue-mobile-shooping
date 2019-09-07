@@ -120,7 +120,6 @@ export default {
       // 房型ID（不是酒店ID）
       serverHttp.hotelPreorderApi({ id: this.detailId }).then(res => {
         let result = res.rs
-        this.details = res
         this.details = {
           name: result.hotelName,
           ticketSpec: result.name,
