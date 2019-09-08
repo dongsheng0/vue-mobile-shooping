@@ -2,7 +2,7 @@ import serverHttp from './api'
 
 const WXPay = (orderNo) => {
   wx.miniProgram.getEnv(function (res) {
-    alert('判断环境' + res.miniprogram)
+    alert('判断微信环境' + res.miniprogram)
     if (res.miniprogram) {
       serverHttp.userPayApi({
         orderNo

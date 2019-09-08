@@ -1,6 +1,5 @@
 <template>
   <div class="home-page">
-    <div>{{weixin}}</div>
     <navigate />
     <div>
       <van-search v-model="searchvalue" placeholder="请输入搜索关键词" show-action shape="round" @search="onSearch">
@@ -55,7 +54,6 @@ export default {
   },
   data: function () {
     return {
-      weixin: "我还是我",
       searchvalue: '',
       bannerList: [],
       productList: [],
