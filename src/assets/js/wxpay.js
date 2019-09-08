@@ -16,7 +16,7 @@ const WXPay = (orderNo) => {
             signType,
             nonceStr
           } = result.rs
-          let params = `?timestamp=${timeStamp}&nonceStr=${nonceStr}&package=${result.rs.package}&signType=${signType}&paySign=${paySign}&orderNo=${orderNo}`
+          let params = `?timestamp=${encodeURIComponent(timeStamp)}&nonceStr=${encodeURIComponent(nonceStr)}&package=${encodeURIComponent(result.rs.package)}&signType=${encodeURIComponent(signType)}&paySign=${encodeURIComponent(paySign)}&orderNo=${encodeURIComponent(orderNo)}`
           let path = '/pages/wxpay/wxpay' + params;
           alert('跳转小程序路径' + path)
           //通过JSSDK的api使小程序跳转到指定的小程序页面

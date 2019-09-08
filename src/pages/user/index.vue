@@ -73,7 +73,7 @@ export default {
 </script>
 <style lang="less" scoped>
   .user {
-    padding: 1rem 15px 20px 15px;
+    padding: 1rem 15px 1rem 15px;
 
     &-profile {
       text-align: center;

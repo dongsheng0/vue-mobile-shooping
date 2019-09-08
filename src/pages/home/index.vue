@@ -25,7 +25,7 @@
           <template slot="bottom">
             <div class="p-tag">
               <span class="p-tag-icon"></span>
-              <span class="p-tag-price">￥{{item.minimumPrice}}</span>
+              <span class="p-tag-price">￥{{item.minimumRakeOff}}</span>
             </div>
             <!-- <div class="p-time">
               <span class="p-time-end">限时：{{item.time}}</span>
