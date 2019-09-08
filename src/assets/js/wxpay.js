@@ -4,7 +4,7 @@ const WXPay = (orderNo) => {
   wx.miniProgram.getEnv(function (res) {
     alert('判断环境' + res.miniprogram)
     if (res.miniprogram) {
-      serverHttp({
+      serverHttp.userPayApi({
         orderNo
       }).then(result => {
         alert('获取微信支付所需参数成功')
