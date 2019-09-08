@@ -17,7 +17,12 @@
       <template slot="price">
         <p class="price">
           <span>{{product.price | price}}</span>
-          <span class="price-style">起</span>
+          <!-- <span class="price-style">起</span> -->
+        </p>
+      </template>
+      <template slot="origin-price">
+        <p class="origin-price" v-if="product.specialOfferTimeLimit">
+          <span>原价：{{product.minimumPrice | price}}</span>
         </p>
       </template>
       <template slot="tags">

@@ -4,33 +4,37 @@
   <div class="room">
     <head-img :detail="details"></head-img>
     <div class="room-detail">
-      <h4 class="title">大床房</h4>
-      <van-cell title="房间面积" value="13平米" />
-      <van-cell title="床型" value="内容" />
-      <van-cell title="床型尺寸" value="内容" />
-      <van-cell title="加床规则" value="内容" />
-      <van-cell title="早餐" value="内容" />
-      <van-cell title="窗户" value="内容" />
-      <van-cell title="最多入住人数" value="内容" />
+      <h4 class="title">{{details.name}}</h4>
+      <van-cell title="房间面积" :value="details.dimension" />
+      <van-cell title="床型" :value="details.bed_type" />
+      <van-cell title="床型尺寸" :value="details.bed_size" />
+      <van-cell title="加床规则" v-if="details.extra_bed_rule" :value="details.extra_bed_rule" />
+      <van-cell title="早餐" :value="details.breakfast_type" />
+      <van-cell title="窗户" :value="details.with_window" />
+      <van-cell title="最多入住人数" :value="details.maximum_entry" />
+      <van-cell title="房间设施" :value="details.facilities" />
       <van-cell>
         <template slot="title">
-          <span class="price">￥ 222</span>
-          <span class="origin">333</span>
-          <span class="time">限时：33:00:00</span>
+          <span class="price">{{details.price | price}}</span>
+          <template v-if="details.specialOfferTimeLimit"> 
+            
+            <span class="origin">原价:{{details.specialOfferPrice | price}}</span>
+            <span class="time" v-if="details.specialOfferTimeLimit">限时:<van-count-down :time="details.specialOfferTimeLimit | countDown" /></span>
+          </template>
         </template>
       </van-cell>
       <van-cell>
         <template slot="title">
-          <span class="point">使用前3日可退</span>
+          <!-- <span class="point">使用前3日可退</span> -->
         </template>
       </van-cell>
     </div>
     <div class="preorder-btn">
       <div class="share">
         推广
-        <span class="money">赚￥2.00</span>
+        <!-- <span class="money">赚￥2.00</span> -->
       </div>
-      <router-link class="preorder" :to="`/hotel/order/${detailId}`">预定</router-link>
+      <span class="preorder" @click="$router.push({'path':`/hotel/order/${detailId}`, query: {startDay, endDay}})">预定</span>
     </div>
   </div>
 </template>
@@ -42,7 +46,9 @@ import serverHttp from '../../../assets/js/api'
 export default {
   data () {
     return {
-      detailId: this.$route.params.id,
+      startDay: this.$route.query.startDay,
+      endDay: this.$route.query.endDay,
+      detailId: this.$route.params.id, // 房型id
       details: {},
     }
   },
@@ -54,17 +60,15 @@ export default {
   },
   methods: {
     getDetail () {
-      serverHttp.scenicSpotsDetailApi({ id: this.detailId }).then(res => {
+      serverHttp.hotelRoomTypeDetailApi({ id: this.detailId, startDay: this.startDay, endDay: this.endDay }).then(res => {
         this.details = res.rs
-        this.pic = res.rs.pics[0]
-        this.tabs = res.rs.ticketTypes.map(item => { return { title: item.name, "name": 0 } })
-        this.ticketTypes = res.rs.ticketTypes
-        this.productList = this.ticketTypes[0].tickets
-        this.productList.forEach(item => {
-          item.picUrl = 'http://pw4gcfw3i.bkt.clouddn.com/scenicSpots/2019-08-17/1566053528010.jpg'
-          item.tags = ['大床', '大床', '大床就']
-        })
-        this.details.tags = ['24小时前台', '24小时前台', '24小时前台']
+        // this.pic = res.rs.pics[0]
+        // this.productList.forEach(item => {
+        //   item.picUrl = 'http://pw4gcfw3i.bkt.clouddn.com/scenicSpots/2019-08-17/1566053528010.jpg'
+        //   item.tags = ['大床', '大床', '大床就']
+        // })
+        console.log(this.details);
+        
       })
     }
   }

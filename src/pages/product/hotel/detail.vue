@@ -8,13 +8,13 @@
     <div class="detail-list">
       <van-list v-model="loading" :error.sync="error" error-text="请求失败，点击重新加载" @load="onLoad">
         <van-cell v-for="item in productList" :key="item.id">
-          <product-card :product="item" source="hotelDetail" @clickThumb="$router.push({path: `/room/${item.id}`})">
+          <product-card :product="item" source="hotelDetail" @clickThumb="$router.push({'path':`/room/${item.id}`, query: {startDay, endDay}})">
             <template slot="tags">
               <div>
                 <span class="card-tag" v-for="(tag,i) in item.attributes" :key="i">{{tag}}</span>
               </div>
             </template>
-            <span slot="bottom" class="hotel-time-end">
+            <span slot="bottom" class="hotel-time-end" v-if="item.specialOfferTimeLimit">
               限时：
               <van-count-down :time="item.specialOfferTimeLimit | countDown" />
             </span>
@@ -28,7 +28,7 @@
                   <span class="share" @click="share">推广</span>
                   <span
                     class="preorder"
-                    @click="$router.push({'path':`/hotel/order/${item.id}`, query: {startDay, endDay, price:item.price}})"
+                    @click="$router.push({'path':`/hotel/order/${item.id}`, query: {startDay, endDay}})"
                   >预定</span>
                 </van-col>
               </van-row>
@@ -50,7 +50,7 @@ import moment from 'moment'
 export default {
   data () {
     return {
-      selectValue: [new Date(), new Date()],
+      selectValue: [],
       detailId: this.$route.params.id,
       productList: [],
       list: [],
@@ -62,14 +62,14 @@ export default {
   computed: {
     startDay () {
       let time = ''
-      if (typeof this.selectValue != 'object') {
+      if (this.selectValue.length>0) {
         time = this.selectValue[0]
       }
       return time
     },
     endDay () {
       let time = ''
-      if (typeof this.selectValue != 'object') {
+      if (this.selectValue.length > 0) {
         time = this.selectValue[1]
       }
       return time

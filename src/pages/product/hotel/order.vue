@@ -22,7 +22,7 @@
     <!-- 提交订单 -->
     <div class="save-order">
       <van-row type="flex" justify="space-between" align="center">
-        <van-col span="6" class>{{price | price}}</van-col>
+        <van-col span="6" class>{{allPrice | price}}</van-col>
         <van-col span="18" class="save-order-btn">
           <span @click="saveOrder">提交订单</span>
         </van-col>
@@ -42,7 +42,9 @@ import moment from 'moment'
 export default {
   data () {
     return {
-      price: this.$route.query.price,
+      unitPrice: '',
+      startDay:this.$route.query.startDay,
+      endDay:this.$route.query.endDay,
       selectValue: [], // 入住日期
       detailId: this.$route.params.id,
       value1: '',
@@ -55,8 +57,8 @@ export default {
         endDay: '', 	// 是	int	离开日期 yyyyMMdd格式
         buyNum: 1, //	是	int	购买数量
         fillInfo: {
-          "name": "wds", //姓名
-          "mobile": '1370123913', //手机号
+          "name": "", //姓名
+          "mobile": '', //手机号
         }
       },
     }
@@ -70,10 +72,16 @@ export default {
     this.getDate()
     this.preorder()
   },
+  computed: {
+    // 总价
+    allPrice() {
+      return this.creatOrderForm.buyNum * this.unitPrice
+    }
+  },
   methods: {
     getDate () {
       if (this.$route.query.startDay) {
-        this.selectValue = [this.$route.query.startDay, this.$route.query.endDay]
+        this.selectValue = [this.startDay, this.endDay]
       }
     },
     // 提交订单
@@ -81,15 +89,13 @@ export default {
       if (!this.selectValue.length) {
         this.$toast('选择日期')
       } else if (!this.creatOrderForm.fillInfo.name) {
-        this.$toast('请填写姓名')
+        this.$toast('请填写入住人姓名')
       } else if (!this.creatOrderForm.fillInfo.mobile) {
         this.$toast('请填写手机号')
-      } else if (this.creatOrderForm.preorderDate) {
-        //
       } else {
-        // this.creatOrder()
+        this.creatOrder()
+        // console.log('提交')
       }
-      this.creatOrder()
     },
     creatOrder () {
       let data = Object.assign({}, this.creatOrderForm)
@@ -118,7 +124,7 @@ export default {
     // 获取订单详情
     preorder () {
       // 房型ID（不是酒店ID）
-      serverHttp.hotelPreorderApi({ id: this.detailId }).then(res => {
+      serverHttp.hotelPreorderApi({ id: this.detailId, startDay: this.startDay, endDay: this.endDay }).then(res => {
         let result = res.rs
         this.details = {
           name: result.hotelName,
@@ -126,6 +132,7 @@ export default {
           preorderRules: result.useRules,
           type: 'hotel',
         }
+        this.unitPrice = result.totalMoney
         console.log(this.details);
       })
     },

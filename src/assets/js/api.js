@@ -57,6 +57,10 @@ const serverHttp = {
   hotelRoomsApi: paramObj => {
     return get('/hotel/rooms', paramObj);
   },
+  // 酒店-房型介绍 OK
+  hotelRoomTypeDetailApi: paramObj => {
+    return get('/hotel/roomTypeDetail', paramObj);
+  },
   // 酒店-下单前 OK
   hotelPreorderApi: paramObj => {
     return post('/hotel/preorder', paramObj);
