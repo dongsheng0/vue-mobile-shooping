@@ -84,7 +84,7 @@ export default {
   data () {
     return {
       activeDate: -1,
-      price: '', // 单价
+      unitPrice: '', // 单价
       showDatetimePicker: false,
       datetimePicker: '', // 更多日期
       minDate: new Date(new Date().getTime() + 3* 86400000),
@@ -116,7 +116,7 @@ export default {
   computed: {
     // 总价
     allPrice () {
-      return this.creatOrderForm.buyNum * this.price
+      return this.creatOrderForm.buyNum * this.unitPrice
     }
   },
   components: {
@@ -180,15 +180,21 @@ export default {
         this.activeDate = i
         this.creatOrderForm.preorderDate = item.stock_date
         this.datetimePicker = ''
-        this.price = item.price 
+        this.unitPrice = item.price 
       }
     },
     // 更多日期-选择日期-确定
-    onConfirmDatetimePicker (value) {
+    async onConfirmDatetimePicker (value) {
       this.showDatetimePicker = !this.showDatetimePicker
       this.datetimePicker = this.creatOrderForm.preorderDate =moment(value).format('MM-DD')
       this.activeDate = -1
-      this.price = this.details.priceAndStock[0].price // 缺少选择某一天的价钱，就直接显示今天的价钱
+      await this.getPriceAndStock(moment(value).format('YYYYMMDD'))
+     
+    },
+    getPriceAndStock(startDay) {
+      serverHttp.scenicGetPriceAndStockApi({ ticketId: this.detailId, startDay}).then(res=> {
+        this.unitPrice = res.rs[0].price
+      })
     },
     // 数量改变
     changeOrderNum () {

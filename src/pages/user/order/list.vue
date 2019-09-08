@@ -24,7 +24,7 @@
           <van-row type="flex" justify="end" v-if="tabActive == 1">
             <van-col>
               <span class="order-cancel" v-if="item.pay_status == 1" @click="cancelOrder(item.order_no)">退款</span>
-              <span class="order-confirm" v-if="item.shipping_status == 1" @click="confirmReceipt(item.order_no)">确认收货</span>
+              <span class="order-confirm" v-if="item.order_type == 2 && item.shipping_status == 1" @click="confirmReceipt(item.order_no)">确认收货</span>
             </van-col>
           </van-row>
         </template>

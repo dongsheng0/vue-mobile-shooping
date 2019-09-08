@@ -8,7 +8,7 @@
     <div class="detail-list">
       <van-list v-model="loading" :error.sync="error" error-text="请求失败，点击重新加载" @load="onLoad">
         <van-cell v-for="item in productList" :key="item.id">
-          <product-card :product="item" source="hotelDetail" @clickThumb="$router.push({'path':`/room/${item.id}`, query: {startDay, endDay}})">
+          <product-card :product="item" source="hotelDetail" @clickThumb="handelPreorder('room',item.id)">
             <template slot="tags">
               <div>
                 <span class="card-tag" v-for="(tag,i) in item.attributes" :key="i">{{tag}}</span>
@@ -28,7 +28,7 @@
                   <span class="share" @click="share">推广</span>
                   <span
                     class="preorder"
-                    @click="$router.push({'path':`/hotel/order/${item.id}`, query: {startDay, endDay}})"
+                    @click="handelPreorder('order',item.id)"
                   >预定</span>
                 </van-col>
               </van-row>
@@ -60,20 +60,7 @@ export default {
     }
   },
   computed: {
-    startDay () {
-      let time = ''
-      if (this.selectValue.length>0) {
-        time = this.selectValue[0]
-      }
-      return time
-    },
-    endDay () {
-      let time = ''
-      if (this.selectValue.length > 0) {
-        time = this.selectValue[1]
-      }
-      return time
-    }
+    
   },
   components: {
     headImg,
@@ -83,6 +70,13 @@ export default {
     this.getDetail()
   },
   methods: {
+    handelPreorder(path, id) {
+      if (this.selectValue.length > 0) {
+        this.$router.push({ 'path': `/hotel/${path}/${id}`, query: { startDay: this.selectValue[0], endDay: this.selectValue[1] } })
+      } else {
+        this.$toast('请选择入住日期')
+      }
+    },
      // 推广
     share() {
       this.$toast('敬请期待')

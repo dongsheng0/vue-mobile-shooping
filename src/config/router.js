@@ -109,7 +109,7 @@ const routes = [{
   },
   {
     name: 'name',
-    path: '/room/:id',
+    path: '/hotel/room/:id',
     component: () => import('../pages/product/hotel/room'),
     meta: {
       title: '房型介绍'

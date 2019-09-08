@@ -2,7 +2,8 @@
 <template>
   <!-- 房型介绍 -->
   <div class="room">
-    <head-img :detail="details"></head-img>
+    <!-- <head-img :detail="details"></head-img> -->
+    <img class="room-img" :src="details.pic_url" alt="">
     <div class="room-detail">
       <h4 class="title">{{details.name}}</h4>
       <van-cell title="房间面积" :value="details.dimension" />
@@ -62,11 +63,6 @@ export default {
     getDetail () {
       serverHttp.hotelRoomTypeDetailApi({ id: this.detailId, startDay: this.startDay, endDay: this.endDay }).then(res => {
         this.details = res.rs
-        // this.pic = res.rs.pics[0]
-        // this.productList.forEach(item => {
-        //   item.picUrl = 'http://pw4gcfw3i.bkt.clouddn.com/scenicSpots/2019-08-17/1566053528010.jpg'
-        //   item.tags = ['大床', '大床', '大床就']
-        // })
         console.log(this.details);
         
       })
@@ -79,6 +75,9 @@ export default {
 .room {
   background: #fff;
   padding-bottom: 50px;
+  &-img{
+     height: 4rem;
+  }
   &-detail {
     position: relative;
     z-index: 4;

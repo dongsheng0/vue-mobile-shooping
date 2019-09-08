@@ -37,6 +37,10 @@ const serverHttp = {
   scenicSpotsPreorderApi: paramObj => {
     return get('/scenic_spots/preorder', paramObj);
   },
+  // 景区详情-景区门票预订—日期筛选库存OK
+  scenicGetPriceAndStockApi: paramObj => {
+    return get('/scenic_spots/getPriceAndStock', paramObj);
+  },
   // 景区-创建订单 OK
   scenicSpotsCreateOrderApi: paramObj => {
     return post('/scenic_spots/createOrder', paramObj);
