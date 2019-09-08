@@ -101,5 +101,13 @@ const serverHttp = {
   userPayApi: paramObj => {
     return post('/user/pay', paramObj);
   },
+  // 订单-确认收货 OK
+  userConfirmReceiptApi: paramObj => {
+    return post('/user/confirmReceipt', paramObj);
+  },
+  // 订单-取消订单 OK
+  userCancelOrderApi: paramObj => {
+    return post('/user/cancelOrder', paramObj);
+  },
 };
 export default serverHttp;

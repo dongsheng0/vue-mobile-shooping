@@ -23,7 +23,7 @@
     <!-- 提交订单 -->
     <div class="save-order">
       <van-row type="flex" justify="space-between" align="center">
-        <van-col span="6" class>￥10000.00</van-col>
+        <van-col span="6" class>{{allPrice | price}}</van-col>
         <van-col span="18" class="save-order-btn">
           <span @click="saveOrder">提交订单</span>
         </van-col>
@@ -41,6 +41,7 @@ import WXPay from '../../../assets/js/wxpay'
 export default {
   data () {
     return {
+      unitPrice: this.$route.query.unitPrice,
       details: {},
       detailId: this.$route.params.id, // 商品规格id
       value: ' ', 
@@ -54,6 +55,12 @@ export default {
       },
     }
   },
+   computed: {
+    // 总价
+    allPrice() {
+      return this.creatOrderForm.buyNum * this.unitPrice
+    }
+  },
   components: {
     ticket
   },
@@ -64,13 +71,13 @@ export default {
     // 提交订单
     saveOrder () {
       if (!this.creatOrderForm.fillInfo.name) {
-        this.$toast('请填写姓名')
+        this.$toast('请填写收件人姓名')
       } else if (!this.creatOrderForm.fillInfo.mobile) {
         this.$toast('请填写手机号')
       } else {
         this.creatOrder()
+        // console.log('提交');
       }
-      // this.creatOrder()
     },
     creatOrder () {
       let data = Object.assign({}, this.creatOrderForm)
@@ -89,7 +96,6 @@ export default {
     // 获取订单详情
     preorder () {
       serverHttp.goodsPreorderApi({ id: this.detailId }).then(res => {
-        console.log(res)
         let result = res.rs
         this.details = {
           name: result.goodsName,

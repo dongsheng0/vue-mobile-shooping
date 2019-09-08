@@ -2,14 +2,15 @@
 <template>
   <div class="order-list">
     <!-- <headerNav title="我的订单" /> -->
-    <tabs :tabs="tabs" active="0" @click="tabClick"></tabs>
+    <tabs :tabs="tabs" class="tab" :active="tabActive" @click="tabClick"></tabs>
+    <div class="border-split"></div>
     <div v-for="item in orderList" :key="item.id">
-      <product-card :product="item" @click="showProductDetail(item)">
+      <product-card :product="item">
         <template slot="footer">
           <!-- 未支付 -->
-          <van-row type="flex" justify="space-between" v-if="active == 1">
+          <van-row type="flex" justify="space-between" v-if="tabActive == 0">
             <van-col span="12" class="bottom-content">
-              <span class="point active">
+              <span class="point active" v-if="item.dead_line">
                 请在
                 <van-count-down :time="item.dead_line | countDown" />内付款
               </span>
@@ -19,11 +20,11 @@
               <span class="order-pay" @click="pay(item.order_no)">支付</span>
             </van-col>
           </van-row>
-
-          <van-row type="flex" justify="end" v-if="item.can_exchange == 2">
+          <!-- 未支付 end -->
+          <van-row type="flex" justify="end" v-if="tabActive == 1">
             <van-col>
-              <!-- <span class="order-cancel">退款</span> -->
-              <span class="order-confirm">确认收货</span>
+              <span class="order-cancel" v-if="item.pay_status == 1" @click="cancelOrder(item.order_no)">退款</span>
+              <span class="order-confirm" v-if="item.shipping_status == 1" @click="confirmReceipt(item.order_no)">确认收货</span>
             </van-col>
           </van-row>
         </template>
@@ -36,18 +37,20 @@
 import tabs from '../../../components/common/tabs'
 import serverHttp from '../../../assets/js/api'
 import WXPay from '../../../assets/js/wxpay'
+  // "shipping_status": null, //0待发货1已发货2已收货
+  // "pay_status": 0, //0未支付1已支付2已取消3已完成4已退款
 export default {
   components: {
     tabs
   },
   data () {
     return {
-      active: 1,
+      tabActive: 0,
       // 0待支付1待使用3已完成
       tabs: [
-        { title: '未支付', type: 0, name: '1' },
-        { title: '待使用', type: 1, name: '2' },
-        { title: '已完成', type: 2, name: '3' }
+        { title: '未支付', type: 0, name: '0' },
+        { title: '待使用', type: 1, name: '1' },
+        { title: '已完成', type: 2, name: '2' }
       ],
       orderList: [],
       orderListDefault: [
@@ -55,12 +58,25 @@ export default {
     }
   },
   methods: {
+    // 确认收货
+    confirmReceipt(orderNo){
+      serverHttp.userConfirmReceiptApi({ orderNo}).then(res=> {
+        this.$toast(res.msg)
+      })
+    },
+    // 取消支付
+    cancelOrder(orderNo){
+      serverHttp.userCancelOrderApi({ orderNo}).then(res=> {
+        this.$toast(res.msg)
+      })
+    },
+    // 点击支付
     pay (id) {
       alert('点击支付按钮')
       WXPay(id)
     },
     tabClick (e) {
-      console.log(e)
+      this.tabActive = e.type
       this.getOrderLists(e.type)
       // this.orderList = this.orderListDefault.filter(i=> i.status==e.type)
     },
@@ -75,17 +91,22 @@ export default {
         that.orderList.forEach(item => {
           item.name = item.title
           item.price = item.order_money
-          item.address = ""
+          item.address = " "
+          item.picUrl = item.pic_url
         })
-        // "order_no": "H-190901-8",//订单号
-        //         "order_date": "2019-09-01 18:13:46",//下单日期
-        //         "order_money": 336,//订单金额
-        //         "can_exchange": 0,//0不可退1可退
-        //         "title": "7天酒店-北京上地店——自主大床房",//标题
-        //         "order_type": 1,//订单类型0景区1酒店2商品
-        //         "dead_line": "2019-09-04 20:22:56"//支付截止时间
-
-
+        // {
+        // "order_no": "G-190906-12", //订单号
+        // "order_date": "2019-09-06 17:13:23",//订单日期 
+        // "pay_status": 0, //0未支付1已支付2已取消3已完成4已退款
+        // "order_money": 0.01, //订单金额
+        // "can_exchange": 0, //0不可退款1可以退款
+        // "target_id": 1,
+        // "title": "大山楂——红色", //订单标题
+        // "pic_url": "http://storage.roztop.com/goods/2019-09-02/1567405500366.jpg", //订单图片
+        // "order_type": 2, //0景区订单1酒店订单2商品订单
+        // "shipping_status": null, //0待发货1已发货2已收货
+        // "dead_line": "2019-09-06 17:13:23"//可支付截止时间
+        // }
         console.log(that.orderList);
       })
     },
@@ -99,8 +120,12 @@ export default {
 <style lang="less" scoped>
 @import "../../../assets/style/global.less";
 .order-list {
+  margin-top: 5px;
   /deep/ .price-style {
     display: none;
+  }
+  .tab{
+    margin-bottom: 15px;
   }
   .bottom-content {
     text-align: left !important;
@@ -118,6 +143,9 @@ export default {
   }
   /deep/ .van-card__footer {
     margin-top: 6px;
+  }
+  /deep/ .van-card__desc{
+    height: 30px;
   }
 }
 </style>

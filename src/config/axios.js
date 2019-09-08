@@ -137,11 +137,6 @@ export function get(url, params = {}) {
  */
 
 export function post(url, data = {}) {
-  let abc = ''
-  for (let it in data) {
-    abc += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-  }
-  console.log(abc);
   return new Promise((resolve, reject) => {
     axios({
       method: 'post',

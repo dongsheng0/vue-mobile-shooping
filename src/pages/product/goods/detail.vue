@@ -6,9 +6,9 @@
       <van-row type="flex" justify="space-between" slot="footer" class="right">
         <van-col span="6" class="type">
           <span class="price">{{goodsSpecDefault.price | price}}</span>
-          <span class="origin">{{goodsSpecDefault.price}}</span>
+          <span class="origin" v-if="goodsSpecDefault.special_offer_time_limit">{{goodsSpecDefault.special_offer_price | price}}</span>
         </van-col>
-        <van-col span="18">
+        <van-col span="18" v-if="goodsSpecDefault.special_offer_time_limit">
           <span class="time">限时:<van-count-down :time="goodsSpecDefault.special_offer_time_limit | countDown" /></span>
         </van-col>
       </van-row>
@@ -108,7 +108,7 @@ export default {
       },
       //
       //
-      goodsSpecDefault: {},
+      goodsSpecDefault: {}, // 顶部的商品展示第一个规格的商品
       detailId: this.$route.params.id, // 商品id
       pic: '',
       details: {},
@@ -122,7 +122,7 @@ export default {
     onBuyClicked(e){
       console.log(e)
       if(e && e.selectedSkuComb) {
-        this.preorder(e.selectedSkuComb.id, e.selectedNum)
+        this.preorder(e.selectedSkuComb.id, e.selectedNum, e.selectedSkuComb.price / 100)
       } else {
         this.$toast('请先选择商品规格')
       }
@@ -132,8 +132,8 @@ export default {
       this.show = true
     },
     // 预购第二步-确定
-    preorder(id,buyNum) {
-      this.$router.push({'path': `/goods/order/${id}`, query: { buyNum }})
+    preorder(id,buyNum, unitPrice) {
+      this.$router.push({'path': `/goods/order/${id}`, query: { buyNum, unitPrice }})
     },
     // 初始化商品选购规格
     initSku(skuList) {
@@ -183,6 +183,7 @@ export default {
     font-size: 17px;
     font-weight: 600;
     color: #555;
+    text-align: left;
   }
   .right {
     line-height: 43px;
