@@ -95,8 +95,45 @@ export default {
   mounted () {
     this.setCity()
     this.getBannerData()
+    // this.getGeolocation()
   },
+
   methods: {
+    getGeolocation () {
+      if (navigator.geolocation) {
+
+        navigator.geolocation.getCurrentPosition(function (pos) {
+
+          // 成功回调函数，接受一个地理位置的对象作为参数。  
+
+          // https://developer.mozilla.org/cn/docs/Web/API/Position 参数说明  
+
+          alert(pos.coords.latitude + '  ' + pos.coords.longitude);
+
+        }, function (err) {
+
+          // 错误的回调  
+
+          // https://developer.mozilla.org/cn/docs/Web/API/PositionError 错误参数  
+
+        }, {
+
+            enableHighAccuracy: true, // 是否获取高精度结果  
+
+            timeout: 5000, //超时,毫秒  
+
+            maximumAge: 0 //可以接受多少毫秒的缓存位置  
+
+            // 详细说明 https://developer.mozilla.org/cn/docs/Web/API/PositionOptions  
+
+          });
+
+      } else {
+
+        alert('抱歉！您的浏览器无法使用地位功能');
+
+      }
+    },
     // 搜索
     onSearch (e) {
       this.$router.push(`/search?keyword=${encodeURIComponent(e)}`)
