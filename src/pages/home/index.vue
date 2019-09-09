@@ -2,10 +2,10 @@
   <div class="home-page">
     <navigate />
     <div>
-      <van-search v-model="searchvalue" placeholder="请输入搜索关键词" show-action shape="round" @search="onSearch">
+      <!-- <van-search v-model="searchvalue" placeholder="请输入搜索关键词" show-action shape="round" @search="onSearch">
         <div slot="action" @click="onSearch">搜索</div>
       </van-search>
-    </div>
+    </div> -->
     <span class="address home-city" @click="$router.push({path:'/city', query: {city:'北京'}})">{{city.name}}</span>
     <imageAd :bannerList="bannerList"></imageAd>
     <div class="content">

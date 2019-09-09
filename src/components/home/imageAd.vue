@@ -1,8 +1,8 @@
 <template>
   <div>
-    <van-swipe :autoplay="3000" style="height:300px;">
+    <van-swipe :autoplay="3000" style="height: 4rem;">
       <van-swipe-item v-for="(image,index) in bannerList" :key="index">
-        <img v-lazy="image.pic_url+''" style="width: 100%;" />
+        <img v-lazy="image.pic_url+''" style="width: 100%; height: 100%" />
       </van-swipe-item>
     </van-swipe>
   </div>
