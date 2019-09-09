@@ -6,10 +6,16 @@
       <van-row type="flex" justify="space-between" slot="footer" class="right">
         <van-col span="6" class="type">
           <span class="price">{{goodsSpecDefault.price | price}}</span>
-          <span class="origin" v-if="goodsSpecDefault.special_offer_time_limit">{{goodsSpecDefault.special_offer_price | price}}</span>
+          <span
+            class="origin"
+            v-if="goodsSpecDefault.special_offer_time_limit"
+          >{{goodsSpecDefault.special_offer_price | price}}</span>
         </van-col>
         <van-col span="18" v-if="goodsSpecDefault.special_offer_time_limit">
-          <span class="time">限时:<van-count-down :time="goodsSpecDefault.special_offer_time_limit | countDown" /></span>
+          <span class="time">
+            限时:
+            <van-count-down :time="goodsSpecDefault.special_offer_time_limit | countDown" />
+          </span>
         </van-col>
       </van-row>
     </head-img>
@@ -18,17 +24,17 @@
       <introduce :detail="details.detail" :pic="pic"></introduce>
     </div>
 
-    <van-sku 
+    <van-sku
       v-model="show"
       :price="price"
-      :sku="sku" 
+      :sku="sku"
       :goods="goods"
       :show-add-cart-btn="false"
-      buy-text="预购" 
+      buy-text="预购"
       :hide-stock="sku.hide_stock"
       :initial-sku="initialSku"
       @buy-clicked="onBuyClicked"
-      />
+    />
     <!-- 推广部分 -->
     <div class="preorder-btn">
       <div class="share">
@@ -50,7 +56,7 @@ export default {
     return {
       // 规格选择弹框-获取数据 预购的时候从这里
       skuData: {
-       selectedSkuComb: {
+        selectedSkuComb: {
           id: 2257,
           price: 100,
           s1: '30349',
@@ -81,7 +87,7 @@ export default {
           }
         ],
         // 所有 sku 的组合列表，比如红色、M 码为一个 sku 组合，红色、S 码为另一个组合
-         list: [
+        list: [
           {
             id: 11, // skuId，下单时后端需要
             price: 110, // 价格（单位分）
@@ -93,12 +99,12 @@ export default {
         none_sku: false, // 是否无规格商品
         hide_stock: true // 是否隐藏剩余库存
       },
-      initialSku:{
+      initialSku: {
         // 键：skuKeyStr（sku 组合列表中当前类目对应的 key 值）
         // 值：skuValueId（规格值 id）
-          // s1: 1,
-            // 初始选中数量
-          selectedNum: 1
+        // s1: 1,
+        // 初始选中数量
+        selectedNum: 1
       },
       goods: {
         // 商品标题
@@ -119,31 +125,31 @@ export default {
     introduce,
   },
   methods: {
-    onBuyClicked(e){
+    onBuyClicked (e) {
       console.log(e)
-      if(e && e.selectedSkuComb) {
+      if (e && e.selectedSkuComb) {
         this.preorder(e.selectedSkuComb.id, e.selectedNum, e.selectedSkuComb.price / 100)
       } else {
         this.$toast('请先选择商品规格')
       }
     },
     // 预购按钮
-    handelPreorder() {
+    handelPreorder () {
       this.show = true
     },
     // 预购第二步-确定
-    preorder(id,buyNum, unitPrice) {
-      this.$router.push({'path': `/goods/order/${id}`, query: { buyNum, unitPrice }})
+    preorder (id, buyNum, unitPrice) {
+      this.$router.push({ 'path': `/goods/order/${id}`, query: { buyNum, unitPrice } })
     },
     // 初始化商品选购规格
-    initSku(skuList) {
+    initSku (skuList) {
       this.sku.tree[0].v = []
       this.sku.list = []
       skuList.forEach(item => {
         let tree = {
-          id: item.id, 
+          id: item.id,
           name: item.name, // skuValueName：规格值名称
-          price: item.price*100, // 价格（单位分）
+          price: item.price * 100, // 价格（单位分）
         }
         let list = {
           id: item.id, // skuId，下单时后端需要
@@ -153,18 +159,18 @@ export default {
         }
         this.sku.tree[0].v.push(tree)
         this.sku.list.push(list)
-       
+
       });
-       this.initialSku.s1 = skuList[0].id
-       this.sku.price = skuList[0].price
-       this.goods.picture = this.pic.pic_url // 商品的首张图
+      this.initialSku.s1 = skuList[0].id
+      this.sku.price = skuList[0].price
+      this.goods.picture = this.pic.pic_url // 商品的首张图
     },
     getDetail () {
       serverHttp.goodsDetailApi({ id: this.detailId }).then(res => {
         this.details = res.rs
         this.pic = res.rs.pics[0]
         this.details.name = '商品详情'
-        this.goodsSpecDefault = this.details.goodsSpecList.length>0? this.details.goodsSpecList[0]: {}
+        this.goodsSpecDefault = this.details.goodsSpecList.length > 0 ? this.details.goodsSpecList[0] : {}
         this.initSku(this.details.goodsSpecList)
       })
     }

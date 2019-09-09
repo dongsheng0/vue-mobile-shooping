@@ -43,8 +43,8 @@ export default {
   data () {
     return {
       unitPrice: '',
-      startDay:this.$route.query.startDay,
-      endDay:this.$route.query.endDay,
+      startDay: this.$route.query.startDay,
+      endDay: this.$route.query.endDay,
       selectValue: [], // 入住日期
       detailId: this.$route.params.id,
       value1: '',
@@ -74,7 +74,7 @@ export default {
   },
   computed: {
     // 总价
-    allPrice() {
+    allPrice () {
       return this.creatOrderForm.buyNum * this.unitPrice
     }
   },

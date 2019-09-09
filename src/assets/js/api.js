@@ -26,7 +26,7 @@ const serverHttp = {
   //
   //
   // 首页-景区列表 OK 
-  scenicSpotsApi: paramObj => {
+  scenicListApi: paramObj => {
     return get('/scenic_spots/list', paramObj);
   },
   // 景区详情 OK
@@ -75,7 +75,7 @@ const serverHttp = {
   },
 
   // 首页商品列表 OK
-  goodslListApi: paramObj => {
+  goodsListApi: paramObj => {
     return get('/goods/list', paramObj);
   },
   // 商品详情 OK

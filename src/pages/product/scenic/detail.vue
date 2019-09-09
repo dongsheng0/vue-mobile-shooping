@@ -12,7 +12,7 @@
           <van-row type="flex" justify="space-between">
             <van-col span="6" class="type">{{item.specName}}</van-col>
             <van-col span="18" class="right">
-              <span class="price"> {{(item.specialOfferTimeLimit? item.specialOfferPrice:item.minimumPrice) | price}}</span>
+              <span class="price">{{(item.specialOfferTimeLimit? item.specialOfferPrice:item.minimumPrice) | price}}</span>
               <span class="origin" v-if="item.specialOfferTimeLimit">原价:{{item.specialOfferPrice}}</span>
               <span class="time" v-if="item.specialOfferTimeLimit">
                 限时:
@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     // 推广
-    share() {
+    share () {
       this.$toast('敬请期待')
     },
     // 切换tab

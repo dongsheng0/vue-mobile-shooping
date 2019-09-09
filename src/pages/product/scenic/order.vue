@@ -9,7 +9,11 @@
       <div class="date">
         <van-row type="flex" justify="space-between">
           <van-col span="6" v-for="(item, i) in details.priceAndStock" :key="i">
-            <div class="date-btn" :class="{'active': activeDate==i? true: false, 'disabled':   item.stock_num== '0'? true: false}" @click="handelDatetime(item,i)">
+            <div
+              class="date-btn"
+              :class="{'active': activeDate==i? true: false, 'disabled':   item.stock_num== '0'? true: false}"
+              @click="handelDatetime(item,i)"
+            >
               <p>{{item.dateFromNow}}{{item.date}}</p>
               <p>{{item.price}}元</p>
             </div>
@@ -41,11 +45,7 @@
         <div class="field-label">手机号</div>
         <van-field v-model="creatOrderForm.fillInfo.mobile" placeholder="请输入接收信息的手机号" />
         <div class="field-label">证件类型</div>
-        <select-picker
-          placeholder="请选择证件类型"
-          v-model="cardType"
-          :columns="cardTypeOptions"
-        />
+        <select-picker placeholder="请选择证件类型" v-model="cardType" :columns="cardTypeOptions" />
         <div class="field-label">证件号</div>
         <van-field v-model="creatOrderForm.fillInfo.cardNo" placeholder="请输入证件号" />
         <div class="field-label">备注信息</div>
@@ -87,7 +87,7 @@ export default {
       unitPrice: '', // 单价
       showDatetimePicker: false,
       datetimePicker: '', // 更多日期
-      minDate: new Date(new Date().getTime() + 3* 86400000),
+      minDate: new Date(new Date().getTime() + 3 * 86400000),
       currentDate: new Date(new Date().getTime() + 3 * 86400000),
       detailId: this.$route.params.id,
       details: {},
@@ -99,7 +99,7 @@ export default {
         fillInfo: {
           "name": "", //姓名
           "mobile": '', //手机号
-          "cardType": '', 
+          "cardType": '',
           "cardNo": "" //证件号
         }
       },
@@ -149,11 +149,11 @@ export default {
       } else if (!this.creatOrderForm.fillInfo.mobile) {
         this.$toast('请填写手机号')
         return
-      } else  {
+      } else {
         if (this.creatOrderForm.fillInfo.cardType == 0 && !this.creatOrderForm.fillInfo.cardNo) {
           this.$toast('请填写身份证号')
         } else {
-          this.creatOrder() 
+          this.creatOrder()
           console.log('提价')
         }
       }
@@ -180,19 +180,19 @@ export default {
         this.activeDate = i
         this.creatOrderForm.preorderDate = item.stock_date
         this.datetimePicker = ''
-        this.unitPrice = item.price 
+        this.unitPrice = item.price
       }
     },
     // 更多日期-选择日期-确定
     async onConfirmDatetimePicker (value) {
       this.showDatetimePicker = !this.showDatetimePicker
-      this.datetimePicker = this.creatOrderForm.preorderDate =moment(value).format('MM-DD')
+      this.datetimePicker = this.creatOrderForm.preorderDate = moment(value).format('MM-DD')
       this.activeDate = -1
       await this.getPriceAndStock(moment(value).format('YYYYMMDD'))
-     
+
     },
-    getPriceAndStock(startDay) {
-      serverHttp.scenicGetPriceAndStockApi({ ticketId: this.detailId, startDay}).then(res=> {
+    getPriceAndStock (startDay) {
+      serverHttp.scenicGetPriceAndStockApi({ ticketId: this.detailId, startDay }).then(res => {
         this.unitPrice = res.rs[0].price
       })
     },
@@ -239,7 +239,7 @@ export default {
           rgba(242, 111, 84, 1) 100%
         );
       }
-      &.disabled{
+      &.disabled {
         background: #555;
         color: #fff;
       }
@@ -249,7 +249,7 @@ export default {
       height: 100%;
       box-sizing: border-box;
       line-height: 36px;
-      &.active{
+      &.active {
         color: #fff;
         background: linear-gradient(
           -90deg,

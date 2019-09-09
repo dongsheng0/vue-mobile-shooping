@@ -4,32 +4,40 @@
     <!-- <headerNav title="我的订单" /> -->
     <tabs :tabs="tabs" class="tab" :active="tabActive" @click="tabClick"></tabs>
     <div class="border-split"></div>
-    <div v-for="item in orderList" :key="item.id">
-      <product-card :product="item">
-        <template slot="footer">
-          <!-- 未支付 -->
-          <van-row type="flex" justify="space-between" v-if="tabActive == 0">
-            <van-col span="12" class="bottom-content">
-              <span class="point active" v-if="item.dead_line">
-                请在
-                <van-count-down :time="item.dead_line | countDown" />内付款
-              </span>
-            </van-col>
-            <van-col span="12">
-              <!-- <span class="order-cancel">取消</span> -->
-              <span class="order-pay" @click="pay(item.order_no)">支付</span>
-            </van-col>
-          </van-row>
-          <!-- 未支付 end -->
-          <van-row type="flex" justify="end" v-if="tabActive == 1">
-            <van-col>
-              <span class="order-cancel" v-if="item.pay_status == 1" @click="cancelOrder(item.order_no)">退款</span>
-              <span class="order-confirm" v-if="item.order_type == 2 && item.shipping_status == 1" @click="confirmReceipt(item.order_no)">确认收货</span>
-            </van-col>
-          </van-row>
-        </template>
-      </product-card>
-    </div>
+    <!-- 列表 -->
+    <van-list :finished="finished" :finished-text="finishedText" v-model="loading" :offset="10" @load="getorderList">
+      <div v-for="item in orderList" :key="item.id">
+        <product-card :product="item">
+          <template slot="footer">
+            <!-- 未支付 -->
+            <van-row type="flex" justify="space-between" v-if="tabActive == 0">
+              <van-col span="12" class="bottom-content">
+                <span class="point active" v-if="item.dead_line">
+                  请在
+                  <van-count-down :time="item.dead_line | countDown" />内付款
+                </span>
+              </van-col>
+              <van-col span="12">
+                <!-- <span class="order-cancel">取消</span> -->
+                <span class="order-pay" @click="pay(item.order_no)">支付</span>
+              </van-col>
+            </van-row>
+            <!-- 未支付 end -->
+            <van-row type="flex" justify="end" v-if="tabActive == 1">
+              <van-col>
+                <span class="order-cancel" v-if="item.pay_status == 1" @click="cancelOrder(item.order_no)">退款</span>
+                <span
+                  class="order-confirm"
+                  v-if="item.order_type == 2 && item.shipping_status == 1"
+                  @click="confirmReceipt(item.order_no)"
+                >确认收货</span>
+              </van-col>
+            </van-row>
+          </template>
+        </product-card>
+      </div>
+    </van-list>
+    <!-- 列表 end-->
   </div>
 </template>
 
@@ -37,8 +45,8 @@
 import tabs from '../../../components/common/tabs'
 import serverHttp from '../../../assets/js/api'
 import WXPay from '../../../assets/js/wxpay'
-  // "shipping_status": null, //0待发货1已发货2已收货
-  // "pay_status": 0, //0未支付1已支付2已取消3已完成4已退款
+// "shipping_status": null, //0待发货1已发货2已收货
+// "pay_status": 0, //0未支付1已支付2已取消3已完成4已退款
 export default {
   components: {
     tabs
@@ -52,68 +60,78 @@ export default {
         { title: '待使用', type: 1, name: '1' },
         { title: '已完成', type: 2, name: '2' }
       ],
+      // 列表参数
       orderList: [],
-      orderListDefault: [
-      ]
+      finishedText: "没有更多了",
+      finished: false,
+      pageNum: 1,
+      pageSize: 20,
+      loading: false
     }
   },
   methods: {
     // 确认收货
-    confirmReceipt(orderNo){
-      serverHttp.userConfirmReceiptApi({ orderNo}).then(res=> {
+    confirmReceipt (orderNo) {
+      serverHttp.userConfirmReceiptApi({ orderNo }).then(res => {
         this.$toast(res.msg)
       })
     },
     // 取消支付
-    cancelOrder(orderNo){
-      serverHttp.userCancelOrderApi({ orderNo}).then(res=> {
+    cancelOrder (orderNo) {
+      serverHttp.userCancelOrderApi({ orderNo }).then(res => {
         this.$toast(res.msg)
       })
     },
     // 点击支付
     pay (id) {
-      alert('点击支付按钮')
       WXPay(id)
     },
+    // 切换菜单
     tabClick (e) {
       this.tabActive = e.type
-      this.getOrderLists(e.type)
-      // this.orderList = this.orderListDefault.filter(i=> i.status==e.type)
+      this.pageNum = 1
+      this.getorderList()
     },
-    getOrderLists (state, pageNum = 1) {
-      let that = this
-      serverHttp.userOrdersApi({
+    async getorderList () {
+      let toast = this.$toast.loading({
+        mask: true,
+        message: "加载中..."
+      });
+      const { pageNum, tabActive: state, pageSize } = this;
+      let params = {
         state,
+        pageSize,
         pageNum
-      }).then(res => {
-        let result = res.rs
-        that.orderList = result.list
-        that.orderList.forEach(item => {
+      };
+      let result = await serverHttp.userOrdersApi(params);
+      let res = result.rs
+      this.loading = false;
+      toast.close();
+      if (res) {
+        let list = res.list || [];
+        list.forEach(item => {
           item.name = item.title
           item.price = item.order_money
-          item.address = " "
+          item.address = " " // 设置为空，是为了让中间的高度撑开
           item.picUrl = item.pic_url
         })
-        // {
-        // "order_no": "G-190906-12", //订单号
-        // "order_date": "2019-09-06 17:13:23",//订单日期 
-        // "pay_status": 0, //0未支付1已支付2已取消3已完成4已退款
-        // "order_money": 0.01, //订单金额
-        // "can_exchange": 0, //0不可退款1可以退款
-        // "target_id": 1,
-        // "title": "大山楂——红色", //订单标题
-        // "pic_url": "http://storage.roztop.com/goods/2019-09-02/1567405500366.jpg", //订单图片
-        // "order_type": 2, //0景区订单1酒店订单2商品订单
-        // "shipping_status": null, //0待发货1已发货2已收货
-        // "dead_line": "2019-09-06 17:13:23"//可支付截止时间
-        // }
-        console.log(that.orderList);
-      })
-    },
+        if (pageNum > 1) {
+          this.orderList = [...this.orderList, ...list];
+        } else {
+          this.orderList = list;
+        }
+        // 如果最后一页
+        if (res.lastPage) {
+          this.finished = true;
+          this.finishedText = "没有更多了";
+        } else {
+          this.pageNum++;
+        }
+      }
+    }
   },
   mounted () {
-    // this.orderList = this.orderListDefault
-    this.orderList = this.getOrderLists(0)
+
   }
 }
 </script>
@@ -124,7 +142,7 @@ export default {
   /deep/ .price-style {
     display: none;
   }
-  .tab{
+  .tab {
     margin-bottom: 15px;
   }
   .bottom-content {
@@ -144,7 +162,7 @@ export default {
   /deep/ .van-card__footer {
     margin-top: 6px;
   }
-  /deep/ .van-card__desc{
+  /deep/ .van-card__desc {
     height: 30px;
   }
 }

@@ -7,10 +7,10 @@
       </van-search>
     </div>
     <span class="address home-city" @click="$router.push({path:'/city', query: {city:'北京'}})">{{city.name}}</span>
-    <!-- <imageAd :bannerList="bannerList"></imageAd> -->
+    <imageAd :bannerList="bannerList"></imageAd>
     <div class="content">
       <!-- 菜单-->
-      <van-tabs v-model="active" title-active-color="#F37455" @click="tabClick" :border="false">
+      <van-tabs v-model="tabActive" title-active-color="#F37455" @click="tabClick" :border="false">
         <van-tab v-for="(item, index) in tabs" :key="index" :name="item.name">
           <div slot="title">
             <span class="tab" :class="item.name"></span>
@@ -18,31 +18,40 @@
           </div>
         </van-tab>
       </van-tabs>
-      <!-- 列表 -->
+      <!-- 菜单 end-->
       <div class="top-border"></div>
-      <div v-for="item in productList" :key="item.id">
-        <product-card :product="item" @click="showProductDetail(item)">
-          <template slot="bottom">
-            <div class="p-tag">
-              <span class="p-tag-icon"></span>
-              <span class="p-tag-price">￥{{item.minimumRakeOff}}</span>
-            </div>
-            <!-- <div class="p-time">
+      <!-- 列表 -->
+      <van-list
+        :finished="finished"
+        :finished-text="finishedText"
+        v-model="loading"
+        :offset="10"
+        @load="getProductList"
+      >
+        <div v-for="item in productList" :key="item.id">
+          <product-card :product="item" @click="showProductDetail(item)">
+            <template slot="bottom">
+              <div class="p-tag">
+                <span class="p-tag-icon"></span>
+                <span class="p-tag-price">￥{{item.minimumRakeOff}}</span>
+              </div>
+              <!-- <div class="p-time">
               <span class="p-time-end">限时：{{item.time}}</span>
               <div class="p-tag">
                 <span class="p-tag-icon"></span>
                 <span class="p-tag-price">￥{{item.price}}</span>
               </div>
-            </div>-->
-          </template>
-        </product-card>
-      </div>
+              </div>-->
+            </template>
+          </product-card>
+        </div>
+      </van-list>
+      <!-- 菜单 end-->
     </div>
   </div>
 </template>
 <script>
 import serverHttp from '../../assets/js/api'
-import Utils from '../../assets/js/utils'
 import "../../assets/style/index.css";
 import navigate from '../../components/footer/navigate'
 import imageAd from "../../components/home/imageAd.vue";
@@ -58,17 +67,23 @@ export default {
       bannerList: [],
       productList: [],
       city: { cityCode: null, name: '北京', provinceCode: 110000 },
-      active: 'scenic',
+      tabActive: 'scenic',
       page: {},
       tabs: [
         { title: '景区', type: 1, name: 'scenic' },
         { title: '酒店', type: 2, name: 'hotel' },
         { title: '商品', type: 3, name: 'goods' }
-      ]
+      ],
+      // 列表加载
+      finishedText: "没有更多了",
+      finished: false,
+      pageNum: 1,
+      pageSize: 20,
+      loading: false
     }
   },
   computed: {
-    mapInfo() {
+    mapInfo () {
       return {
         provinceCode: this.city.provinceCode,  // provinceCode	 是	int	省代码
         cityCode: this.city.cityCode,  // cityCode	否	int	市代码
@@ -77,18 +92,16 @@ export default {
       }
     }
   },
-  created: function () {
-  },
   mounted () {
     this.setCity()
     this.getBannerData()
-    this.gitScenicListData()
-    this.getHotelListData()
   },
   methods: {
+    // 搜索
     onSearch (e) {
       this.$router.push(`/search?keyword=${encodeURIComponent(e)}`)
     },
+    // 获取banner数据
     getBannerData () {
       let that = this
       serverHttp.bannerApi().then(res => {
@@ -102,63 +115,42 @@ export default {
         this.city = JSON.parse(city)
       }
     },
-    // 商品列表
-    getGoodslListData (pageNum=1) {
-      let data = {
-        ...this.mapInfo,
-        ...{ pageNum}
-      }
-      serverHttp.goodslListApi(data).then(res => {
-        this.productList = res.rs.list
-        this.productList.forEach(item => {
+    async getProductList () {
+      let toast = this.$toast.loading({
+        mask: true,
+        message: "加载中..."
+      });
+      const { pageNum, tabActive, pageSize } = this;
+      let params = { ...{ pageSize, pageNum }, ...this.mapInfo }
+      let API = `${tabActive}ListApi`
+      let result = await serverHttp[API](params);
+      let res = result.rs
+      this.loading = false;
+      toast.close();
+      if (res) {
+        let list = res.list || [];
+        list.forEach(item => {
           item.price = item.minimumPrice
-        });
-      })
-    },
-    // 酒店列表
-    getHotelListData (pageNum=1) {
-     let data = {
-        ...this.mapInfo,
-        ...{ pageNum}
-      }
-      serverHttp.hotelListApi(data).then(res => {
-        this.productList = res.rs.list
-        this.productList.forEach(item => {
-          item.price = item.minimumPrice
-        });
-      })
-    },
-    // 获取景区列表
-    gitScenicListData (pageNum=1) {
-     let data = {
-        ...this.mapInfo,
-        ...{ pageNum }
-      }
-      serverHttp.scenicSpotsApi(data).then(res => {
-        console.log()
-        this.productList = res.rs.list
-        this.productList.forEach(item => {
-          item.price = item.minimumPrice
-        });
-      })
-    },
-    tabClick (name) {
-      console.log(name)
-      switch (name) {
-        case 'scenic':
-          this.gitScenicListData();
-          break;
-        case 'hotel':
-          this.getHotelListData();
-          break;
-        case 'goods':
-          this.getGoodslListData();
-          break;
-        default:
-          this.gitScenicListData();
-          break;
+        })
+        if (pageNum > 1) {
+          this.productList = [...this.productList, ...list];
+        } else {
+          this.productList = list;
+        }
+        // 如果最后一页
+        if (res.lastPage) {
+          this.finished = true;
+          this.finishedText = "没有更多了";
+        } else {
+          this.pageNum++;
+        }
       }
     },
+    // tab菜单切换
+    tabClick () {
+      this.getProductList()
+    },
+    // 点击进入详情
     showProductDetail (product) {
       console.log(product)
       this.$router.push(`/${this.active}/${product.id}`);

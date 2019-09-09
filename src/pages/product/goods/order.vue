@@ -44,7 +44,7 @@ export default {
       unitPrice: this.$route.query.unitPrice,
       details: {},
       detailId: this.$route.params.id, // 商品规格id
-      value: ' ', 
+      value: ' ',
       creatOrderForm: {
         goodsSpecId: this.$route.params.id,	// 是	int	商品规格ID
         buyNum: this.$route.query.buyNum, //	是	int	购买数量
@@ -54,9 +54,9 @@ export default {
       },
     }
   },
-   computed: {
+  computed: {
     // 总价
-    allPrice() {
+    allPrice () {
       return this.creatOrderForm.buyNum * this.unitPrice
     }
   },

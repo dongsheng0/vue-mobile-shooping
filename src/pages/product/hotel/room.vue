@@ -3,7 +3,7 @@
   <!-- 房型介绍 -->
   <div class="room">
     <!-- <head-img :detail="details"></head-img> -->
-    <img class="room-img" :src="details.pic_url" alt="">
+    <img class="room-img" :src="details.pic_url" alt />
     <div class="room-detail">
       <h4 class="title">{{details.name}}</h4>
       <van-cell title="房间面积" :value="details.dimension" />
@@ -17,10 +17,12 @@
       <van-cell>
         <template slot="title">
           <span class="price">{{details.price | price}}</span>
-          <template v-if="details.specialOfferTimeLimit"> 
-            
+          <template v-if="details.specialOfferTimeLimit">
             <span class="origin">原价:{{details.specialOfferPrice | price}}</span>
-            <span class="time" v-if="details.specialOfferTimeLimit">限时:<van-count-down :time="details.specialOfferTimeLimit | countDown" /></span>
+            <span class="time" v-if="details.specialOfferTimeLimit">
+              限时:
+              <van-count-down :time="details.specialOfferTimeLimit | countDown" />
+            </span>
           </template>
         </template>
       </van-cell>
@@ -64,7 +66,7 @@ export default {
       serverHttp.hotelRoomTypeDetailApi({ id: this.detailId, startDay: this.startDay, endDay: this.endDay }).then(res => {
         this.details = res.rs
         console.log(this.details);
-        
+
       })
     }
   }
@@ -75,8 +77,8 @@ export default {
 .room {
   background: #fff;
   padding-bottom: 50px;
-  &-img{
-     height: 4rem;
+  &-img {
+    height: 4rem;
   }
   &-detail {
     position: relative;

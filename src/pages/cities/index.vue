@@ -38,7 +38,7 @@ export default {
     },
     backHomePage (item) {
       localStorage.setItem('city', JSON.stringify(item))
-      this.$router.push({'path': '/home'})
+      this.$router.push({ 'path': '/home' })
     },
     requireData () {
       serverHttp.cityApi().then(res => {

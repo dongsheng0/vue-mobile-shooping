@@ -26,10 +26,7 @@
                 </van-col>
                 <van-col span="12">
                   <span class="share" @click="share">推广</span>
-                  <span
-                    class="preorder"
-                    @click="handelPreorder('order',item.id)"
-                  >预定</span>
+                  <span class="preorder" @click="handelPreorder('order',item.id)">预定</span>
                 </van-col>
               </van-row>
               <div class="useRules">
@@ -60,7 +57,7 @@ export default {
     }
   },
   computed: {
-    
+
   },
   components: {
     headImg,
@@ -70,15 +67,15 @@ export default {
     this.getDetail()
   },
   methods: {
-    handelPreorder(path, id) {
+    handelPreorder (path, id) {
       if (this.selectValue.length > 0) {
         this.$router.push({ 'path': `/hotel/${path}/${id}`, query: { startDay: this.selectValue[0], endDay: this.selectValue[1] } })
       } else {
         this.$toast('请选择入住日期')
       }
     },
-     // 推广
-    share() {
+    // 推广
+    share () {
       this.$toast('敬请期待')
     },
     // 选择日期，帅选酒店
