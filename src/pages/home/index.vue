@@ -190,7 +190,7 @@ export default {
     // 点击进入详情
     showProductDetail (product) {
       console.log(product)
-      this.$router.push(`/${this.active}/${product.id}`);
+      this.$router.push(`/${this.tabActive}/${product.id}`);
     }
   }
 }
