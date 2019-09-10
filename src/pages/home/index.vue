@@ -1,7 +1,7 @@
 <template>
   <div class="home-page">
     <navigate />
-    <div>
+    <!-- <div> -->
       <!-- <van-search v-model="searchvalue" placeholder="请输入搜索关键词" show-action shape="round" @search="onSearch">
         <div slot="action" @click="onSearch">搜索</div>
       </van-search>

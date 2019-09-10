@@ -12,7 +12,7 @@ const routes = [
     name: 'home',
     component: () => import ('../pages/home/index'),
     meta: {
-      title: '首页',
+      title: '熊加加优选',
     },
   },
   {

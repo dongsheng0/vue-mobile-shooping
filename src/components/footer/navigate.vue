@@ -2,7 +2,7 @@
   <div class="footer">
     <van-tabbar active-color="#333333" :route="true" inactive-color="#555">
       <van-tabbar-item to="/home">
-        <span>首页</span>
+        <span>优选</span>
         <span class="home" slot="icon" slot-scope="props" :class="props.active ? 'active' : 'normal'"></span>
       </van-tabbar-item>
       <van-tabbar-item to="/user">

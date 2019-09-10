@@ -117,6 +117,11 @@ export function get(url, params = {}) {
       .then(res => {
         if (res.data.code == 0) {
           resolve(res.data);
+        } else if (res.data.code == 401) {
+          //通过JSSDK的api使小程序跳转到指定的小程序页面
+          wx.miniProgram.navigateTo({
+            url: '/pages/index'
+          });
         } else {
           Toast(res.data.msg)
           reject(res.data);
@@ -155,7 +160,12 @@ export function post(url, data = {}) {
     }).then(res => {
         if (res.data.code == 0) {
           resolve(res.data);
-        } else {
+        } else if (res.data.code == 401) {
+          //通过JSSDK的api使小程序跳转到指定的小程序页面
+          wx.miniProgram.navigateTo({
+            url: '/pages/index'
+          });
+        }else {
           Toast(res.data.msg)
           reject(res.data);
         }
