@@ -37,7 +37,7 @@
         </li>
       </ul>
       <!-- 详情介绍 -->
-      <introduce :detail="details.detail" :pic="pic"></introduce>
+      <introduce :detail="details.detail" title="景区"></introduce>
     </div>
   </div>
 </template>
@@ -52,7 +52,6 @@ export default {
   data () {
     return {
       detailId: this.$route.params.id,
-      pic: '',
       tabs: [],
       list: [],
       details: {},
@@ -75,7 +74,6 @@ export default {
     getDetail () {
       serverHttp.scenicSpotsDetailApi({ id: this.detailId }).then(res => {
         this.details = res.rs
-        this.pic = res.rs.pics[0]
         this.tabs = res.rs.ticketTypes.map((item, index) => { return { title: item.name, name: index } })
         this.ticketTypes = res.rs.ticketTypes
         this.list = this.ticketTypes[0].tickets

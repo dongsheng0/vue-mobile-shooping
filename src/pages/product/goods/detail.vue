@@ -21,7 +21,7 @@
     </head-img>
     <div class="detail-content">
       <!-- 详情介绍 -->
-      <introduce :detail="details.detail" :pic="pic"></introduce>
+      <introduce :detail="details.detail" title="商品"></introduce>
     </div>
 
     <van-sku
@@ -116,7 +116,6 @@ export default {
       //
       goodsSpecDefault: {}, // 顶部的商品展示第一个规格的商品
       detailId: this.$route.params.id, // 商品id
-      pic: '',
       details: {},
     }
   },
@@ -168,7 +167,6 @@ export default {
     getDetail () {
       serverHttp.goodsDetailApi({ id: this.detailId }).then(res => {
         this.details = res.rs
-        this.pic = res.rs.pics[0]
         this.details.name = '商品详情'
         this.goodsSpecDefault = this.details.goodsSpecList.length > 0 ? this.details.goodsSpecList[0] : {}
         this.initSku(this.details.goodsSpecList)

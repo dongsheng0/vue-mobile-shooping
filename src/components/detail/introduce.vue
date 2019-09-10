@@ -39,19 +39,18 @@
     <div class="title">
       <div class="title-content">
         <span class="title-icon"></span>
-        <span class="title-name">景区</span>
+        <span class="title-name">{{title}}详情</span>
         <span class="title-icon"></span>
       </div>
     </div>
     <div class="desc" v-html="detail"></div>
-    <img :src="pic" alt />
   </div>
 </template>
 
 <script>
 export default {
   name: 'introduce',
-  props: ['detail', 'pic'],
+  props: ['detail', 'title'],
   data () {
     return {
 
