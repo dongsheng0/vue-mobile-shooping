@@ -20,6 +20,10 @@ const serverHttp = {
   cityApi: paramObj => {
     return get('/city/list', paramObj);
   },
+  // 搜索OK
+  searchApi: paramObj => {
+    return post('/search', paramObj);
+  },
   // 
   //
   //景区部分

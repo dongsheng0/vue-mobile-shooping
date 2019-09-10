@@ -3,7 +3,7 @@
     <van-card
       :title="product.name"
       :centered="true"
-      :origin-price="product.minimumPrice"
+      :origin-price="product.originPrice"
       :desc="product.address"
       @click="clickProduct"
       @click-thumb="clickThumb"
@@ -22,7 +22,7 @@
       </template>
       <template slot="origin-price">
         <p class="origin-price" v-if="product.specialOfferTimeLimit">
-          <span>原价：{{product.minimumPrice | price}}</span>
+          <span>原价：{{product.originPrice | price}}</span>
         </p>
       </template>
       <template slot="tags">

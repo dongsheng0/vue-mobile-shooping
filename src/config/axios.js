@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { Toast } from 'vant';
+import {
+  Toast
+} from 'vant';
 axios.defaults.timeout = 5000;
 let headers = {
   'content-type': 'application/x-www-form-urlencoded'
@@ -119,8 +121,9 @@ export function get(url, params = {}) {
           resolve(res.data);
         } else if (res.data.code == 401) {
           //通过JSSDK的api使小程序跳转到指定的小程序页面
+          Toast('登录信息失效，请重新登录')
           wx.miniProgram.navigateTo({
-            url: '/pages/index'
+            url: '/pages/login/login'
           });
         } else {
           Toast(res.data.msg)
@@ -149,7 +152,8 @@ export function post(url, data = {}) {
       transformRequest: [function (data) {
         let ret = ''
         for (let it in data) {
-          ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          // ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          ret += it + '=' + data[it] + '&'
         }
         return ret
       }],
@@ -162,10 +166,11 @@ export function post(url, data = {}) {
           resolve(res.data);
         } else if (res.data.code == 401) {
           //通过JSSDK的api使小程序跳转到指定的小程序页面
+          Toast('登录信息失效，请重新登录')
           wx.miniProgram.navigateTo({
-            url: '/pages/index'
+            url: '/pages/login/login'
           });
-        }else {
+        } else {
           Toast(res.data.msg)
           reject(res.data);
         }

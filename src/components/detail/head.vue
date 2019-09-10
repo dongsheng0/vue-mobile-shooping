@@ -68,7 +68,7 @@ export default {
     &-address {
       font-size: 13px;
       color: #666;
-      padding-left: 25px;
+      padding: 0 25px 5px 25px;
       margin-top: 10px;
       background: url(../../assets/img/icon/icon_address.png) no-repeat left;
     }

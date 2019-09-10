@@ -3,39 +3,37 @@
 <template>
   <!-- 酒店详情 -->
   <div class="detail">
-    <!-- <head-img :detail="details"></head-img> -->
+    <head-img :detail="details"></head-img>
     <room-date v-model="selectValue" @change="changeRoomDate" :hotelId="detailId" />
     <div class="detail-list">
-      <van-list v-model="loading" :error.sync="error" error-text="请求失败，点击重新加载" @load="onLoad">
-        <van-cell v-for="item in productList" :key="item.id">
-          <product-card :product="item" source="hotelDetail" @clickThumb="handelPreorder('room',item.id)">
-            <template slot="tags">
-              <div>
-                <span class="card-tag" v-for="(tag,i) in item.attributes" :key="i">{{tag}}</span>
-              </div>
-            </template>
-            <span slot="bottom" class="hotel-time-end" v-if="item.specialOfferTimeLimit">
-              限时：
-              <van-count-down :time="item.specialOfferTimeLimit | countDown" />
-            </span>
-            <template slot="footer">
-              <van-row type="flex" justify="space-between">
-                <van-col span="12" class="bottom-content">
-                  <!-- <span class="point">使用前3日可退</span> -->
-                  <span class="point active">奖励{{item.rakeOff | price}}</span>
-                </van-col>
-                <van-col span="12">
-                  <span class="share" @click="share">推广</span>
-                  <span class="preorder" @click="handelPreorder('order',item.id)">预定</span>
-                </van-col>
-              </van-row>
-              <div class="useRules">
-                <p class="point" v-for="(item, i) in item.useRules" :key="i">{{item}}</p>
-              </div>
-            </template>
-          </product-card>
-        </van-cell>
-      </van-list>
+      <van-cell v-for="item in productList" :key="item.id">
+        <product-card :product="item" source="hotelDetail" @clickThumb="handelPreorder('room',item.id)">
+          <template slot="tags">
+            <div>
+              <span class="card-tag" v-for="(tag,i) in item.attributes" :key="i">{{tag}}</span>
+            </div>
+          </template>
+          <span slot="bottom" class="hotel-time-end" v-if="item.specialOfferTimeLimit">
+            限时：
+            <van-count-down :time="item.specialOfferTimeLimit | countDown" />
+          </span>
+          <template slot="footer">
+            <van-row type="flex" justify="space-between">
+              <van-col span="12" class="bottom-content">
+                <!-- <span class="point">使用前3日可退</span> -->
+                <span class="point active">奖励{{item.rakeOff | price}}</span>
+              </van-col>
+              <van-col span="12">
+                <span class="share" @click="share">推广</span>
+                <span class="preorder" @click="handelPreorder('order',item.id)">预定</span>
+              </van-col>
+            </van-row>
+            <div class="useRules">
+              <p class="point" v-for="(item, i) in item.useRules" :key="i">{{item}}</p>
+            </div>
+          </template>
+        </product-card>
+      </van-cell>
     </div>
   </div>
 </template>
@@ -82,18 +80,14 @@ export default {
     changeRoomDate (e) {
       this.mapDetailsdata(e)
     },
-    onLoad () {
-      console.log(0)
-      this.loading = false
-    },
     // 二次处理数据
     mapDetailsdata (list) {
       list.forEach(item => {
         item.picUrl = item.pic_url
         // 有限时特价
         if (item.specialOfferTimeLimit) {
-          item.minimumPrice = item.price
           item.price = item.specialOfferPrice
+          item.originPrice = item.price
         }
       })
       this.productList = list

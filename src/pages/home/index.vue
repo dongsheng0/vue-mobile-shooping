@@ -1,11 +1,17 @@
 <template>
   <div class="home-page">
     <navigate />
-    <!-- <div> -->
-      <!-- <van-search v-model="searchvalue" placeholder="请输入搜索关键词" show-action shape="round" @search="onSearch">
-        <div slot="action" @click="onSearch">搜索</div>
+    <div>
+      <van-search
+        v-model="keyword"
+        placeholder="请输入搜索关键词"
+        :show-action="keyword? true: false"
+        shape="round"
+        @search="onSearch"
+      >
+        <div slot="action" @click="onSearch" class="home-search">搜索</div>
       </van-search>
-    </div> -->
+    </div>
     <span class="address home-city" @click="$router.push({path:'/city', query: {city:'北京'}})">{{city.name}}</span>
     <imageAd :bannerList="bannerList"></imageAd>
     <div class="content">
@@ -63,7 +69,7 @@ export default {
   },
   data: function () {
     return {
-      searchvalue: '',
+      keyword: '',
       bannerList: [],
       productList: [],
       city: { cityCode: null, name: '北京', provinceCode: 110000 },
@@ -136,7 +142,7 @@ export default {
     },
     // 搜索
     onSearch (e) {
-      this.$router.push(`/search?keyword=${encodeURIComponent(e)}`)
+      this.$router.push(`/search?keyword=${this.keyword}`)
     },
     // 获取banner数据
     getBannerData () {
@@ -168,6 +174,7 @@ export default {
         let list = res.list || [];
         list.forEach(item => {
           item.price = item.minimumPrice
+          item.address = item.address ? item.address : " " // 设置为空，是为了让中间的高度撑开
         })
         if (pageNum > 1) {
           this.productList = [...this.productList, ...list];
@@ -257,6 +264,9 @@ export default {
   }
   .van-card__bottom {
     line-height: 26px;
+  }
+  /deep/ .van-card__desc {
+    height: 30px;
   }
 }
 </style>

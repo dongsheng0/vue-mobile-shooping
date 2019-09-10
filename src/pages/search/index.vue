@@ -1,26 +1,35 @@
 <template>
   <!-- 搜索 -->
   <div>
-    <van-search ref="search" placeholder="请输入搜索关键词" shape="round" @search="onSearch">
-      <div slot="action" @click="onSearch">搜索</div>
+    <van-search
+      v-model="keyword"
+      placeholder="请输入搜索关键词"
+      :show-action="keyword? true: false"
+      shape="round"
+      @search="onSearch"
+    >
+      <div slot="action" @click="onSearch" class="home-search">搜索</div>
     </van-search>
-    <div v-for="item in productList" :key="item.id">
-      <product-card :product="item" @click="showProductDetail(item)">
-        <template slot="bottom">
-          <div class="p-tag">
-            <span class="p-tag-icon"></span>
-            <span class="p-tag-price">￥{{item.minimumPrice}}</span>
-          </div>
-          <!-- <div class="p-time">
+    <template v-if="productList.length>0">
+      <div v-for="item in productList" :key="item.id">
+        <product-card :product="item" @click="showProductDetail(item)">
+          <template slot="bottom">
+            <div class="p-tag">
+              <span class="p-tag-icon"></span>
+              <span class="p-tag-price">￥{{item.minimumRakeOff}}</span>
+            </div>
+            <!-- <div class="p-time">
                   <span class="p-time-end">限时：{{item.time}}</span>
                   <div class="p-tag">
                     <span class="p-tag-icon"></span>
                     <span class="p-tag-price">￥{{item.price}}</span>
                   </div>
-          </div>-->
-        </template>
-      </product-card>
-    </div>
+            </div>-->
+          </template>
+        </product-card>
+      </div>
+    </template>
+    <div v-else class="empty">请换个关键词搜索</div>
   </div>
 </template>
 
@@ -38,35 +47,49 @@ export default {
 
   },
   mounted () {
-    this.getListData()
     this.keyword = decodeURIComponent(this.$route.query.keyword)
-    console.log(this.keyword)
+    this.getListData()
   },
   methods: {
-    onSearch () { },
-    getListData () {
-
-      // 参数名称	必选	类型及范围	说明
-      // provinceCode	 是	int	省代码
-      // cityCode	否	int	市代码
-      // lat	是	double	纬度 116.33664
-      // lng	是	double	经度
-      // pageNum	否	int	当前页，默认1
-      // pageSize	否	int	分页大小，默认20
-      let data = {
-        provinceCode: 110000,
-        lat: 116.33664,
-        lng: 39.94228,
-        pageNum: 1
+    onSearch () {
+      this.getListData()
+    },
+    showProductDetail (item) {
+      let [type, id] = item.target_url.split(':')
+      let target = ''
+      switch (type) {
+        case 'hotel':
+          target = type
+          break;
+        case 'goods':
+          target = type
+          break;
+        case 'scenic_spot':
+          target = 'scenic'
+          break;
+        default:
+          target = 'scenic'
+          break;
       }
-      serverHttp.scenicSpotsApi(data).then(res => {
-        console.log()
-        this.productList = res.rs.list
+      this.$router.push(`/${target}/${id}`);
+    },
+    getListData () {
+      serverHttp.searchApi({ key: this.keyword }).then(res => {
+        this.productList = res.rs
+        this.productList.forEach(item => {
+          item.picUrl = item.pic_url
+          item.price = item.minimumPrice
+        })
       })
     },
   }
 }
 </script>
 
-<style>
+<style scoped>
+.empty {
+  font-size: 14px;
+  padding: 15px;
+  text-align: center;
+}
 </style>

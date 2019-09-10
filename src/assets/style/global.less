@@ -14,6 +14,7 @@
   text-align: center;
   color: #fff;
   background: linear-gradient(135deg, rgba(254, 167, 99, 0.5) 0%, rgba(242, 111, 84, 1) 100%);
+
   &:active {
     background: linear-gradient(135deg, rgba(248, 82, 83, .5) 0%, rgba(250, 61, 60, 1) 100%);
   }
@@ -30,10 +31,12 @@
   text-align: center;
   color: #fff;
   background: linear-gradient(135deg, #c7f263 0%, #8aee77 100%);
+
   &:active {
     background: linear-gradient(135deg, rgba(148, 82, 83, 1) 0%, rgba(150, 61, 60, 1) 100%);
   }
 }
+
 .button(@color: "green"; @width: 52px; @height: 30px; @font-size: 14px)when(@color="white") {
   display: inline-block;
   width: @width;
@@ -45,7 +48,7 @@
   text-align: center;
   color: #A2A2A2;
   background: #fff;
-  box-shadow:0px 10px 15px 0px rgba(208,208,208,0.24);
+  box-shadow: 0px 10px 15px 0px rgba(208, 208, 208, 0.24);
 }
 
 /* 分割线 */
@@ -59,7 +62,7 @@
   display: inline-block;
   font-size: 13px;
   color: #666;
-  padding-left: 25px;
+  padding: 5px 25px;
   line-height: 22px;
   background: url(../img/icon/icon_address.png) no-repeat left;
 }
@@ -100,22 +103,26 @@
     }
   }
 }
+
 // 订单提交页
-.field-label{
-  height:20px;
-  font-size:14px;
-  color:rgba(66,66,66,1);
-  line-height:20px;
+.field-label {
+  height: 20px;
+  font-size: 14px;
+  color: rgba(66, 66, 66, 1);
+  line-height: 20px;
   padding: 8px 0 8px 15px;
 }
-.order-userinfo{
+
+.order-userinfo {
   padding: 15px;
   margin-bottom: 55px;
 }
-.order-num{
+
+.order-num {
   text-align: center;
 }
-.save-order{
+
+.save-order {
   position: fixed;
   z-index: 20;
   bottom: 0;
@@ -123,38 +130,47 @@
   width: 100%;
   box-sizing: border-box;
   padding: 7px 15px;
-  box-shadow:0px -6px 11px 0px rgba(0,0,0,0.03);
-  font-size:14px;
-  font-weight:500;
+  box-shadow: 0px -6px 11px 0px rgba(0, 0, 0, 0.03);
+  font-size: 14px;
+  font-weight: 500;
   color: @primary;
   background-color: #fff;
-  &-btn{
+
+  &-btn {
     text-align: right;
-    span{
+
+    span {
       .button('red', 100%, 42px, 15px);
     }
   }
 }
+
 // 订单提交页
 // room goods-detail页面 按钮
-.preorder-btn{
-   position: fixed;
+.preorder-btn {
+  position: fixed;
   z-index: 20;
   bottom: 0;
   left: 0;
   width: 100%;
   box-sizing: border-box;
   padding: 7px 15px;
-    background-color: #fff;
+  background-color: #fff;
 
-    .share{
-      .button(@color: "green"; @width: 36%; @height: 40px; @font-size: 18px);
-      .money{
-        font-size: 12px;
-      }
+  .share {
+    .button(@color: "green"; @width: 36%; @height: 40px; @font-size: 18px);
+
+    .money {
+      font-size: 12px;
     }
-    .preorder{
-      .button("red", 60%, 42px, 18px);
-      float: right;
-      }
+  }
+
+  .preorder {
+    .button("red", 60%, 42px, 18px);
+    float: right;
+  }
+}
+
+.home-search {
+  .button(@color: "red"; @width: 45px; @height: 28px; @font-size: 12px);
 }
