@@ -167,6 +167,11 @@ export default {
         WXPay(res.rs.orderNo)
         // orderNo: "S-190906-10"
       })
+      //   let backH5hash = window.location.hash.substring(1)
+      // let path = '/pages/login/login'
+      // wx.miniProgram.navigateTo({
+      //   url: `${path}?backH5hash=${backH5hash}`
+      // });
     },
     // 点击更多日期
     handelDatetimePicker () {
