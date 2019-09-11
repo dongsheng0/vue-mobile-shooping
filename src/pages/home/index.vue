@@ -1,18 +1,21 @@
+
+
 <template>
   <div class="home-page">
-    <navigate />
     <div>
-      <van-search
-        v-model="keyword"
-        placeholder="请输入搜索关键词"
-        :show-action="keyword? true: false"
-        shape="round"
-        @search="onSearch"
-      >
-        <div slot="action" @click="onSearch" class="home-search">搜索</div>
-      </van-search>
+      <span class="address home-city" @click="$router.push({path:'/city', query: {city:'北京'}})">{{city.name}}</span>
+      <div class="search-box">
+        <van-search
+          v-model="keyword"
+          placeholder="请输入搜索关键词"
+          :show-action="keyword? true: false"
+          shape="round"
+          @search="onSearch"
+        >
+          <div slot="action" @click="onSearch" class="home-search">搜索</div>
+        </van-search>
+      </div>
     </div>
-    <span class="address home-city" @click="$router.push({path:'/city', query: {city:'北京'}})">{{city.name}}</span>
     <imageAd :bannerList="bannerList"></imageAd>
     <div class="content">
       <!-- 菜单-->
@@ -54,6 +57,8 @@
       </van-list>
       <!-- 菜单 end-->
     </div>
+
+    <navigate />
   </div>
 </template>
 <script>
@@ -202,8 +207,20 @@ export default {
   }
 }
 </script>
+
 <style lang="less" scoped>
 .home-page {
+  .search-box {
+    display: table-cell;
+  }
+
+  /deep/ .van-field__control {
+    margin-top: 3px;
+  }
+  /deep/ .van-icon-search {
+    margin-top: 3px;
+  }
+
   .search {
     margin: 15px;
     height: 35px;
@@ -219,7 +236,13 @@ export default {
     }
   }
   .home-city {
+    display: table-cell;
     margin-left: 15px;
+    max-width: 92px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 0;
   }
   .h_title {
     line-height: 22px;

@@ -9,6 +9,8 @@ import VueLazyload from 'vue-lazyload'
 import Calendar from 'vue-mobile-calendar'
 import components from './config/components.js';
 import moment from 'moment'
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+Vue.use(VueAwesomeSwiper)
 Vue.use(components);
 
 Vue.use(VueLazyload)
