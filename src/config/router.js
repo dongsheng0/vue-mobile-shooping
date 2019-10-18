@@ -11,7 +11,7 @@ const routes = [{
     name: 'home',
     component: () => import('../pages/home/index'),
     meta: {
-      title: '熊加加优选',
+      title: '呼啦啦',
     },
   },
   {
